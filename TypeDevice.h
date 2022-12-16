@@ -21,6 +21,8 @@ enum TypeControl {
   unknown_c,
 };
 
+const TypeDevice currentTypeDevice = ups;
+
 const static struct {
   TypeDevice val;
   const char *str;

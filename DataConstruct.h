@@ -3,63 +3,63 @@
 
 #define API_PKG_SYMB "^"
 #define API_DELIMITER ":"
-#define TYPE_DEVICE "wifi_ups_helper"
 
-int id;
-bool connected = false;
-bool registered = false;
-bool registering = false;
+struct ParsedHeaderPayload {
+  String header;
+  String payload;
+};
 
-String getRegisterOrAuthData() {
+String constructRegister(String typeDevice) {
   uint8_t lengthApiChar = String(API_PKG_SYMB).length() * 2
                           + String(API_DELIMITER).length();
-  String apiStr;
 
-  if (registered) {
-    String idStr = String(id);
-    char api[lengthApiChar + idStr.length()];
-    const char *idChar = idStr.c_str();
+  char api[lengthApiChar + String(typeDevice).length()];
 
-    strcat(api, API_PKG_SYMB);
-    strcat(api, idChar);
-    strcat(api, API_DELIMITER);
-    strcat(api, TYPE_DEVICE);
-    strcat(api, API_PKG_SYMB);
+  strcat(api, API_PKG_SYMB);
+  strcat(api, typeDevice.c_str());
+  strcat(api, API_PKG_SYMB);
 
-    apiStr = api;
-  } else {
-    char api[lengthApiChar + String(TYPE_DEVICE).length()];
-
-    strcat(api, API_PKG_SYMB);
-    strcat(api, TYPE_DEVICE);
-    strcat(api, API_PKG_SYMB);
-
-    registering = true;
-    apiStr = api;
-  }
-  return apiStr;
-  // String encryptedApi = encrypt(apiStr);
-  // webSocket.sendTXT(encryptedApi);
+  return api;
 }
 
-void updateRegistered() {
-  registered = id != 0;
-  registering = false;
+String constructAuth(int idDevice, String typeDevice) {
+  uint8_t lengthApiChar = String(API_PKG_SYMB).length() * 2
+                          + String(API_DELIMITER).length();
+
+  String idStr = String(idDevice);
+  char api[lengthApiChar + idStr.length()];
+  const char *idChar = idStr.c_str();
+
+  strcat(api, API_PKG_SYMB);
+  strcat(api, idChar);
+  strcat(api, API_DELIMITER);
+  strcat(api, typeDevice.c_str());
+  strcat(api, API_PKG_SYMB);
+
+  return api;
 }
 
-void getAndCheckId() {
-  EEPROM.begin(sizeof(id));
-  id = EEPROM.read(0);
-  EEPROM.end();
-  updateRegistered();
-  Serial.println("ID");
-  Serial.println(id);
-}
+// void removeSignP(String data) {
+//   uint8_t indexStart = data.indexOf(API_PKG_SYMB) + 1;
+//   uint8_t indexEnd = data.lastIndexOf(API_PKG_SYMB);
 
-void saveId() {
-  EEPROM.begin(sizeof(id));
-  EEPROM.write(0, id);
-  EEPROM.commit();
-  EEPROM.end();
-  updateRegistered();
+//   String cmd = data.substring(indexStart, indexEnd);
+//   id = cmd.toInt();
+
+//   saveId();
+// }
+
+ParsedHeaderPayload parseTextData(String data) {
+  ParsedHeaderPayload headerPayload;
+
+  uint8_t indexStart = data.indexOf(API_PKG_SYMB) + 1;
+  uint8_t indexEnd = data.lastIndexOf(API_PKG_SYMB);
+
+  String parsed = data.substring(indexStart, indexEnd);
+  uint8_t indexFirstDelimiter = data.indexOf(API_DELIMITER);
+
+  headerPayload.header = parsed.substring(0, indexFirstDelimiter);
+  headerPayload.payload = parsed.substring(indexFirstDelimiter + 1);
+
+  return headerPayload;
 }

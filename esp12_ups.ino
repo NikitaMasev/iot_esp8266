@@ -1,10 +1,12 @@
 #include "Base64.h"
-#include "DataConstruct.h"
+//#include "DataConstruct.h"
 #include "TempDetector.h"
 #include "VoltCur.h"
 #include "CoolerControl.h"
 #include "Network.h"
-#include "TypeDevice.h"
+//#include "TypeDevice.h"
+//#include "Persistent.h"
+#include "IotAdapter.h"
 
 ///was 285 code lines, 319
 #define SERIAL_COMMUNICATION_SPEED 9600
@@ -15,33 +17,46 @@ long lastUpdate;
 
 void setup() {
   Serial.begin(SERIAL_COMMUNICATION_SPEED);
-  getAndCheckId();
-  //id = 0;
-  //saveId();
 
+  setupIna219();
+  pullPersistentData();
   startWifi();
 
   webSocket.onEvent(webSocketEvent);
+}
 
-  if (!ina219.begin()) {
-    Serial.println("Failed to find INA219 chip");
+void webSocketEvent(WStype_t type, uint8_t *payload, size_t length) {
+  switch (type) {
+    case WStype_DISCONNECTED:
+      break;
+    case WStype_CONNECTED:
+      {
+        String dataForService = adaptConnected();
+        String encrypted = encrypt(dataForService);
+        webSocket.sendTXT(encrypted);
+      }
+      break;
+    case WStype_TEXT:
+      {
+        String normalizedData = decryptAndFormatToString(payload, length);
+        String dataForService = adaptText(normalizedData);
+        
+        if (!dataForService.isEmpty()) {
+          String encrypted = encrypt(dataForService);
+          webSocket.sendTXT(encrypted);
+        }
+      }
+      break;
+    case WStype_BIN:
+      break;
+    case WStype_PING:
+      break;
+    case WStype_PONG:
+      break;
   }
 }
 
-void continueRegisteringIfNot(String decrCmd) {
-  if (registering) {
-    uint8_t indexStart = decrCmd.indexOf(API_PKG_SYMB) + 1;
-    uint8_t indexEnd = decrCmd.lastIndexOf(API_PKG_SYMB);
-
-    String cmd = decrCmd.substring(indexStart, indexEnd);
-    id = cmd.toInt();
-
-    saveId();
-    //registerOrAuth();
-  }
-}
-
-String decryptCmd(uint8_t *payload, size_t length) {
+String decryptAndFormatToString(uint8_t *payload, size_t length) {
   char encrCmd[length + 1];
 
   memcpy(encrCmd, payload, length);
@@ -57,32 +72,6 @@ void loop() {
   updateTemperatures();
   updateVoltageAndCurrent();
   controlCooler();
-}
-
-void webSocketEvent(WStype_t type, uint8_t *payload, size_t length) {
-  switch (type) {
-    case WStype_DISCONNECTED:
-      connected = false;
-      break;
-    case WStype_CONNECTED:
-      {
-        connected = true;
-        //registerOrAuth();
-      }
-      break;
-    case WStype_TEXT:
-      {
-        String decrCmd = decryptCmd(payload, length);
-        continueRegisteringIfNot(decrCmd);
-      }
-      break;
-    case WStype_BIN:
-      break;
-    case WStype_PING:
-      break;
-    case WStype_PONG:
-      break;
-  }
 }
 
 ///CBC
