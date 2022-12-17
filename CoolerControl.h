@@ -1,6 +1,5 @@
 #define PIN_PWM_COOLER 9
 
-
 #define TIME_UPDATE_COOLER 5500
 #define TEMP_HIGH_UPS 58.0f    //C
 #define TEMP_HIGH_ACC 35.0f    //C

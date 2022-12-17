@@ -10,17 +10,8 @@ enum LocalStateAuth {
 LocalStateAuth localStateAuth = notRegistered;
 int idDevice;
 
-void updateRegistered() {
+void updateLocalStateById() {
   localStateAuth = idDevice == 0 ? notRegistered : registered;
-}
-
-void pullPersistentData() {
-  EEPROM.begin(sizeof(idDevice));
-  idDevice = EEPROM.read(0);
-  EEPROM.end();
-  updateRegistered();
-  Serial.println("ID");
-  Serial.println(idDevice);
 }
 
 void savePersistentData() {
@@ -28,5 +19,20 @@ void savePersistentData() {
   EEPROM.write(0, idDevice);
   EEPROM.commit();
   EEPROM.end();
-  updateRegistered();
+  updateLocalStateById();
+}
+
+void updateIdDevice(int newId) {
+  idDevice = newId;
+  savePersistentData();
+  updateLocalStateById();
+}
+
+void pullPersistentData() {
+  EEPROM.begin(sizeof(idDevice));
+  idDevice = EEPROM.read(0);
+  EEPROM.end();
+  updateLocalStateById();
+  Serial.println("ID");
+  Serial.println(idDevice);
 }

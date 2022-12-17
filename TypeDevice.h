@@ -16,12 +16,11 @@ enum TypeControl {
   powerOff_c,
   rgba_c,
   rgbaEffects_c,
-  changeName_c,
   register_c,
   unknown_c,
 };
 
-const TypeDevice currentTypeDevice = ups;
+TypeDevice currentTypeDevice = unknown;
 
 const static struct {
   TypeDevice val;
@@ -43,7 +42,6 @@ const static struct {
   { powerOff_c, "powerOff" },
   { rgba_c, "rgba" },
   { rgbaEffects_c, "rgbaEffects" },
-  { changeName_c, "changeName" },
   { register_c, "register" },
   { unknown_c, "unknown" },
 };
@@ -52,11 +50,11 @@ const static struct {
   TypeDevice typeDevice;
   TypeControl typeControl[SIZE_TYPE_CONTROL_MAP];
 } typeDeviceToTypeControl[] = {
-  { ups, { changeName_c, register_c } },
-  { lamp, { powerOn_c, powerOff_c, changeName_c, register_c } },
-  { rgba, { powerOn_c, powerOff_c, changeName_c, register_c, rgba_c } },
-  { rgbaAddress, { powerOn_c, powerOff_c, changeName_c, register_c, rgbaEffects_c, rgba_c } },
-  { tempSensor, { changeName_c, register_c } },
+  { ups, { register_c } },
+  { lamp, { powerOn_c, powerOff_c, register_c } },
+  { rgba, { powerOn_c, powerOff_c, register_c, rgba_c } },
+  { rgbaAddress, { powerOn_c, powerOff_c, register_c, rgbaEffects_c, rgba_c } },
+  { tempSensor, { register_c } },
   { unknown, {} },
 };
 
@@ -96,9 +94,9 @@ String typeControlToString(TypeControl typeControl) {
   return typeControlToStr[unknown_c].str;
 }
 
-bool allowedTypeControl(TypeDevice typeDevice, TypeControl typeControl) {
+bool allowedTypeControl(TypeControl typeControl) {
   for (int i = 0; i < sizeof(typeDeviceToTypeControl) / sizeof(typeDeviceToTypeControl[0]); i++) {
-    if (typeDeviceToTypeControl[i].typeDevice == typeDevice) {
+    if (typeDeviceToTypeControl[i].typeDevice == currentTypeDevice) {
       for (int j = 0; j < sizeof(typeDeviceToTypeControl[i].typeControl) / sizeof(typeDeviceToTypeControl[i].typeControl[0]); j++) {
         if (typeDeviceToTypeControl[i].typeControl[j] == typeControl) {
           return true;

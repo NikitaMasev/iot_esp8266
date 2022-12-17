@@ -20,6 +20,7 @@ void setup() {
 
   setupIna219();
   pullPersistentData();
+  setupAdapter();
   startWifi();
 
   webSocket.onEvent(webSocketEvent);
