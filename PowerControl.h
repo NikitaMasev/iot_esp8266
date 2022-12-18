@@ -6,12 +6,7 @@ void setupPowerControl() {
   pinMode(PIN_POWER_CONTROL, OUTPUT);
 }
 
-void powerOn() {
-  digitalWrite(PIN_POWER_CONTROL, HIGH);
-  powerState = true;
-}
-
-void powerOff() {
-  digitalWrite(PIN_POWER_CONTROL, LOW);
-  powerState = false;
+void updatePower(bool controlOn) {
+  powerState = controlOn;
+  digitalWrite(PIN_POWER_CONTROL, powerState);
 }

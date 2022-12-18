@@ -11,7 +11,11 @@ long lastTimesUpdateCooler;
 
 int pwmCooler;
 
-void controlCooler() {
+void setupCoolerControl() {
+  pinMode(PIN_PWM_COOLER, OUTPUT);
+}
+
+void controlCooler(float tempAcc) {
   if (millis() - lastTimesUpdateCooler > TIME_UPDATE_COOLER) {
     lastTimesUpdateCooler = millis();
 

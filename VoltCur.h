@@ -15,7 +15,7 @@ void updateVoltageAndCurrent() {
   voltageDC = loadvoltage;
 }
 
-void setupIna219() {
+void setupVoltageCurrentSensor() {
     if (!ina219.begin()) {
     Serial.println("Failed to find INA219 chip");
   }

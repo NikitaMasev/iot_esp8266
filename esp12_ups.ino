@@ -1,8 +1,8 @@
 #include "Base64.h"
 //#include "DataConstruct.h"
 #include "TempDetector.h"
-#include "VoltCur.h"
-#include "CoolerControl.h"
+//#include "VoltCur.h"
+//#include "CoolerControl.h"
 #include "Network.h"
 //#include "TypeDevice.h"
 //#include "Persistent.h"
@@ -18,7 +18,6 @@ long lastUpdate;
 void setup() {
   Serial.begin(SERIAL_COMMUNICATION_SPEED);
 
-  setupIna219();
   pullPersistentData();
   setupAdapter();
   startWifi();
@@ -70,9 +69,9 @@ String decryptAndFormatToString(uint8_t *payload, size_t length) {
 
 void loop() {
   webSocket.loop();
-  updateTemperatures();
-  updateVoltageAndCurrent();
-  controlCooler();
+  // updateTemperatures();
+  // updateVoltageAndCurrent();
+  // controlCooler();
 }
 
 ///CBC

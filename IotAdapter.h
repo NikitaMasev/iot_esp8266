@@ -6,15 +6,26 @@
 #if defined(TYPE_DEVICE_LAMP)
 #include "PowerControl.h"
 #endif
+#if defined(TYPE_DEVICE_UPS)
+#include "CoolerControl.h"
+#include "VoltCur.h"
+#endif
+#if defined(TYPE_DEVICE_RGBA)
+#include "RgbaControl.h"
+#endif
 
 const char* empty = "";
 
 void setupAdapter() {
 #if defined(TYPE_DEVICE_UPS)
+  setupCoolerControl();
+  setupVoltageCurrentSensor();
   currentTypeDevice = ups;
 #elif defined(TYPE_DEVICE_LAMP)
+  setupPowerControl();
   currentTypeDevice = lamp;
 #elif defined(TYPE_DEVICE_RGBA)
+  setupRgbaControl();
   currentTypeDevice = rgba;
 #elif defined(TYPE_DEVICE_RGBA_ADDRESS)
   currentTypeDevice = rgbaAddress;
@@ -44,11 +55,15 @@ String handleRegister(String payload) {
 
 String handlePower(bool controlOn) {
 #if defined(TYPE_DEVICE_LAMP)
-  if (controlOn) {
-    powerOn();
-  } else {
-    powerOff();
-  }
+  updatePower(controlOn);
+#endif
+  return empty;
+}
+
+String handleRgba(String payload) {
+#if defined(TYPE_DEVICE_RGBA)
+  ParsedRgba parsedRgba = parseRgba(payload);
+  updateRgba(parsedRgba.r, parsedRgba.g, parsedRgba.b, parsedRgba.a);
 #endif
   return empty;
 }
@@ -73,6 +88,8 @@ String adaptText(String data) {
       return handlePower(false);
     case powerOn_c:
       return handlePower(true);
+    case rgba_c:
+      return handleRgba(headerPayload.payload);
   }
 
   return empty;

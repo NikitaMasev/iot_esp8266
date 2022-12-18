@@ -9,11 +9,9 @@ OneWire wireTemps[TEMP_SENSOR_COUNT] = { OneWire(2), OneWire(13) };
 long lastTimesUpdateTemps[TEMP_SENSOR_COUNT];
 bool cmdWireTemps[TEMP_SENSOR_COUNT] = { false, false };
 
-float tempUps;
-float tempAcc;
+float temps[TEMP_SENSOR_COUNT];
 
-
-float detectTemperature(OneWire *wireTemp, long *lastTimeUpdateTemp, bool *cmdWireTemp) {
+static float detectTemperature(OneWire *wireTemp, long *lastTimeUpdateTemp, bool *cmdWireTemp) {
   float temp = TEMP_NOT_UPDATED;
   byte data[2];
 
@@ -44,10 +42,8 @@ float detectTemperature(OneWire *wireTemp, long *lastTimeUpdateTemp, bool *cmdWi
 void updateTemperatures() {
   for (int i = 0; i < TEMP_SENSOR_COUNT; i++) {
     float temp = detectTemperature(&wireTemps[i], &lastTimesUpdateTemps[i], &cmdWireTemps[i]);
-    if (i == 0 && temp != TEMP_NOT_UPDATED) {
-      tempUps = temp;
-    } else if (i == 1 && temp != TEMP_NOT_UPDATED) {
-      tempAcc = temp;
+    if (temp != TEMP_NOT_UPDATED) {
+      temps[i] = temp;
     }
   }
 }
