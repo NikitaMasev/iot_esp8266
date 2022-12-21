@@ -2,24 +2,26 @@
 
 // указать тип драйвера COMMON_CATHODE/COMMON_ANODE
 // и пины в порядке R,G,B
-GRGB rgbaControl(COMMON_CATHODE, 9, 10, 11);
+GRGB ledControl(COMMON_CATHODE, 9, 10, 11);
 
-int ledR = 128;
-int ledG = 128;
-int ledB = 100;
-int ledA = 128;
+LedConfigData ledConfigData = {
+  h: 59,
+  s: 255,
+  v: 180,
+  mode: 10,
+};
 
-void setupRgbaControl() {
-  rgbaControl.setBrightness(ledA);
-  led.setRGB(ledR, ledG, ledB);
-  rgbaControl.setCRT(true);
+void updateLedPower(bool controlOn) {
+  ledControl.setPower(true);
 }
 
-void updateRgba(int r, int g, int b, int a) {
-  ledR = r;
-  ledG = g;
-  ledB = b;
-  ledA = a;
+void setupLedControl() {
+  ledControl.setBrightness(ledConfigData.v);
+  ledControl.setHSV(ledConfigData.h, ledConfigData.s, ledConfigData.v);
+  ledControl.setCRT(true);
+}
 
-  setupRgbaControl();
+void updateLedConfig(LedConfigData newConfigData) {
+  ledConfigData = newConfigData;
+  setupLedControl();
 }

@@ -1,20 +1,9 @@
 #include "WString.h"
+#include "DataStruct.h"
 #include <EEPROM.h>
 
 #define API_PKG_SYMB "^"
 #define API_DELIMITER ":"
-
-struct ParsedHeaderPayload {
-  String header;
-  String payload;
-};
-
-struct ParsedRgba {
-  int r;
-  int g;
-  int b;
-  int a;
-};
 
 struct StringParser {
   void reset() {
@@ -78,28 +67,28 @@ ParsedHeaderPayload parseTextData(String data) {
   return headerPayload;
 }
 
-ParsedRgba parseRgba(String data) {
-  ParsedRgba parsedRgba;
+LedConfigData parseLedConfig(String data) {
+  LedConfigData ledConfigData;
   StringParser pars;
   uint8_t index = 0;
 
   while (pars.update(data)) {
     switch (index) {
       case 0:
-        parsedRgba.r = pars.str.toInt();
+        ledConfigData.h = pars.str.toInt();
         break;
       case 1:
-        parsedRgba.g = pars.str.toInt();
+        ledConfigData.s = pars.str.toInt();
         break;
       case 2:
-        parsedRgba.b = pars.str.toInt();
+        ledConfigData.v = pars.str.toInt();
         break;
       case 3:
-        parsedRgba.a = pars.str.toInt();
+        ledConfigData.mode = pars.str.toInt();
         break;
     }
     index++;
   }
 
-  return parsedRgba;
+  return ledConfigData;
 }

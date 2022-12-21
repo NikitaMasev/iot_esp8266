@@ -13,6 +13,9 @@
 #if defined(TYPE_DEVICE_RGBA)
 #include "RgbaControl.h"
 #endif
+#if defined(TYPE_DEVICE_RGBA_ADDRESS)
+#include "RgbaAddressControl.h"
+#endif
 
 const char* empty = "";
 
@@ -25,9 +28,10 @@ void setupAdapter() {
   setupPowerControl();
   currentTypeDevice = lamp;
 #elif defined(TYPE_DEVICE_RGBA)
-  setupRgbaControl();
+  setupLedControl();
   currentTypeDevice = rgba;
 #elif defined(TYPE_DEVICE_RGBA_ADDRESS)
+  setupLedAddressControl();
   currentTypeDevice = rgbaAddress;
 #elif defined(TYPE_DEVICE_TEMP_SENSOR)
   currentTypeDevice = tempSensor;
@@ -57,13 +61,23 @@ String handlePower(bool controlOn) {
 #if defined(TYPE_DEVICE_LAMP)
   updatePower(controlOn);
 #endif
+#if defined(TYPE_DEVICE_RGBA)
+  updateLedPower(controlOn);
+#endif
+#if defined(TYPE_DEVICE_RGBA_ADDRESS)
+  updateLedAddressPower(controlOn);
+#endif
   return empty;
 }
 
 String handleRgba(String payload) {
+  LedConfigData parsedLedConfig = parseLedConfig(payload);
+
 #if defined(TYPE_DEVICE_RGBA)
-  ParsedRgba parsedRgba = parseRgba(payload);
-  updateRgba(parsedRgba.r, parsedRgba.g, parsedRgba.b, parsedRgba.a);
+  updateLedConfig(parsedLedConfig);
+#endif
+#if defined(TYPE_DEVICE_RGBA_ADDRESS)
+  updateLedAddressConfig(parsedLedConfig);
 #endif
   return empty;
 }
@@ -89,6 +103,7 @@ String adaptText(String data) {
     case powerOn_c:
       return handlePower(true);
     case rgba_c:
+    case rgbaEffects_c:
       return handleRgba(headerPayload.payload);
   }
 
