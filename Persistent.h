@@ -8,7 +8,9 @@ bool registered = false;
 int idDevice;
 
 void updateRegisteredState() {
-  registered = idDevice != 0;
+  registered = idDevice != 0 && idDevice != 255;
+  Serial.println("registered");
+  Serial.println(registered);
 }
 
 void saveIdDevice(int newId) {

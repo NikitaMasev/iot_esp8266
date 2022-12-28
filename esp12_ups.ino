@@ -17,8 +17,8 @@ long lastUpdate;
 
 void setup() {
   Serial.begin(SERIAL_COMMUNICATION_SPEED);
-
-  //setupAdapter();
+  
+  setupAdapter();
   //startWifi();
 
   webSocket.onEvent(webSocketEvent);
