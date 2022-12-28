@@ -2,6 +2,8 @@
 #include "RgbaAddressEffectsUtil.h"
 
 void setupLedAddressControl() {
+  ledConfigData = getSavedLedConfigData();
+  
   LEDS.setBrightness(ledConfigData.v);  // ограничить максимальную яркость
 
   LEDS.addLeds<WS2811, LED_DT, BRG>(leds, LED_COUNT);  // настрйоки для нашей ленты (ленты на WS2811, WS2812, WS2812B)
@@ -13,6 +15,7 @@ void setupLedAddressControl() {
 
 void updateLedAddressConfig(LedConfigData newConfigData) {
   ledConfigData = newConfigData;
+  saveLedConfigData(newConfigData);
   //ledConfigData.s = 255;
   switch (ledConfigData.mode) {
     case 2: thisdelay = 60; break;  //---STRIP RAINBOW FADE

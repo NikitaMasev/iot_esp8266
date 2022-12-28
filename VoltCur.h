@@ -16,7 +16,11 @@ void updateVoltageAndCurrent() {
 }
 
 void setupVoltageCurrentSensor() {
-    if (!ina219.begin()) {
+  if (!ina219.begin()) {
     Serial.println("Failed to find INA219 chip");
   }
+}
+
+void loopVoltCur() {
+  updateVoltageAndCurrent();
 }

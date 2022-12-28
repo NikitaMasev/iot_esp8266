@@ -1,6 +1,5 @@
 #include "WString.h"
-#include "DataConstruct.h"
-#include "Persistent.h"
+//#include "DataConstruct.h"
 #include "TypeDevice.h"
 #include "Config.h"
 #if defined(TYPE_DEVICE_LAMP)
@@ -16,10 +15,15 @@
 #if defined(TYPE_DEVICE_RGBA_ADDRESS)
 #include "RgbaAddressControl.h"
 #endif
+#if defined(TYPE_DEVICE_TEMP_SENSOR)
+#include "Persistent.h"
+#include "TempDetector.h"
+#endif
 
 const char* empty = "";
 
 void setupAdapter() {
+  setupPersistent();
 #if defined(TYPE_DEVICE_UPS)
   setupCoolerControl();
   setupVoltageCurrentSensor();
@@ -34,26 +38,22 @@ void setupAdapter() {
   setupLedAddressControl();
   currentTypeDevice = rgbaAddress;
 #elif defined(TYPE_DEVICE_TEMP_SENSOR)
+  setupTempDetector();
   currentTypeDevice = tempSensor;
 #endif
 }
 
 String adaptConnected() {
-  switch (localStateAuth) {
-    case notRegistered:
-      return constructRegister(typeDeviceToString(currentTypeDevice));
-    case registering:
-      ///registering after adaptConnected function
-      return empty;
-    case registered:
-      return constructAuth(idDevice, typeDeviceToString(currentTypeDevice));
+  if (registered) {
+    return constructAuth(idDevice, typeDeviceToString(currentTypeDevice));
+  } else {
+    return constructRegister(typeDeviceToString(currentTypeDevice));
   }
-  return empty;
 }
 
 String handleRegister(String payload) {
   int newId = payload.toInt();
-  updateIdDevice(newId);
+  saveIdDevice(newId);
   return empty;
 }
 

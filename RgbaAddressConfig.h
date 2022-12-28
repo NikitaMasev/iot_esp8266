@@ -1,3 +1,5 @@
+#include "Persistent.h"
+
 #define LED_COUNT 100  // число светодиодов в кольце/ленте
 #define LED_DT 12      // пин, куда подключен DIN ленты
 

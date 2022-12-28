@@ -1,6 +1,6 @@
 #include "Base64.h"
 //#include "DataConstruct.h"
-#include "TempDetector.h"
+//#include "TempDetector.h"
 //#include "VoltCur.h"
 //#include "CoolerControl.h"
 #include "Network.h"
@@ -18,9 +18,8 @@ long lastUpdate;
 void setup() {
   Serial.begin(SERIAL_COMMUNICATION_SPEED);
 
-  pullPersistentData();
-  setupAdapter();
-  startWifi();
+  //setupAdapter();
+  //startWifi();
 
   webSocket.onEvent(webSocketEvent);
 }

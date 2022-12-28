@@ -1,3 +1,5 @@
+#include "TempDetector.h"
+
 #define PIN_PWM_COOLER 9
 
 #define TIME_UPDATE_COOLER 5500
@@ -34,4 +36,8 @@ void controlCooler(float tempAcc) {
     pwmCooler = 0;
   }
   analogWrite(PIN_PWM_COOLER, pwmCooler);
+}
+
+void loopCooler() {
+  controlCooler(temps[TEMP_SENSOR_COUNT - 1]);
 }
