@@ -6,6 +6,7 @@
 #include "PowerControl.h"
 #endif
 #if defined(TYPE_DEVICE_UPS)
+#include "Persistent.h"
 #include "CoolerControl.h"
 #include "VoltCur.h"
 #endif

@@ -1,25 +1,16 @@
 #include "Base64.h"
-//#include "DataConstruct.h"
-//#include "TempDetector.h"
-//#include "VoltCur.h"
-//#include "CoolerControl.h"
 #include "Network.h"
-//#include "TypeDevice.h"
-//#include "Persistent.h"
 #include "IotAdapter.h"
 
-///was 285 code lines, 319
 #define SERIAL_COMMUNICATION_SPEED 9600
 
 static String data = "";
-
-long lastUpdate;
 
 void setup() {
   Serial.begin(SERIAL_COMMUNICATION_SPEED);
   
   setupAdapter();
-  //startWifi();
+  startWifi();
 
   webSocket.onEvent(webSocketEvent);
 }
@@ -68,9 +59,9 @@ String decryptAndFormatToString(uint8_t *payload, size_t length) {
 
 void loop() {
   webSocket.loop();
-  // updateTemperatures();
-  // updateVoltageAndCurrent();
-  // controlCooler();
+  //TODO rename iot adapter - something like iot controller
+  //loopController
+  //loopDataPusher -> if empty - not push
 }
 
 ///CBC

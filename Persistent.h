@@ -17,7 +17,7 @@ void saveIdDevice(int newId) {
   idDevice = newId;
 
   EEPROM.begin(sizeof(idDevice));
-  EEPROM.write(0, idDevice);
+  EEPROM.put(0, idDevice);
   EEPROM.commit();
   EEPROM.end();
 
@@ -26,7 +26,7 @@ void saveIdDevice(int newId) {
 
 void setupPersistent() {
   EEPROM.begin(SIZE_EEPROM);
-  idDevice = EEPROM.read(0);
+  EEPROM.get(0, idDevice);
   EEPROM.end();
   updateRegisteredState();
   Serial.println("ID");
