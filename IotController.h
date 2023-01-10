@@ -1,4 +1,5 @@
 #include "WString.h"
+#include <GyverOS.h>
 //#include "DataConstruct.h"
 #include "TypeDevice.h"
 #include "Config.h"
@@ -23,11 +24,21 @@
 
 const char* empty = "";
 
-void setupAdapter() {
+#if defined(TYPE_DEVICE_UPS)
+GyverOS<3> tasker;
+#endif
+
+void setupIotController() {
   setupPersistent();
 #if defined(TYPE_DEVICE_UPS)
   setupCoolerControl();
   setupVoltageCurrentSensor();
+  setupTempDetector();
+  
+  tasker.attach(0, loopCooler, 1000);
+  tasker.attach(1, loopTempDetector, 500);
+  tasker.attach(2, loopVoltCur, 200);
+
   currentTypeDevice = ups;
 #elif defined(TYPE_DEVICE_LAMP)
   setupPowerControl();
@@ -44,7 +55,7 @@ void setupAdapter() {
 #endif
 }
 
-String adaptConnected() {
+String controlConnected() {
   if (registered) {
     return constructAuth(idDevice, typeDeviceToString(currentTypeDevice));
   } else {
@@ -83,7 +94,7 @@ String handleRgba(String payload) {
   return empty;
 }
 
-String adaptText(String data) {
+String controlIncomingText(String data) {
   ParsedHeaderPayload headerPayload = parseTextData(data);
 
   if (headerPayload.header.isEmpty()) {
@@ -109,4 +120,8 @@ String adaptText(String data) {
   }
 
   return empty;
+}
+
+void loopController() {
+  tasker.tick();
 }

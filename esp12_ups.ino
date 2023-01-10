@@ -1,6 +1,6 @@
 #include "Base64.h"
 #include "Network.h"
-#include "IotAdapter.h"
+#include "IotController.h"
 
 #define SERIAL_COMMUNICATION_SPEED 9600
 
@@ -8,8 +8,8 @@ static String data = "";
 
 void setup() {
   Serial.begin(SERIAL_COMMUNICATION_SPEED);
-  
-  setupAdapter();
+
+  setupIotController();
   startWifi();
 
   webSocket.onEvent(webSocketEvent);
@@ -21,7 +21,7 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length) {
       break;
     case WStype_CONNECTED:
       {
-        String dataForService = adaptConnected();
+        String dataForService = controlConnected();
         String encrypted = encrypt(dataForService);
         webSocket.sendTXT(encrypted);
       }
@@ -29,8 +29,8 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length) {
     case WStype_TEXT:
       {
         String normalizedData = decryptAndFormatToString(payload, length);
-        String dataForService = adaptText(normalizedData);
-        
+        String dataForService = controlIncomingText(normalizedData);
+
         if (!dataForService.isEmpty()) {
           String encrypted = encrypt(dataForService);
           webSocket.sendTXT(encrypted);
@@ -59,8 +59,7 @@ String decryptAndFormatToString(uint8_t *payload, size_t length) {
 
 void loop() {
   webSocket.loop();
-  //TODO rename iot adapter - something like iot controller
-  //loopController
+  loopController();
   //loopDataPusher -> if empty - not push
 }
 
