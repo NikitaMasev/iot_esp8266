@@ -4,7 +4,6 @@
 
 bool powerState = false;
 
-
 void applyPowerState() {
   digitalWrite(PIN_POWER_CONTROL, powerState);
 }

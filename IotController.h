@@ -26,6 +26,12 @@ const char* empty = "";
 #if defined(TYPE_DEVICE_UPS)
 GyverOS<3> tasker;
 #endif
+#if defined(TYPE_DEVICE_RGBA_ADDRESS)
+GyverOS<1> tasker;
+#endif
+#if defined(TYPE_DEVICE_TEMP_SENSOR)
+GyverOS<1> tasker;
+#endif
 
 void setupIotController() {
   setupPersistent();
@@ -33,9 +39,9 @@ void setupIotController() {
   setupCoolerControl();
   setupVoltageCurrentSensor();
   setupTempDetector();
-  
-  tasker.attach(0, loopCooler, 1000);
-  tasker.attach(1, loopTempDetector, 500);
+
+  tasker.attach(0, loopCooler, 5000);
+  tasker.attach(1, loopTempDetector, 750);
   tasker.attach(2, loopVoltCur, 200);
 
   currentTypeDevice = ups;
@@ -47,9 +53,11 @@ void setupIotController() {
   currentTypeDevice = rgba;
 #elif defined(TYPE_DEVICE_RGBA_ADDRESS)
   setupLedAddressControl();
+  tasker.attach(0, loopLedAddress, 0);
   currentTypeDevice = rgbaAddress;
 #elif defined(TYPE_DEVICE_TEMP_SENSOR)
   setupTempDetector();
+  tasker.attach(0, loopTempDetector, 750);
   currentTypeDevice = tempSensor;
 #endif
 }
@@ -122,5 +130,7 @@ String controlIncomingText(String data) {
 }
 
 void loopController() {
+#if defined(TYPE_DEVICE_UPS) || defined(TYPE_DEVICE_RGBA_ADDRESS) || defined(TYPE_DEVICE_TEMP_SENSOR)
   tasker.tick();
+#endif
 }

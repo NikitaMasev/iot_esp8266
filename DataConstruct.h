@@ -126,3 +126,55 @@ String constructUpsData(
 
   return data;
 }
+
+String constructLedConfigData(LedConfigData ledConfigData) {
+  char data[30] = "";
+  char tmp[8] = "";
+
+  strcat(data, START_SYMB);
+  itoa(ledConfigData.h, tmp, DEC);
+  strcat(data, tmp);
+  strcat(data, SINGLE_SYMB);
+  itoa(ledConfigData.s, tmp, DEC);
+  strcat(data, tmp);
+  strcat(data, SINGLE_SYMB);
+  itoa(ledConfigData.v, tmp, DEC);
+  strcat(data, tmp);
+  strcat(data, SINGLE_SYMB);
+  itoa(ledConfigData.mode, tmp, DEC);
+  strcat(data, tmp);
+  strcat(data, END_SYMB);
+
+  return data;
+}
+
+String constructSwitchData(bool powerState) {
+  char data[8] = "";
+  char tmp[8] = "";
+
+  strcat(data, START_SYMB);
+  itoa(powerState, tmp, DEC);
+  strcat(data, tmp);
+  strcat(data, END_SYMB);
+
+  return data;
+}
+
+String constructTempsData(float temps[], int length) {
+  char data[4 * length] = "";
+  char tmp[8] = "";
+
+  strcat(data, START_SYMB);
+
+  for (int i = 0; i < length; i++) {
+    dtostrf(temps[i], 4, 2, tmp);
+    strcat(data, tmp);
+    if (i + 1 != length) {
+      strcat(data, SINGLE_SYMB);
+    }
+  }
+  
+  strcat(data, END_SYMB);
+
+  return data;
+}

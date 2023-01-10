@@ -11,19 +11,19 @@ String loopDataPusher() {
     lastTimeUpdateDataPusher = millis();
 
 #if defined(TYPE_DEVICE_LAMP)
-//TODO
+    return constructSwitchData(powerState);
 #endif
 #if defined(TYPE_DEVICE_UPS)
     return constructUpsData(temps[0], temps[1], pwmCooler, currentDC, voltageDC);
 #endif
 #if defined(TYPE_DEVICE_RGBA)
-//TODO
+    return constructLedConfigData(ledConfigData);
 #endif
 #if defined(TYPE_DEVICE_RGBA_ADDRESS)
-//TODO
+    return constructLedConfigData(ledConfigData);
 #endif
 #if defined(TYPE_DEVICE_TEMP_SENSOR)
-//TODO
+    return constructTempsData(temps, TEMP_SENSOR_COUNT);
 #endif
   }
 
