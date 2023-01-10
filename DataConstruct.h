@@ -5,6 +5,10 @@
 #define API_PKG_SYMB "^"
 #define API_DELIMITER ":"
 
+const char START_SYMB[] = "#";
+const char SINGLE_SYMB[] = "/";
+const char END_SYMB[] = ";";
+
 struct StringParser {
   void reset() {
     from = to = -1;
@@ -91,4 +95,34 @@ LedConfigData parseLedConfig(String data) {
   }
 
   return ledConfigData;
+}
+
+String constructUpsData(
+  float tempUps,
+  float tempAcc,
+  int pwmCooler,
+  float currentDC,
+  float voltageDC) {
+  char data[32] = "";
+  char tmp[8] = "";
+
+  strcat(data, START_SYMB);
+  dtostrf(tempUps, 4, 2, tmp);
+  strcat(data, tmp);
+  strcat(data, SINGLE_SYMB);
+  dtostrf(tempAcc, 4, 2, tmp);
+  strcat(data, tmp);
+  strcat(data, SINGLE_SYMB);
+  itoa(pwmCooler, tmp, DEC);
+  strcat(data, tmp);
+  strcat(data, SINGLE_SYMB);
+  //itoa(currentDC, tmp, DEC);
+  dtostrf(currentDC, 4, 2, tmp);
+  strcat(data, tmp);
+  strcat(data, SINGLE_SYMB);
+  dtostrf(voltageDC, 4, 2, tmp);
+  strcat(data, tmp);
+  strcat(data, END_SYMB);
+
+  return data;
 }

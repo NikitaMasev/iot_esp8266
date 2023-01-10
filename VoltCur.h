@@ -2,7 +2,7 @@
 
 Adafruit_INA219 ina219;
 
-int currentDC;
+float currentDC;
 float voltageDC;
 
 void updateVoltageAndCurrent() {
@@ -11,7 +11,7 @@ void updateVoltageAndCurrent() {
   float current_mA = ina219.getCurrent_mA();
   float loadvoltage = busvoltage + (shuntvoltage / 1000);
 
-  currentDC = (int)current_mA;
+  currentDC = current_mA;
   voltageDC = loadvoltage;
 }
 

@@ -1,10 +1,9 @@
 #include "Base64.h"
 #include "Network.h"
-#include "IotController.h"
+//#include "IotController.h"
+#include "DataPusher.h"
 
 #define SERIAL_COMMUNICATION_SPEED 9600
-
-static String data = "";
 
 void setup() {
   Serial.begin(SERIAL_COMMUNICATION_SPEED);
@@ -60,7 +59,13 @@ String decryptAndFormatToString(uint8_t *payload, size_t length) {
 void loop() {
   webSocket.loop();
   loopController();
-  //loopDataPusher -> if empty - not push
+
+  String dataForService = loopDataPusher();
+
+  if (!dataForService.isEmpty()) {
+    String encrypted = encrypt(dataForService);
+    webSocket.sendTXT(encrypted);
+  }
 }
 
 ///CBC

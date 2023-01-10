@@ -1,6 +1,5 @@
 #include "WString.h"
 #include <GyverOS.h>
-//#include "DataConstruct.h"
 #include "TypeDevice.h"
 #include "Config.h"
 #if defined(TYPE_DEVICE_LAMP)
