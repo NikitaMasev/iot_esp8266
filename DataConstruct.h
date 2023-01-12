@@ -2,18 +2,17 @@
 #include "DataStruct.h"
 #include <EEPROM.h>
 
-#define API_PKG_SYMB "^"
-#define API_DELIMITER ":"
-
-const char START_SYMB[] = "#";
-const char SINGLE_SYMB[] = "/";
-const char END_SYMB[] = ";";
+#define PKG_CMD_SYMB "^"
+#define PKG_CMD_DELIMITER_SYMB ":"
+#define START_PKG_DATA_SYMB "#"
+#define DELIMITER_IOT_DATA_SYMB "/"
+#define END_PKG_DATA_SYMB ";"
 
 struct StringParser {
   void reset() {
     from = to = -1;
   }
-  bool update(String& s, String div = API_DELIMITER) {
+  bool update(String& s, String div = PKG_CMD_DELIMITER_SYMB) {
     if (to == s.length()) return 0;
     from = to + 1;
     to = s.indexOf(div, from);
@@ -27,31 +26,31 @@ struct StringParser {
 };
 
 String constructRegister(String typeDevice) {
-  uint8_t lengthApiChar = String(API_PKG_SYMB).length() * 2
-                          + String(API_DELIMITER).length();
+  uint8_t lengthApiChar = String(PKG_CMD_SYMB).length() * 2
+                          + String(PKG_CMD_DELIMITER_SYMB).length();
 
   char api[lengthApiChar + String(typeDevice).length()];
 
-  strcat(api, API_PKG_SYMB);
+  strcat(api, PKG_CMD_SYMB);
   strcat(api, typeDevice.c_str());
-  strcat(api, API_PKG_SYMB);
+  strcat(api, PKG_CMD_SYMB);
 
   return api;
 }
 
 String constructAuth(int idDevice, String typeDevice) {
-  uint8_t lengthApiChar = String(API_PKG_SYMB).length() * 2
-                          + String(API_DELIMITER).length();
+  uint8_t lengthApiChar = String(PKG_CMD_SYMB).length() * 2
+                          + String(PKG_CMD_DELIMITER_SYMB).length();
 
   String idStr = String(idDevice);
   char api[lengthApiChar + idStr.length()];
   const char* idChar = idStr.c_str();
 
-  strcat(api, API_PKG_SYMB);
+  strcat(api, PKG_CMD_SYMB);
   strcat(api, idChar);
-  strcat(api, API_DELIMITER);
+  strcat(api, PKG_CMD_DELIMITER_SYMB);
   strcat(api, typeDevice.c_str());
-  strcat(api, API_PKG_SYMB);
+  strcat(api, PKG_CMD_SYMB);
 
   return api;
 }
@@ -59,11 +58,11 @@ String constructAuth(int idDevice, String typeDevice) {
 ParsedHeaderPayload parseTextData(String data) {
   ParsedHeaderPayload headerPayload;
 
-  uint8_t indexStart = data.indexOf(API_PKG_SYMB) + 1;
-  uint8_t indexEnd = data.lastIndexOf(API_PKG_SYMB);
+  uint8_t indexStart = data.indexOf(PKG_CMD_SYMB) + 1;
+  uint8_t indexEnd = data.lastIndexOf(PKG_CMD_SYMB);
 
   String parsed = data.substring(indexStart, indexEnd);
-  uint8_t indexFirstDelimiter = data.indexOf(API_DELIMITER);
+  uint8_t indexFirstDelimiter = data.indexOf(PKG_CMD_DELIMITER_SYMB);
 
   headerPayload.header = parsed.substring(0, indexFirstDelimiter);
   headerPayload.payload = parsed.substring(indexFirstDelimiter + 1);
@@ -106,23 +105,23 @@ String constructUpsData(
   char data[32] = "";
   char tmp[8] = "";
 
-  strcat(data, START_SYMB);
+  strcat(data, START_PKG_DATA_SYMB);
   dtostrf(tempUps, 4, 2, tmp);
   strcat(data, tmp);
-  strcat(data, SINGLE_SYMB);
+  strcat(data, DELIMITER_IOT_DATA_SYMB);
   dtostrf(tempAcc, 4, 2, tmp);
   strcat(data, tmp);
-  strcat(data, SINGLE_SYMB);
+  strcat(data, DELIMITER_IOT_DATA_SYMB);
   itoa(pwmCooler, tmp, DEC);
   strcat(data, tmp);
-  strcat(data, SINGLE_SYMB);
+  strcat(data, DELIMITER_IOT_DATA_SYMB);
   //itoa(currentDC, tmp, DEC);
   dtostrf(currentDC, 4, 2, tmp);
   strcat(data, tmp);
-  strcat(data, SINGLE_SYMB);
+  strcat(data, DELIMITER_IOT_DATA_SYMB);
   dtostrf(voltageDC, 4, 2, tmp);
   strcat(data, tmp);
-  strcat(data, END_SYMB);
+  strcat(data, END_PKG_DATA_SYMB);
 
   return data;
 }
@@ -131,19 +130,19 @@ String constructLedConfigData(LedConfigData ledConfigData) {
   char data[30] = "";
   char tmp[8] = "";
 
-  strcat(data, START_SYMB);
+  strcat(data, START_PKG_DATA_SYMB);
   itoa(ledConfigData.h, tmp, DEC);
   strcat(data, tmp);
-  strcat(data, SINGLE_SYMB);
+  strcat(data, DELIMITER_IOT_DATA_SYMB);
   itoa(ledConfigData.s, tmp, DEC);
   strcat(data, tmp);
-  strcat(data, SINGLE_SYMB);
+  strcat(data, DELIMITER_IOT_DATA_SYMB);
   itoa(ledConfigData.v, tmp, DEC);
   strcat(data, tmp);
-  strcat(data, SINGLE_SYMB);
+  strcat(data, DELIMITER_IOT_DATA_SYMB);
   itoa(ledConfigData.mode, tmp, DEC);
   strcat(data, tmp);
-  strcat(data, END_SYMB);
+  strcat(data, END_PKG_DATA_SYMB);
 
   return data;
 }
@@ -152,10 +151,10 @@ String constructSwitchData(bool powerState) {
   char data[8] = "";
   char tmp[8] = "";
 
-  strcat(data, START_SYMB);
+  strcat(data, START_PKG_DATA_SYMB);
   itoa(powerState, tmp, DEC);
   strcat(data, tmp);
-  strcat(data, END_SYMB);
+  strcat(data, END_PKG_DATA_SYMB);
 
   return data;
 }
@@ -164,17 +163,17 @@ String constructTempsData(float temps[], int length) {
   char data[4 * length] = "";
   char tmp[8] = "";
 
-  strcat(data, START_SYMB);
+  strcat(data, START_PKG_DATA_SYMB);
 
   for (int i = 0; i < length; i++) {
     dtostrf(temps[i], 4, 2, tmp);
     strcat(data, tmp);
     if (i + 1 != length) {
-      strcat(data, SINGLE_SYMB);
+      strcat(data, DELIMITER_IOT_DATA_SYMB);
     }
   }
   
-  strcat(data, END_SYMB);
+  strcat(data, END_PKG_DATA_SYMB);
 
   return data;
 }
