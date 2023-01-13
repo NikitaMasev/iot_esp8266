@@ -26,19 +26,24 @@ struct StringParser {
 };
 
 String constructRegister(String typeDevice) {
-  uint8_t lengthApiChar = String(PKG_CMD_SYMB).length() * 2
-                          + String(PKG_CMD_DELIMITER_SYMB).length();
+  String apiStr;
 
-  char api[lengthApiChar + String(typeDevice).length()];
+  uint8_t lengthApiChar = String(PKG_CMD_SYMB).length() * 2;
+  uint8_t fullLength = lengthApiChar + String(typeDevice).length();
+  char api[fullLength];
 
-  strcat(api, PKG_CMD_SYMB);
+  strcat(api, String(PKG_CMD_SYMB).c_str());
   strcat(api, typeDevice.c_str());
-  strcat(api, PKG_CMD_SYMB);
+  strcat(api, String(PKG_CMD_SYMB).c_str());
 
-  return api;
+  apiStr = api;
+
+  return apiStr;
 }
 
 String constructAuth(int idDevice, String typeDevice) {
+  String apiStr;
+
   uint8_t lengthApiChar = String(PKG_CMD_SYMB).length() * 2
                           + String(PKG_CMD_DELIMITER_SYMB).length();
 
@@ -52,7 +57,8 @@ String constructAuth(int idDevice, String typeDevice) {
   strcat(api, typeDevice.c_str());
   strcat(api, PKG_CMD_SYMB);
 
-  return api;
+  apiStr = api;
+  return apiStr;
 }
 
 ParsedHeaderPayload parseTextData(String data) {
@@ -64,8 +70,8 @@ ParsedHeaderPayload parseTextData(String data) {
   String parsed = data.substring(indexStart, indexEnd);
   uint8_t indexFirstDelimiter = data.indexOf(PKG_CMD_DELIMITER_SYMB);
 
-  headerPayload.header = parsed.substring(0, indexFirstDelimiter);
-  headerPayload.payload = parsed.substring(indexFirstDelimiter + 1);
+  headerPayload.header = parsed.substring(0, indexFirstDelimiter - 1);
+  headerPayload.payload = parsed.substring(indexFirstDelimiter);
 
   return headerPayload;
 }
@@ -102,6 +108,7 @@ String constructUpsData(
   int pwmCooler,
   float currentDC,
   float voltageDC) {
+  String dataStr;
   char data[32] = "";
   char tmp[8] = "";
 
@@ -123,10 +130,12 @@ String constructUpsData(
   strcat(data, tmp);
   strcat(data, END_PKG_DATA_SYMB);
 
-  return data;
+  dataStr = data;
+  return dataStr;
 }
 
 String constructLedConfigData(LedConfigData ledConfigData) {
+  String dataStr;
   char data[30] = "";
   char tmp[8] = "";
 
@@ -144,10 +153,12 @@ String constructLedConfigData(LedConfigData ledConfigData) {
   strcat(data, tmp);
   strcat(data, END_PKG_DATA_SYMB);
 
-  return data;
+  dataStr = data;
+  return dataStr;
 }
 
 String constructSwitchData(bool powerState) {
+  String dataStr;
   char data[8] = "";
   char tmp[8] = "";
 
@@ -156,10 +167,12 @@ String constructSwitchData(bool powerState) {
   strcat(data, tmp);
   strcat(data, END_PKG_DATA_SYMB);
 
-  return data;
+  dataStr = data;
+  return dataStr;
 }
 
 String constructTempsData(float temps[], int length) {
+  String dataStr;
   char data[4 * length] = "";
   char tmp[8] = "";
 
@@ -172,8 +185,9 @@ String constructTempsData(float temps[], int length) {
       strcat(data, DELIMITER_IOT_DATA_SYMB);
     }
   }
-  
+
   strcat(data, END_PKG_DATA_SYMB);
 
-  return data;
+  dataStr = data;
+  return dataStr;
 }

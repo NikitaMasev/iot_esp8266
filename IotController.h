@@ -104,12 +104,17 @@ String handleRgba(String payload) {
 String controlIncomingText(String data) {
   ParsedHeaderPayload headerPayload = parseTextData(data);
 
+  Serial.println("headerPayload.header");
+  Serial.println(headerPayload.header);
+  Serial.println("headerPayload.payload");
+  Serial.println(headerPayload.payload);
+
   if (headerPayload.header.isEmpty()) {
     return empty;
   }
 
   TypeControl typeControl = stringToTypeControl(headerPayload.header.c_str());
-
+  
   if (typeControl == unknown_c || !allowedTypeControl(typeControl)) {
     return empty;
   }

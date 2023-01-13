@@ -60,7 +60,7 @@ const static struct {
 
 TypeDevice stringToTypeDevice(const char *str) {
   for (int j = 0; j < sizeof(typeDeviceToStr) / sizeof(typeDeviceToStr[0]); ++j) {
-    if (strcmp(str, typeDeviceToStr[j].str)) {
+    if (!strcmp(typeDeviceToStr[j].str, str)) {
       return typeDeviceToStr[j].val;
     }
   }
@@ -78,7 +78,7 @@ String typeDeviceToString(TypeDevice typeDevice) {
 
 TypeControl stringToTypeControl(const char *str) {
   for (int j = 0; j < sizeof(typeControlToStr) / sizeof(typeControlToStr[0]); ++j) {
-    if (strcmp(str, typeControlToStr[j].str)) {
+    if (!strcmp(typeControlToStr[j].str, str)) {
       return typeControlToStr[j].val;
     }
   }

@@ -6,7 +6,7 @@ WebSocketsClient webSocket;
 
 const char *ssid = "CrynetSystem";
 const char *password = "gish4264";
-const char *ipServer = "192.168.50.213";
+const char *ipServer = "192.168.50.143";
 const uint16_t port = 5080;
 
 uint8_t cipher_key[16] = { 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 53, 54, 49, 48, 49, 49 };

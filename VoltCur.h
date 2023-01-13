@@ -1,4 +1,7 @@
+#include "core_esp8266_features.h"
 #include <Adafruit_INA219.h>
+
+#define SAMPLES_VOLT_CUR 10
 
 Adafruit_INA219 ina219;
 
@@ -6,13 +9,17 @@ float currentDC;
 float voltageDC;
 
 void updateVoltageAndCurrent() {
-  float shuntvoltage = ina219.getShuntVoltage_mV();
-  float busvoltage = ina219.getBusVoltage_V();
-  float current_mA = ina219.getCurrent_mA();
-  float loadvoltage = busvoltage + (shuntvoltage / 1000);
+  float current_mA = 0.0;
+  float loadvoltage = 0.0;
 
-  currentDC = current_mA;
-  voltageDC = loadvoltage;
+  for (int i = 0; i < SAMPLES_VOLT_CUR; i++) {
+    float shuntvoltage = ina219.getShuntVoltage_mV();
+    float busvoltage = ina219.getBusVoltage_V();
+    current_mA += ina219.getCurrent_mA();
+    loadvoltage += busvoltage + (shuntvoltage / 1000);
+  }
+  currentDC = current_mA / SAMPLES_VOLT_CUR;
+  voltageDC = loadvoltage / SAMPLES_VOLT_CUR;
 }
 
 void setupVoltageCurrentSensor() {

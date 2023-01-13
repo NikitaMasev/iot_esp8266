@@ -7,6 +7,8 @@
 long lastTimeUpdateDataPusher;
 
 String loopDataPusher() {
+  if (!registered) return empty;
+
   if (millis() - lastTimeUpdateDataPusher > TIME_DATA_PUSH) {
     lastTimeUpdateDataPusher = millis();
 

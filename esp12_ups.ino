@@ -7,7 +7,7 @@
 
 void setup() {
   Serial.begin(SERIAL_COMMUNICATION_SPEED);
-
+  
   setupIotController();
   startWifi();
 
@@ -20,6 +20,7 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length) {
       break;
     case WStype_CONNECTED:
       {
+        Serial.println("WStype_CONNECTED");
         String dataForService = controlConnected();
         String encrypted = encrypt(dataForService);
         webSocket.sendTXT(encrypted);
@@ -27,6 +28,7 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length) {
       break;
     case WStype_TEXT:
       {
+        Serial.println("WStype_TEXT");
         String normalizedData = decryptAndFormatToString(payload, length);
         String dataForService = controlIncomingText(normalizedData);
 

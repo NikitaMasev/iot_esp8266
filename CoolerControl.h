@@ -1,6 +1,6 @@
 #include "TempDetector.h"
 
-#define PIN_PWM_COOLER 9
+#define PIN_PWM_COOLER 14
 
 #define TEMP_HIGH_UPS 58.0f    //C
 #define TEMP_HIGH_ACC 35.0f    //C
