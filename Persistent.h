@@ -41,19 +41,23 @@ int getAddressForSavingSideData() {
 
 void savePowerControlState(bool newState) {
   EEPROM.begin(SIZE_EEPROM);
-  EEPROM.put(getAddressForSavingSideData(), newState);
+  EEPROM.put(getAddressForSavingSideData(), newState ? 1 : 0);
   EEPROM.commit();
   EEPROM.end();
 }
 
 bool getSavedPowerControlState() {
-  bool state = false;
+  int data = 0;
 
   EEPROM.begin(SIZE_EEPROM);
-  EEPROM.get(getAddressForSavingSideData(), state);
+  EEPROM.get(getAddressForSavingSideData(), data);
   EEPROM.end();
 
-  return state;
+  Serial.println("getSavedPowerControlState");
+  Serial.println(data);
+  Serial.println(!(data == -1 || data == 0));
+
+  return !(data == -1 || data == 0);
 }
 
 void saveLedConfigData(LedConfigData ledConfigData) {

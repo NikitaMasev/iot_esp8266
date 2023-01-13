@@ -114,7 +114,7 @@ String controlIncomingText(String data) {
   }
 
   TypeControl typeControl = stringToTypeControl(headerPayload.header.c_str());
-  
+
   if (typeControl == unknown_c || !allowedTypeControl(typeControl)) {
     return empty;
   }

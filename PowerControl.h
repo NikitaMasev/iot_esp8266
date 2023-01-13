@@ -1,6 +1,6 @@
 #include "Persistent.h"
 
-#define PIN_POWER_CONTROL 2
+#define PIN_POWER_CONTROL 14
 
 bool powerState = false;
 

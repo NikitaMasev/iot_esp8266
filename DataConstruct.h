@@ -163,11 +163,11 @@ String constructSwitchData(bool powerState) {
   char tmp[8] = "";
 
   strcat(data, START_PKG_DATA_SYMB);
-  itoa(powerState, tmp, DEC);
+  itoa(powerState ? 1 : 0, tmp, DEC);
   strcat(data, tmp);
   strcat(data, END_PKG_DATA_SYMB);
-
   dataStr = data;
+  
   return dataStr;
 }
 
