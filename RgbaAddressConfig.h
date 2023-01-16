@@ -1,14 +1,14 @@
 #include "Persistent.h"
 
 #define LED_COUNT 100  // число светодиодов в кольце/ленте
-#define LED_DT 12      // пин, куда подключен DIN ленты
+#define LED_DT 14      // пин, куда подключен DIN ленты
 
 #define BOTTOM_INDEX 0  // светодиод начала отсчёта
 #define TOP_INDEX (int(LED_COUNT / 2))
 #define EVENODD (LED_COUNT % 2)
 
 LedConfigData ledConfigData = {
-  h: 59,
+  h: 100,
   s: 255,
   v: 180,
   mode: 10,

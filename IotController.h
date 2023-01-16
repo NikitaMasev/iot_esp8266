@@ -53,7 +53,7 @@ void setupIotController() {
   currentTypeDevice = rgba;
 #elif defined(TYPE_DEVICE_RGBA_ADDRESS)
   setupLedAddressControl();
-  tasker.attach(0, loopLedAddress, 0);
+  tasker.attach(0, loopLedAddress, 50);
   currentTypeDevice = rgbaAddress;
 #elif defined(TYPE_DEVICE_TEMP_SENSOR)
   setupTempDetector();
@@ -135,6 +135,9 @@ String controlIncomingText(String data) {
 }
 
 void loopController() {
+// #if defined(TYPE_DEVICE_RGBA_ADDRESS)
+//   loopLedAddress();
+// #endif
 #if defined(TYPE_DEVICE_UPS) || defined(TYPE_DEVICE_RGBA_ADDRESS) || defined(TYPE_DEVICE_TEMP_SENSOR)
   tasker.tick();
 #endif

@@ -1,18 +1,6 @@
 #include <FastLED.h>
 #include "RgbaAddressEffectsUtil.h"
 
-void setupLedAddressControl() {
-  ledConfigData = getSavedLedConfigData();
-  
-  LEDS.setBrightness(ledConfigData.v);  // ограничить максимальную яркость
-
-  LEDS.addLeds<WS2811, LED_DT, BRG>(leds, LED_COUNT);  // настрйоки для нашей ленты (ленты на WS2811, WS2812, WS2812B)
-  one_color_all(0, 0, 0);                              // погасить все светодиоды
-  LEDS.show();                                         // отослать команду
-
-  randomSeed(analogRead(0));
-}
-
 void updateLedAddressConfig(LedConfigData newConfigData) {
   ledConfigData = newConfigData;
   saveLedConfigData(newConfigData);
@@ -46,7 +34,7 @@ void updateLedAddressConfig(LedConfigData newConfigData) {
       break;  //---STRIP FLICKER
     case 10:
       thisdelay = 15;
-      ledConfigData.h = 0;
+      //ledConfigData.h = 0;
       break;  //---PULSE COLOR BRIGHTNESS
     case 11:
       thisdelay = 30;
@@ -112,6 +100,22 @@ void updateLedAddressConfig(LedConfigData newConfigData) {
   }
   bouncedirection = 0;
   one_color_all(0, 0, 0);
+}
+
+void setupLedAddressControl() {
+  LedConfigData savedLedConfigData = getSavedLedConfigData();
+  if (savedLedConfigData.h != -1) {
+    ledConfigData = savedLedConfigData;
+  }
+
+  LEDS.setBrightness(ledConfigData.v);  // ограничить максимальную яркость
+
+  LEDS.addLeds<WS2811, LED_DT, BRG>(leds, LED_COUNT);  // настрйоки для нашей ленты (ленты на WS2811, WS2812, WS2812B)
+  one_color_all(0, 0, 0);                              // погасить все светодиоды
+  LEDS.show();                                         // отослать команду
+
+  randomSeed(analogRead(0));
+  updateLedAddressConfig(ledConfigData);
 }
 
 void updateLedAddressPower(bool controlOn) {

@@ -77,6 +77,17 @@ void saveLedConfigData(LedConfigData ledConfigData) {
   EEPROM.put(startAddress + sizeH + sizeS + sizeV, ledConfigData.mode);
   EEPROM.commit();
   EEPROM.end();
+
+  
+  Serial.println("saveLedConfigData");
+  Serial.println("ledConfigData.h");
+  Serial.println(ledConfigData.h);
+  Serial.println("ledConfigData.s");
+  Serial.println(ledConfigData.s);
+  Serial.println("ledConfigData.v");
+  Serial.println(ledConfigData.v);
+  Serial.println("ledConfigData.mode");
+  Serial.println(ledConfigData.mode);
 }
 
 LedConfigData getSavedLedConfigData() {
@@ -97,6 +108,16 @@ LedConfigData getSavedLedConfigData() {
   EEPROM.get(startAddress + sizeH + sizeS, ledConfigData.v);
   EEPROM.get(startAddress + sizeH + sizeS + sizeV, ledConfigData.mode);
   EEPROM.end();
+
+  Serial.println("getSavedLedConfigData");
+  Serial.println("ledConfigData.h");
+  Serial.println(ledConfigData.h);
+  Serial.println("ledConfigData.s");
+  Serial.println(ledConfigData.s);
+  Serial.println("ledConfigData.v");
+  Serial.println(ledConfigData.v);
+  Serial.println("ledConfigData.mode");
+  Serial.println(ledConfigData.mode);
 
   return ledConfigData;
 }

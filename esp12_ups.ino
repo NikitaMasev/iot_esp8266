@@ -7,10 +7,10 @@
 
 void setup() {
   Serial.begin(SERIAL_COMMUNICATION_SPEED);
-  
-  setupIotController();
-  startWifi();
 
+  setupIotController();
+  delay(1000);
+  startWifi();
   webSocket.onEvent(webSocketEvent);
 }
 

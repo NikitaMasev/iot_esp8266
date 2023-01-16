@@ -17,8 +17,8 @@ void startWifi() {
 
   while (WiFiMulti.run() != WL_CONNECTED) {
     Serial.println("Try connecting to WIFI");
-    delay(100);
+    delay(1000);
   }
-
+  Serial.println("WIFI CONNECTED");
   webSocket.begin(ipServer, port);
 }

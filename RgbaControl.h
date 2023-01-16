@@ -22,7 +22,10 @@ void ledConfigApplyControl() {
 }
 
 void setupLedControl() {
-  ledConfigData = getSavedLedConfigData();
+  LedConfigData savedLedConfigData = getSavedLedConfigData();
+  if (savedLedConfigData.h != -1) {
+    ledConfigData = savedLedConfigData;
+  }
   ledControl.setCRT(true);
   ledConfigApplyControl();
 }
