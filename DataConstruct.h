@@ -27,32 +27,27 @@ struct StringParser {
 
 String constructRegister(String typeDevice) {
   String apiStr;
-
   uint8_t lengthApiChar = String(PKG_CMD_SYMB).length() * 2;
   uint8_t fullLength = lengthApiChar + String(typeDevice).length();
-  char api[fullLength];
+  char api[fullLength] = "";
 
   strcat(api, String(PKG_CMD_SYMB).c_str());
   strcat(api, typeDevice.c_str());
   strcat(api, String(PKG_CMD_SYMB).c_str());
-
+  
   apiStr = api;
-
   return apiStr;
 }
 
 String constructAuth(int idDevice, String typeDevice) {
   String apiStr;
-
   uint8_t lengthApiChar = String(PKG_CMD_SYMB).length() * 2
                           + String(PKG_CMD_DELIMITER_SYMB).length();
-
   String idStr = String(idDevice);
-  char api[lengthApiChar + idStr.length()];
-  const char* idChar = idStr.c_str();
+  char api[lengthApiChar + idStr.length()] = "";
 
   strcat(api, PKG_CMD_SYMB);
-  strcat(api, idChar);
+  strcat(api, idStr.c_str());
   strcat(api, PKG_CMD_DELIMITER_SYMB);
   strcat(api, typeDevice.c_str());
   strcat(api, PKG_CMD_SYMB);
@@ -167,7 +162,7 @@ String constructSwitchData(bool powerState) {
   strcat(data, tmp);
   strcat(data, END_PKG_DATA_SYMB);
   dataStr = data;
-  
+
   return dataStr;
 }
 
