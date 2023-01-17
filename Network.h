@@ -21,6 +21,7 @@ void startWifi() {
   }
   Serial.println("WIFI CONNECTED");
   webSocket.begin(ipServer, port);
+  WiFi.setSleepMode(WIFI_NONE_SLEEP);
 }
 
 void networkLoop() {
