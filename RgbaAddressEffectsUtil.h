@@ -142,7 +142,7 @@ void ems_lightsONE() {  //-m7-EMERGENCY LIGHTS (TWO COLOR SINGLE LED)
     }
   }
   LEDS.show();
-  delay(thisdelay);
+  //delay(thisdelay);
 }
 
 void ems_lightsALL() {  //-m8-EMERGENCY LIGHTS (TWO COLOR SOLID)
@@ -156,7 +156,7 @@ void ems_lightsALL() {  //-m8-EMERGENCY LIGHTS (TWO COLOR SOLID)
   leds[idexR] = CHSV(ledConfigData.h, ledConfigData.s, 255);
   leds[idexB] = CHSV(thathue, ledConfigData.s, 255);
   LEDS.show();
-  delay(thisdelay);
+  //delay(thisdelay);
 }
 
 void flicker() {  //-m9-FLICKER EFFECT

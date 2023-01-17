@@ -12,6 +12,8 @@ const uint16_t port = 5080;
 uint8_t cipher_key[16] = { 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 53, 54, 49, 48, 49, 49 };
 uint8_t cipher_iv[16] = { 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48 };
 
+long lastTimeUpdateWebsocket;
+
 void startWifi() {
   WiFiMulti.addAP(ssid, password);
 
@@ -21,9 +23,12 @@ void startWifi() {
   }
   Serial.println("WIFI CONNECTED");
   webSocket.begin(ipServer, port);
-  WiFi.setSleepMode(WIFI_NONE_SLEEP);
+  lastTimeUpdateWebsocket = millis();
 }
 
 void networkLoop() {
-  webSocket.loop();
+  if (millis() - lastTimeUpdateWebsocket > 100) {
+    webSocket.loop();
+    lastTimeUpdateWebsocket = millis();
+  }
 }

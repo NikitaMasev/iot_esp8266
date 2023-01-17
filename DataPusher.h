@@ -2,7 +2,7 @@
 #include "WString.h"
 #include "IotController.h"
 
-#define TIME_DATA_PUSH 400
+#define TIME_DATA_PUSH 500
 
 long lastTimeUpdateDataPusher;
 
