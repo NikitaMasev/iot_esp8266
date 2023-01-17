@@ -22,3 +22,7 @@ void startWifi() {
   Serial.println("WIFI CONNECTED");
   webSocket.begin(ipServer, port);
 }
+
+void networkLoop() {
+  webSocket.loop();
+}

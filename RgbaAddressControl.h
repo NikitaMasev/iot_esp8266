@@ -1,10 +1,7 @@
 #include <FastLED.h>
 #include "RgbaAddressEffectsUtil.h"
 
-void updateLedAddressConfig(LedConfigData newConfigData) {
-  ledConfigData = newConfigData;
-  saveLedConfigData(newConfigData);
-  //ledConfigData.s = 255;
+void applyLedInternalConfig() {
   switch (ledConfigData.mode) {
     case 2: thisdelay = 60; break;  //---STRIP RAINBOW FADE
     case 3:
@@ -14,11 +11,11 @@ void updateLedAddressConfig(LedConfigData newConfigData) {
     case 4: thisdelay = 20; break;  //---RANDOM BURST
     case 5:
       thisdelay = 20;
-      ledConfigData.h = 0;
+      //ledConfigData.h = 0;
       break;  //---CYLON v1
     case 6:
       thisdelay = 80;
-      ledConfigData.h = 30;
+      //ledConfigData.h = 30;
       break;  //---CYLON v2
     case 7:
       thisdelay = 40;
@@ -102,6 +99,12 @@ void updateLedAddressConfig(LedConfigData newConfigData) {
   one_color_all(0, 0, 0);
 }
 
+void updateLedAddressConfig(LedConfigData newConfigData) {
+  ledConfigData = newConfigData;
+  saveLedConfigData(newConfigData);
+  applyLedInternalConfig();
+}
+
 void setupLedAddressControl() {
   LedConfigData savedLedConfigData = getSavedLedConfigData();
   if (savedLedConfigData.h != -1) {
@@ -115,7 +118,7 @@ void setupLedAddressControl() {
   LEDS.show();                                         // отослать команду
 
   randomSeed(analogRead(0));
-  updateLedAddressConfig(ledConfigData);
+  applyLedInternalConfig();
 }
 
 void updateLedAddressPower(bool controlOn) {

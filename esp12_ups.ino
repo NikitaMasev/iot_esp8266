@@ -47,6 +47,18 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length) {
   }
 }
 
+void loop() {
+  networkLoop();
+  loopController();
+
+  String dataForService = loopDataPusher();
+
+  if (!dataForService.isEmpty()) {
+    String encrypted = encrypt(dataForService);
+    webSocket.sendTXT(encrypted);
+  }
+}
+
 String decryptAndFormatToString(uint8_t *payload, size_t length) {
   char encrCmd[length + 1];
 
@@ -56,18 +68,6 @@ String decryptAndFormatToString(uint8_t *payload, size_t length) {
   String decrCmd = decrypt(String(encrCmd));
   Serial.println(decrCmd);
   return decrCmd;
-}
-
-void loop() {
-  webSocket.loop();
-  loopController();
-
-  String dataForService = loopDataPusher();
-
-  if (!dataForService.isEmpty()) {
-    String encrypted = encrypt(dataForService);
-    webSocket.sendTXT(encrypted);
-  }
 }
 
 ///CBC
