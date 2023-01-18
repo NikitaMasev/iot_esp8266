@@ -34,6 +34,7 @@ void applyLedInternalConfig() {
     case 9:
       ledConfigData.h = 160;
       ledConfigData.s = 50;
+      thisdelay = 35;
       break;  //---STRIP FLICKER
     case 10:
       thisdelay = 15;
@@ -54,6 +55,9 @@ void applyLedInternalConfig() {
       thisdelay = 60;
       ledConfigData.h = 95;
       break;  //---RADIATION SYMBOL
+    case 18:
+      thisdelay = 100;
+      break;
     case 19:
       thisdelay = 35;
       ledConfigData.h = 180;
@@ -143,41 +147,38 @@ void loopLedAddress() {
       case 4: random_burst(); break;              // случайная смена цветов          OK
       case 5: color_bounce(); break;              // бегающий светодиод              OK
       case 6: color_bounceFADE(); break;          // бегающий паровозик светодиодов  OK
-      case 7: ems_lightsONE(); break;             // вращаются красный и синий
-      case 8: ems_lightsALL(); break;             // вращается половина красных и половина синих
-      case 9: flicker(); break;                   // случайный стробоскоп
-      case 10: pulse_one_color_all(); break;      // пульсация одним цветом
-      case 11: pulse_one_color_all_rev(); break;  // пульсация со сменой цветов
-      case 12: fade_vertical(); break;            // плавная смена яркости по вертикали (для кольца)
-      case 13: rule30(); break;                   // безумие красных светодиодов
-      case 14: random_march(); break;             // безумие случайных цветов
-      case 15: rwb_march(); break;                // белый синий красный бегут по кругу (ПАТРИОТИЗМ!)
-      case 18: white_temps(); break;              // бело синий градиент
-      case 19: sin_bright_wave(); break;          // тоже хрень какая то
-      case 20: pop_horizontal(); break;           // красные вспышки спускаются вниз
-      case 21: quad_bright_curve(); break;        // полумесяц НУЖНО МОДИФИЦИРОВАТЬ
-      case 22: flame(); break;                    // эффект пламени !!!!!
-      case 23: rainbow_vertical(); break;         // радуга в вертикаьной плоскости (кольцо)
-      case 25: random_color_pop(); break;         // безумие случайных вспышек
-      case 26: ems_lightsSTROBE(); break;         // полицейская мигалка
-      case 27: rgb_propeller(); break;            // RGB пропеллер
-      case 28: kitt(); break;                     // случайные вспышки красного в вертикаьной плоскости
-      case 29: matrix(); break;                   // зелёненькие бегают по кругу случайно
-      case 30: new_rainbow_loop(); break;         // крутая плавная вращающаяся радуга
+      case 7: ems_lightsONE(); break;             // вращаются красный и синий       OK
+      case 8: ems_lightsALL(); break;             // вращается половина красных и половина синих  OK
+      case 9: flicker(); break;                   // случайный стробоскоп НУЖНО ПОДОБРАТЬ ТАЙМИНГИ
+      case 10: pulse_one_color_all(); break;      // пульсация одним цветом           OK
+      case 11: pulse_one_color_all_rev(); break;  // пульсация со сменой цветов       OK
+      case 12: fade_vertical(); break;            // плавная смена яркости по вертикали (для кольца) OK, НО НУЖЕН ЛИ ДЛЯ ЛИНЕЙНОЙ ЛЕНТЫ ???
+      case 13: rule30(); break;                   // безумие красных светодиодов      OK
+      case 14: random_march(); break;             // безумие случайных цветов         OK
+      case 15: rwb_march(); break;                // белый синий красный бегут по кругу (ПАТРИОТИЗМ!) НУЖНО ПОДОБРАТЬ ТАЙМИНГИ
+      case 18: white_temps(); break;              // бело синий градиент              OK
+      case 19: sin_bright_wave(); break;          // НЕ РАБОТАЕТ
+      case 20: pop_horizontal(); break;           // красные вспышки спускаются вниз  OK
+      case 21: quad_bright_curve(); break;        // полумесяц                        OK
+      case 22: flame(); break;                    // эффект пламени УБРАТЬ ЗАДЕРЖКИ
+      case 23: rainbow_vertical(); break;         // радуга в вертикаьной плоскости (кольцо)  OK
+      case 25: random_color_pop(); break;         // безумие случайных вспышек        OK
+      case 26: ems_lightsSTROBE(); break;         // полицейская мигалка              OK НО МОЖНО УБРАТЬ ЗАДЕРЖКИ
+      case 27: rgb_propeller(); break;            // RGB пропеллер                    OK
+      case 28: kitt(); break;                     // случайные вспышки красного в вертикаьной плоскости OK
+      case 29: matrix(); break;                   // зелёненькие бегают по кругу случайно OK НО МОЖНО ПОДОБРАТЬ ТАЙМИНГИ
+      case 30: new_rainbow_loop(); break;         // крутая плавная вращающаяся радуга  OK
       case 33:
-        colorWipe(0x00, 0xff, 0x00, thisdelay);
-        colorWipe(0x00, 0x00, 0x00, thisdelay);
-        break;                                                        // плавное заполнение цветом
-      case 35: Fire(55, 120, thisdelay); break;                       // линейный огонь
-      case 37: rainbowCycle(thisdelay); break;                        // очень плавная вращающаяся радуга
-      case 38: TwinkleRandom(20, thisdelay, 1); break;                // случайные разноцветные включения (1 - танцуют все, 0 - случайный 1 диод) ???
-      case 39: RunningLights(0xff, 0xff, 0x00, thisdelay); break;     // бегущие огни
+        colorWipe(0x00, 0xff, 0x00, thisdelay); // УБРАТЬ ЗАДЕРЖКИ
+        colorWipe(0x00, 0x00, 0x00, thisdelay); // плавное заполнение цветом
+        break;                                                       
+      case 35: Fire(55, 120); break;                       // линейный огонь          OK
+      case 37: rainbowCycle(); break;                        // очень плавная вращающаяся радуга НЕ РАБОТАЕТ
+      case 38: TwinkleRandom(20, 1); break;                // случайные разноцветные включения (1 - танцуют все, 0 - случайный 1 диод)  НУЖНО ПОДОБРАТЬ ТАЙМИНГИ
+      case 39: RunningLights(0xff, 0xff, 0x00, thisdelay); break;     // бегущие огни       УБРАТЬ ЗАДЕРЖКИ
       case 42: theaterChase(0xff, 0, 0, thisdelay); break;            // бегущие каждые 3 (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3)
       case 43: theaterChaseRainbow(thisdelay); break;                 // бегущие каждые 3 радуга (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3)
-      case 44: Strobe(0xff, 0xff, 0xff, 10, thisdelay, 1000); break;  // стробоскоп
-
-      case 888: demo_modeA(); break;  // длинное демо
-      case 889: demo_modeB(); break;  // короткое демо
+      case 44: Strobe(0xff, 0xff, 0xff, 10, 100); break;  // стробоскоп OK НО НУЖНО УБРАТЬ ЗАДЕРЖКИ
     }
     lastTimeLoopLedAddress = millis() + 12;
   }
