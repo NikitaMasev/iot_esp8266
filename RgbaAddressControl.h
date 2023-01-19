@@ -1,4 +1,4 @@
-//#define FASTLED_INTERRUPT_RETRY_COUNT 0  // fix flickering first led
+#define FASTLED_INTERRUPT_RETRY_COUNT 0  // fix flickering first led
 //#define FASTLED_ALLOW_INTERRUPTS 0
 //#define INTERRUPT_THRESHOLD 1
 //#define FASTLED_ESP8266_RAW_PIN_ORDER
@@ -49,7 +49,7 @@ void applyLedInternalConfig() {
       break;                          //---VERTICAL SOMETHING
     case 13: thisdelay = 100; break;  //---CELL AUTO - RULE 30 (RED)
     case 14: thisdelay = 80; break;   //---MARCH RANDOM COLORS
-    case 15: thisdelay = 10; break;  //---MARCH RWB COLORS
+    case 15: thisdelay = 10; break;   //---MARCH RWB COLORS
     case 16:
       thisdelay = 60;
       ledConfigData.h = 95;
@@ -57,10 +57,6 @@ void applyLedInternalConfig() {
     case 18:
       thisdelay = 100;
       break;
-    case 19:
-      thisdelay = 35;
-      ledConfigData.h = 180;
-      break;  //---SIN WAVE BRIGHTNESS
     case 20:
       thisdelay = 100;
       ledConfigData.h = 0;
@@ -69,6 +65,9 @@ void applyLedInternalConfig() {
       thisdelay = 100;
       ledConfigData.h = 180;
       break;  //---QUADRATIC BRIGHTNESS CURVE
+    case 22:
+      thisdelay = 0;
+      break;
     case 23:
       thisdelay = 50;
       thisstep = 15;
@@ -156,10 +155,9 @@ void loopLedAddress() {
       case 14: random_march(); break;             // безумие случайных цветов         OK
       case 15: rwb_march(); break;                // белый синий красный бегут по кругу OK(?)
       case 18: white_temps(); break;              // бело синий градиент              OK
-      case 19: sin_bright_wave(); break;          // НЕ РАБОТАЕТ
       case 20: pop_horizontal(); break;           // красные вспышки спускаются вниз  OK
       case 21: quad_bright_curve(); break;        // полумесяц                        OK
-      case 22: flame(); break;                    // эффект пламени УБРАТЬ ЗАДЕРЖКИ
+      case 22: flame(); break;                    // эффект пламени                   OK
       case 23: rainbow_vertical(); break;         // радуга в вертикаьной плоскости (кольцо)  OK
       case 25: random_color_pop(); break;         // безумие случайных вспышек        OK
       case 26: ems_lightsSTROBE(); break;         // полицейская мигалка              OK НО МОЖНО УБРАТЬ ЗАДЕРЖКИ
@@ -178,7 +176,7 @@ void loopLedAddress() {
       case 42: theaterChase(0xff, 0, 0, thisdelay); break;         // бегущие каждые 3 (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3)
       case 43: theaterChaseRainbow(thisdelay); break;              // бегущие каждые 3 радуга (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3)
       case 44: Strobe(0xff, 0xff, 0xff); break;                    // стробоскоп OK
-    }  
+    }
     lastTimeLoopLedAddress = millis() + 12;
   }
 }

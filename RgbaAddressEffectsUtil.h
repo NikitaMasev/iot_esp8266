@@ -431,19 +431,6 @@ void white_temps() {  //-m18-SHOW A SAMPLE OF BLACK BODY RADIATION COLOR TEMPERA
   LEDS.show();
 }
 
-void sin_bright_wave() {  //-m19-BRIGHTNESS SINE WAVE
-  for (int i = 0; i < LED_COUNT; i++) {
-    tcount = tcount + .1;
-    if (tcount > 3.14) {
-      tcount = 0.0;
-    }
-    ibright = int(sin(tcount) * 255);
-    leds[i] = CHSV(ledConfigData.h, ledConfigData.s, ibright);
-    LEDS.show();
-    delay(thisdelay);
-  }
-}
-
 void pop_horizontal() {  //-m20-POP FROM LEFT TO RIGHT UP THE RING
   int ix;
   if (bouncedirection == 0) {
@@ -490,24 +477,36 @@ void quad_bright_curve() {  //-m21-QUADRATIC BRIGHTNESS CURVER
   //delay(thisdelay);
 }
 
+const float hmin = 0.1;
+const float hmax = 45.0;
+const float hdif = hmax - hmin;
+int indexFlame = 0;
+int idelay = 0;
+int randtemp = 0;
+float hinc = 0;
+int ihueFlame = 0;
+
 void flame() {  //-m22-FLAMEISH EFFECT
-  int idelay = random(0, 35);
-  float hmin = 0.1;
-  float hmax = 45.0;
-  float hdif = hmax - hmin;
-  int randtemp = random(0, 3);
-  float hinc = (hdif / float(TOP_INDEX)) + randtemp;
-  int ihue = hmin;
-  for (int i = 0; i <= TOP_INDEX; i++) {
-    ihue = ihue + hinc;
-    leds[i] = CHSV(ihue, ledConfigData.s, 255);
-    int ih = horizontal_index(i);
-    leds[ih] = CHSV(ihue, ledConfigData.s, 255);
+  if (indexFlame == 0) {
+    thisdelay = random(0, 35);
+    randtemp = random(0, 3);
+    hinc = (hdif / float(TOP_INDEX)) + randtemp;
+    ihueFlame = hmin;
+    Serial.println(thisdelay);
+  }
+
+  if (indexFlame <= TOP_INDEX) {
+    ihueFlame += hinc;
+    leds[indexFlame] = CHSV(ihueFlame, ledConfigData.s, 255);
+    int ih = horizontal_index(indexFlame);
+    leds[ih] = CHSV(ihueFlame, ledConfigData.s, 255);
     leds[TOP_INDEX].r = 255;
     leds[TOP_INDEX].g = 255;
     leds[TOP_INDEX].b = 255;
     LEDS.show();
-    delay(idelay);
+    indexFlame++;
+  } else {
+    indexFlame = 0;
   }
 }
 
