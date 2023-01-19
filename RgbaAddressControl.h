@@ -165,8 +165,7 @@ void loopLedAddress() {
       case 29: matrix(); break;                   // зелёненькие бегают по кругу случайно OK 
       case 30: new_rainbow_loop(); break;         // крутая плавная вращающаяся радуга  OK
       case 33:
-        colorWipe(0x00, 0xff, 0x00, thisdelay);  // УБРАТЬ ЗАДЕРЖКИ
-        colorWipe(0x00, 0x00, 0x00, thisdelay);  // плавное заполнение цветом
+        colorWipe(0x00, 0xff, 0x00, 0x00, 0x00, 0x00);  // УБРАТЬ ЗАДЕРЖКИ
         break;
       case 35: Fire(55, 120); break;                               // линейный огонь          OK
       case 37: rainbowCycle(); break;                              // очень плавная вращающаяся радуга НЕ РАБОТАЕТ

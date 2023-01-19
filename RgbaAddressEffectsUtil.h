@@ -597,19 +597,19 @@ void kitt() {  //-m28-KNIGHT INDUSTIES 2000
 }
 
 void matrix() {  //-m29-ONE LINE MATRIX
-    int rand = random(0, 100);
-    if (rand > 90) {
-      leds[0] = CHSV(ledConfigData.h, ledConfigData.s, 255);
-    } else {
-      leds[0] = CHSV(ledConfigData.h, ledConfigData.s, 0);
-    }
-    copy_led_array();
-    for (int i = 1; i < LED_COUNT; i++) {
-      leds[i].r = ledsX[i - 1][0];
-      leds[i].g = ledsX[i - 1][1];
-      leds[i].b = ledsX[i - 1][2];
-    }
-    LEDS.show();
+  int rand = random(0, 100);
+  if (rand > 90) {
+    leds[0] = CHSV(ledConfigData.h, ledConfigData.s, 255);
+  } else {
+    leds[0] = CHSV(ledConfigData.h, ledConfigData.s, 0);
+  }
+  copy_led_array();
+  for (int i = 1; i < LED_COUNT; i++) {
+    leds[i].r = ledsX[i - 1][0];
+    leds[i].g = ledsX[i - 1][1];
+    leds[i].b = ledsX[i - 1][2];
+  }
+  LEDS.show();
 }
 
 void strip_march_cw() {  //-m50-MARCH STRIP CW ???
@@ -646,11 +646,21 @@ void new_rainbow_loop() {  //-m88-RAINBOW FADE FROM FAST_SPI2
 }
 
 //-----------------------------плавное заполнение цветом-----------------------------------------
-void colorWipe(byte red, byte green, byte blue, int SpeedDelay) {
-  for (uint16_t i = 0; i < LED_COUNT; i++) {
-    setPixel(i, red, green, blue);
+bool colorWipeFirst = true;
+int indexColorWipe = 0;
+
+void colorWipe(byte red, byte green, byte blue, byte redWipe, byte greenWipe, byte blueWipe) {
+  if (indexColorWipe < LED_COUNT) {
+    if (colorWipeFirst) {
+      setPixel(indexColorWipe, red, green, blue);
+    } else {
+      setPixel(indexColorWipe, redWipe, greenWipe, blueWipe);
+    }
     FastLED.show();
-    delay(SpeedDelay);
+    indexColorWipe++;
+  } else {
+    indexColorWipe = 0;
+    colorWipeFirst = !colorWipeFirst;
   }
 }
 
