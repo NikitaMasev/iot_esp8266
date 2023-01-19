@@ -75,7 +75,6 @@ void applyLedInternalConfig() {
     case 25: thisdelay = 35; break;  //---RANDOM COLOR POP
     case 26:
       thisdelay = 25;
-      ledConfigData.h = 0;
       break;  //---EMERGECNY STROBE
     case 27:
       thisdelay = 100;
@@ -86,7 +85,7 @@ void applyLedInternalConfig() {
       ledConfigData.h = 0;
       break;  //---KITT
     case 29:
-      thisdelay = 100;
+      thisdelay = 10;
       ledConfigData.h = 95;
       break;                         //---MATRIX RAIN
     case 30: thisdelay = 15; break;  //---NEW RAINBOW LOOP
@@ -163,7 +162,7 @@ void loopLedAddress() {
       case 26: ems_lightsSTROBE(); break;         // полицейская мигалка              OK НО МОЖНО УБРАТЬ ЗАДЕРЖКИ
       case 27: rgb_propeller(); break;            // RGB пропеллер                    OK
       case 28: kitt(); break;                     // случайные вспышки красного в вертикаьной плоскости OK
-      case 29: matrix(); break;                   // зелёненькие бегают по кругу случайно OK НО МОЖНО ПОДОБРАТЬ ТАЙМИНГИ
+      case 29: matrix(); break;                   // зелёненькие бегают по кругу случайно OK 
       case 30: new_rainbow_loop(); break;         // крутая плавная вращающаяся радуга  OK
       case 33:
         colorWipe(0x00, 0xff, 0x00, thisdelay);  // УБРАТЬ ЗАДЕРЖКИ

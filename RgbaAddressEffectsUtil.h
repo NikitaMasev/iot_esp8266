@@ -537,11 +537,11 @@ void random_color_pop() {  //-m25-RANDOM COLOR POP
 }
 
 void ems_lightsSTROBE() {  //-m26-EMERGENCY LIGHTS (STROBE LEFT/RIGHT)
-  ledConfigData.h = 0;
-  int thathue = (ledConfigData.h + 160) % 255;
+  int newHue = 0;
+  int thathue = (newHue + 160) % 255;
   for (int x = 0; x < 5; x++) {
     for (int i = 0; i < TOP_INDEX; i++) {
-      leds[i] = CHSV(ledConfigData.h, ledConfigData.s, 255);
+      leds[i] = CHSV(newHue, ledConfigData.s, 255);
     }
     LEDS.show();
     delay(thisdelay);
@@ -597,20 +597,19 @@ void kitt() {  //-m28-KNIGHT INDUSTIES 2000
 }
 
 void matrix() {  //-m29-ONE LINE MATRIX
-  int rand = random(0, 100);
-  if (rand > 90) {
-    leds[0] = CHSV(ledConfigData.h, ledConfigData.s, 255);
-  } else {
-    leds[0] = CHSV(ledConfigData.h, ledConfigData.s, 0);
-  }
-  copy_led_array();
-  for (int i = 1; i < LED_COUNT; i++) {
-    leds[i].r = ledsX[i - 1][0];
-    leds[i].g = ledsX[i - 1][1];
-    leds[i].b = ledsX[i - 1][2];
-  }
-  LEDS.show();
-  //delay(thisdelay);
+    int rand = random(0, 100);
+    if (rand > 90) {
+      leds[0] = CHSV(ledConfigData.h, ledConfigData.s, 255);
+    } else {
+      leds[0] = CHSV(ledConfigData.h, ledConfigData.s, 0);
+    }
+    copy_led_array();
+    for (int i = 1; i < LED_COUNT; i++) {
+      leds[i].r = ledsX[i - 1][0];
+      leds[i].g = ledsX[i - 1][1];
+      leds[i].b = ledsX[i - 1][2];
+    }
+    LEDS.show();
 }
 
 void strip_march_cw() {  //-m50-MARCH STRIP CW ???
