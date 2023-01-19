@@ -168,7 +168,7 @@ void flicker() {  //-m9-FLICKER EFFECT
       leds[i] = CHSV(ledConfigData.h, ledConfigData.s, random_bright);
     }
     LEDS.show();
-    //delay(random_delay);
+    thisdelay = random_delay;
   }
 }
 
@@ -846,6 +846,6 @@ void Strobe(byte red, byte green, byte blue) {
       previousOn = !previousOn;
     }
 
-    lastTimeStrobe = millis();    
+    lastTimeStrobe = millis();
   }
 }

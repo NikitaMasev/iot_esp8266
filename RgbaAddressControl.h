@@ -148,7 +148,7 @@ void loopLedAddress() {
       case 6: color_bounceFADE(); break;          // бегающий паровозик светодиодов  OK
       case 7: ems_lightsONE(); break;             // вращаются красный и синий       OK
       case 8: ems_lightsALL(); break;             // вращается половина красных и половина синих  OK
-      case 9: flicker(); break;                   // случайный стробоскоп НУЖНО ПОДОБРАТЬ ТАЙМИНГИ
+      case 9: flicker(); break;                   // случайный стробоскоп             OK  
       case 10: pulse_one_color_all(); break;      // пульсация одним цветом           OK
       case 11: pulse_one_color_all_rev(); break;  // пульсация со сменой цветов       OK
       case 12: fade_vertical(); break;            // плавная смена яркости по вертикали (для кольца) OK, НО НУЖЕН ЛИ ДЛЯ ЛИНЕЙНОЙ ЛЕНТЫ ???
