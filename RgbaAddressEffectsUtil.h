@@ -818,15 +818,34 @@ void theaterChaseRainbow(int SpeedDelay) {
 }
 
 //-------------------------------Strobe---------------------------------------
-void Strobe(byte red, byte green, byte blue, int StrobeCount, int FlashDelay) {
-  for (int j = 0; j < StrobeCount; j++) {
-    setAll(red, green, blue);
-    FastLED.show();
-    delay(FlashDelay);
-    setAll(0, 0, 0);
-    FastLED.show();
-    delay(FlashDelay);
-  }
+const int delayPause = 1000;
+const int delayFlash = 100;
+const int strobeCount = 10;
 
-  //delay(EndPause);
+static int strobeCounter = 0;
+bool previousOn = false;
+long lastTimeStrobe;
+int strobeAnim = delayFlash;
+
+void Strobe(byte red, byte green, byte blue) {
+  if (millis() - lastTimeStrobe > strobeAnim) {
+    if (strobeCounter == strobeCount) {
+      strobeAnim = delayPause;
+      strobeCounter = 0;
+      setAll(0, 0, 0);
+      FastLED.show();
+    } else {
+      if (previousOn) {
+        setAll(0, 0, 0);
+      } else {
+        setAll(red, green, blue);
+      }
+      FastLED.show();
+      strobeAnim = delayFlash;
+      strobeCounter++;
+      previousOn = !previousOn;
+    }
+
+    lastTimeStrobe = millis();    
+  }
 }

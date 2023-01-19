@@ -1,11 +1,10 @@
-#define FASTLED_INTERRUPT_RETRY_COUNT 0  // fix flickering first led
-// #define FASTLED_ALLOW_INTERRUPTS 0
-// #define INTERRUPT_THRESHOLD 1
-// #define FASTLED_ESP8266_RAW_PIN_ORDER
+//#define FASTLED_INTERRUPT_RETRY_COUNT 0  // fix flickering first led
+//#define FASTLED_ALLOW_INTERRUPTS 0
+//#define INTERRUPT_THRESHOLD 1
+//#define FASTLED_ESP8266_RAW_PIN_ORDER
 
 #include <FastLED.h>
 #include "RgbaAddressEffectsUtil.h"
-
 
 void applyLedInternalConfig() {
   switch (ledConfigData.mode) {
@@ -99,7 +98,7 @@ void applyLedInternalConfig() {
     case 39: thisdelay = 50; break;   // RunningLights
     case 42: thisdelay = 50; break;   // theaterChase
     case 43: thisdelay = 50; break;   // theaterChaseRainbow
-    case 44: thisdelay = 100; break;  // Strobe
+    case 44: thisdelay = 0; break;  // Strobe
     case 45:
       one_color_allHSV();
       LEDS.show();
@@ -178,7 +177,7 @@ void loopLedAddress() {
       case 39: RunningLights(0xff, 0xff, 0x00, thisdelay); break;     // бегущие огни       УБРАТЬ ЗАДЕРЖКИ
       case 42: theaterChase(0xff, 0, 0, thisdelay); break;            // бегущие каждые 3 (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3)
       case 43: theaterChaseRainbow(thisdelay); break;                 // бегущие каждые 3 радуга (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3)
-      case 44: Strobe(0xff, 0xff, 0xff, 10, 100); break;  // стробоскоп OK НО НУЖНО УБРАТЬ ЗАДЕРЖКИ
+      case 44: Strobe(0xff, 0xff, 0xff); break;  // стробоскоп OK 
     }
     lastTimeLoopLedAddress = millis() + 12;
   }
