@@ -761,19 +761,26 @@ void rainbowCycle() {
 }
 
 //-------------------------------TwinkleRandom---------------------------------------
-void TwinkleRandom(int Count, boolean OnlyOne) {
-  setAll(0, 0, 0);
+const int twinkleRandomCount = 20;
+int indexTwinkleRandom = 0;
+bool twinkleRandomDelay = false;
 
-  for (int i = 0; i < Count; i++) {
-    setPixel(random(LED_COUNT), random(0, 255), random(0, 255), random(0, 255));
-    FastLED.show();
-    delay(thisdelay);
-    if (OnlyOne) {
-      setAll(0, 0, 0);
-    }
+void TwinkleRandom() {
+  if (indexTwinkleRandom == 0) {
+    setAll(0, 0, 0);
   }
 
-  //delay(SpeedDelay);
+  if (indexTwinkleRandom < twinkleRandomCount && !twinkleRandomDelay) {
+    setPixel(random(LED_COUNT), random(0, 255), random(0, 255), random(0, 255));
+    FastLED.show();
+    twinkleRandomDelay = true;
+  } else if (indexTwinkleRandom < twinkleRandomCount && twinkleRandomDelay) {
+    setAll(0, 0, 0);
+    indexTwinkleRandom++;
+    twinkleRandomDelay = false;
+  } else {
+    indexTwinkleRandom = 0;
+  }
 }
 
 //-------------------------------RunningLights---------------------------------------
