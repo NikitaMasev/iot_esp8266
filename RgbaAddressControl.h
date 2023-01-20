@@ -133,10 +133,10 @@ void updateLedAddressPower(bool controlOn) {
   LEDS.show();
 }
 
-static long lastTimeLoopLedAddress = 0;
+volatile long lastTimeLoopLedAddress = 0;
 
 void loopLedAddress() {
-  if (millis() - lastTimeLoopLedAddress >= thisdelay) {
+  if (millis() - lastTimeLoopLedAddress > thisdelay) {
     switch (ledConfigData.mode) {
       case 1: break;                              // пазуа
       case 2: rainbow_fade(); break;              // плавная смена цветов всей ленты OK
@@ -170,7 +170,7 @@ void loopLedAddress() {
       case 35: Fire(55, 120); break;                               // линейный огонь          OK
       case 37: rainbowCycle(); break;                              // очень плавная вращающаяся радуга OK
       case 38: TwinkleRandom(); break;                        // случайные разноцветные включения (1 - танцуют все, 0 - случайный 1 диод) OK
-      case 39: RunningLights(0xff, 0xff, 0x00, thisdelay); break;  // бегущие огни       УБРАТЬ ЗАДЕРЖКИ
+      case 39: RunningLights(0xff, 0xff, 0x00); break;  // бегущие огни        OK
       case 42: theaterChase(0xff, 0, 0, thisdelay); break;         // бегущие каждые 3 (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3)
       case 43: theaterChaseRainbow(thisdelay); break;              // бегущие каждые 3 радуга (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3)
       case 44: Strobe(0xff, 0xff, 0xff); break;                    // стробоскоп OK

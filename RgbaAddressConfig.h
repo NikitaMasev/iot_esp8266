@@ -17,5 +17,5 @@ LedConfigData ledConfigData = {
 struct CRGB leds[LED_COUNT];
 int ledsX[LED_COUNT][3];  //-ARRAY FOR COPYING WHATS IN THE LED STRIP CURRENTLY (FOR CELL-AUTOMATA, MARCH, ETC)
 
-int thisdelay = 20;  //-FX LOOPS DELAY VAR
+volatile int thisdelay = 20;  //-FX LOOPS DELAY VAR
 int thisstep = 10;   //-FX LOOPS DELAY VAR

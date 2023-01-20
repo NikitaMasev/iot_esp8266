@@ -784,23 +784,20 @@ void TwinkleRandom() {
 }
 
 //-------------------------------RunningLights---------------------------------------
-void RunningLights(byte red, byte green, byte blue, int WaveDelay) {
-  int Position = 0;
+const int runningLightsCount = LED_COUNT * 2;
+int indexRunningLights = 0;
 
-  for (int i = 0; i < LED_COUNT * 2; i++) {
-    Position++;  // = 0; //Position + Rate;
+void RunningLights(byte red, byte green, byte blue) {
+  if (indexRunningLights < runningLightsCount) {
     for (int i = 0; i < LED_COUNT; i++) {
-      // sine wave, 3 offset waves make a rainbow!
-      //float level = sin(i+Position) * 127 + 128;
-      //setPixel(i,level,0,0);
-      //float level = sin(i+Position) * 127 + 128;
-      setPixel(i, ((sin(i + Position) * 127 + 128) / 255) * red,
-               ((sin(i + Position) * 127 + 128) / 255) * green,
-               ((sin(i + Position) * 127 + 128) / 255) * blue);
+      setPixel(i, ((sin(i + indexRunningLights + 1) * 127 + 128) / 255) * red,
+               ((sin(i + indexRunningLights + 1) * 127 + 128) / 255) * green,
+               ((sin(i + indexRunningLights + 1) * 127 + 128) / 255) * blue);
     }
-
     FastLED.show();
-    delay(WaveDelay);
+    indexRunningLights++;
+  } else {
+    indexRunningLights = 0;
   }
 }
 
