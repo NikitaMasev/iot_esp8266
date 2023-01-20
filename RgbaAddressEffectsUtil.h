@@ -536,28 +536,48 @@ void random_color_pop() {  //-m25-RANDOM COLOR POP
   //delay(thisdelay);
 }
 
+const int emsXCount = 5;
+int indexEmsX = 0;
+bool emsModeFirstHue = true;
+bool emsModeDelayBeforeOff = false;
+long timeEms = 0;
+
 void ems_lightsSTROBE() {  //-m26-EMERGENCY LIGHTS (STROBE LEFT/RIGHT)
-  int newHue = 0;
-  int thathue = (newHue + 160) % 255;
-  for (int x = 0; x < 5; x++) {
-    for (int i = 0; i < TOP_INDEX; i++) {
-      leds[i] = CHSV(newHue, ledConfigData.s, 255);
+  if (millis() - timeEms >= 25) {
+    int newHue = 0;
+    int thathue = (newHue + 160) % 255;
+
+    if (indexEmsX < emsXCount && emsModeFirstHue && !emsModeDelayBeforeOff) {
+      for (int i = 0; i < TOP_INDEX; i++) {
+        leds[i] = CHSV(newHue, ledConfigData.s, 255);
+      }
+      LEDS.show();
+      emsModeDelayBeforeOff = true;
+    } else if (indexEmsX < emsXCount && emsModeFirstHue && emsModeDelayBeforeOff) {
+      one_color_all(0, 0, 0);
+      LEDS.show();
+      emsModeDelayBeforeOff = false;
+      indexEmsX++;
+    } else if (indexEmsX == emsXCount && emsModeFirstHue) {
+      indexEmsX = 0;
+      emsModeFirstHue = false;
+    } else if (indexEmsX < emsXCount && !emsModeFirstHue && !emsModeDelayBeforeOff) {
+      for (int i = TOP_INDEX; i < LED_COUNT; i++) {
+        leds[i] = CHSV(thathue, ledConfigData.s, 255);
+      }
+      LEDS.show();
+      emsModeDelayBeforeOff = true;
+    } else if (indexEmsX < emsXCount && !emsModeFirstHue && emsModeDelayBeforeOff) {
+      one_color_all(0, 0, 0);
+      LEDS.show();
+      emsModeDelayBeforeOff = false;
+      indexEmsX++;
+    } else if (indexEmsX == emsXCount && !emsModeFirstHue) {
+      indexEmsX = 0;
+      emsModeFirstHue = true;
     }
-    LEDS.show();
-    delay(thisdelay);
-    one_color_all(0, 0, 0);
-    LEDS.show();
-    delay(thisdelay);
-  }
-  for (int x = 0; x < 5; x++) {
-    for (int i = TOP_INDEX; i < LED_COUNT; i++) {
-      leds[i] = CHSV(thathue, ledConfigData.s, 255);
-    }
-    LEDS.show();
-    delay(thisdelay);
-    one_color_all(0, 0, 0);
-    LEDS.show();
-    delay(thisdelay);
+
+    timeEms = millis();
   }
 }
 
