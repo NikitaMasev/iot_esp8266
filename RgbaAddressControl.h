@@ -171,7 +171,7 @@ void loopLedAddress() {
       case 37: rainbowCycle(); break;                              // очень плавная вращающаяся радуга OK
       case 38: TwinkleRandom(); break;                        // случайные разноцветные включения (1 - танцуют все, 0 - случайный 1 диод) OK
       case 39: RunningLights(0xff, 0xff, 0x00); break;  // бегущие огни        OK
-      case 42: theaterChase(0xff, 0, 0, thisdelay); break;         // бегущие каждые 3 (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3)
+      case 42: theaterChase(0xff, 0, 0); break;         // бегущие каждые 3 (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3) OK, НО НЕ РАБОТАЕТ АДЕКВАТНО
       case 43: theaterChaseRainbow(thisdelay); break;              // бегущие каждые 3 радуга (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3)
       case 44: Strobe(0xff, 0xff, 0xff); break;                    // стробоскоп OK
     }

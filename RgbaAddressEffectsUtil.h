@@ -802,18 +802,32 @@ void RunningLights(byte red, byte green, byte blue) {
 }
 
 //-------------------------------theaterChase---------------------------------------
-void theaterChase(byte red, byte green, byte blue, int SpeedDelay) {
-  for (int j = 0; j < 10; j++) {  //do 10 cycles of chasing
-    for (int q = 0; q < 3; q++) {
-      for (int i = 0; i < LED_COUNT; i = i + 3) {
-        setPixel(i + q, red, green, blue);  //turn every third pixel on
-      }
-      FastLED.show();
-      delay(SpeedDelay);
-      for (int i = 0; i < LED_COUNT; i = i + 3) {
-        setPixel(i + q, 0, 0, 0);  //turn every third pixel off
-      }
+const int theaterChaseCycles = 10;
+const int theaterChaseQ = 3;
+int indexCycleTheaterChase = 0;
+int indexQTheaterChase = 0;
+bool theaterChaseTurnMode = true;
+
+void theaterChase(byte red, byte green, byte blue) {
+  if (indexQTheaterChase < theaterChaseQ && theaterChaseTurnMode) {
+    for (int i = 0; i < LED_COUNT; i = i + 3) {
+      setPixel(i + indexQTheaterChase, red, green, blue);  //turn every third pixel on
     }
+    FastLED.show();
+    theaterChaseTurnMode = false;
+  } else if (indexQTheaterChase < theaterChaseQ && !theaterChaseTurnMode) {
+    for (int i = 0; i < LED_COUNT; i = i + 3) {
+      setPixel(i + indexQTheaterChase, 0, 0, 0);  //turn every third pixel off
+    }
+    theaterChaseTurnMode = true;
+    indexQTheaterChase++;
+  } else if (indexQTheaterChase == theaterChaseQ && indexCycleTheaterChase < theaterChaseCycles) {
+    indexQTheaterChase = 0;
+    indexCycleTheaterChase++;
+    theaterChaseTurnMode = true;
+  } else if (indexCycleTheaterChase == theaterChaseCycles) {
+    indexCycleTheaterChase = 0;
+    theaterChaseTurnMode = true;
   }
 }
 
