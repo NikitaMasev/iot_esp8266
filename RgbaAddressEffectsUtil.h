@@ -742,17 +742,21 @@ byte *Wheel(byte WheelPos) {
   return c;
 }
 
+const int rainbowCycles = 256 * 5;
+int indexRainbowCycle = 0;
+
 void rainbowCycle() {
   byte *c;
-  uint16_t i, j;
 
-  for (j = 0; j < 256 * 5; j++) {  // 5 cycles of all colors on wheel
-    for (i = 0; i < LED_COUNT; i++) {
-      c = Wheel(((i * 256 / LED_COUNT) + j) & 255);
+  if (indexRainbowCycle < rainbowCycles) {
+    for (int i = 0; i < LED_COUNT; i++) {
+      c = Wheel(((i * 256 / LED_COUNT) + indexRainbowCycle) & 255);
       setPixel(i, *c, *(c + 1), *(c + 2));
     }
     FastLED.show();
-    //delay(SpeedDelay);
+    indexRainbowCycle++;
+  } else {
+    indexRainbowCycle = 0;
   }
 }
 
