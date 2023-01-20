@@ -168,7 +168,7 @@ void loopLedAddress() {
         colorWipe(0x00, 0xff, 0x00, 0x00, 0x00, 0x00);  // OK
         break;
       case 35: Fire(55, 120); break;                               // линейный огонь          OK
-      case 37: rainbowCycle(); break;                              // очень плавная вращающаяся радуга НЕ РАБОТАЕТ
+      case 37: rainbowCycle(); break;                              // очень плавная вращающаяся радуга OK
       case 38: TwinkleRandom(20, 1); break;                        // случайные разноцветные включения (1 - танцуют все, 0 - случайный 1 диод)  НУЖНО ПОДОБРАТЬ ТАЙМИНГИ
       case 39: RunningLights(0xff, 0xff, 0x00, thisdelay); break;  // бегущие огни       УБРАТЬ ЗАДЕРЖКИ
       case 42: theaterChase(0xff, 0, 0, thisdelay); break;         // бегущие каждые 3 (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3)
