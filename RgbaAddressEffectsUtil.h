@@ -1,3 +1,5 @@
+#pragma once
+
 #include "RgbaAddressConfig.h"
 #include "RgbaAddressUtil.h"
 

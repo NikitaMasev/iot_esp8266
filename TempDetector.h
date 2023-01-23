@@ -1,3 +1,5 @@
+#pragma once
+
 #include <OneWire.h>
 
 #define TEMP_NOT_UPDATED -8000L

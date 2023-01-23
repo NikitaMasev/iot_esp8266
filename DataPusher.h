@@ -1,13 +1,15 @@
-#include "core_esp8266_features.h"
+#pragma once
+
 #include "WString.h"
 #include "IotController.h"
 
-#define TIME_DATA_PUSH 500
+#define TIME_DATA_PUSH 1500
 
 long lastTimeUpdateDataPusher;
 
 String loopDataPusher() {
   if (!registered) return empty;
+  if (!iotServerConnected) return empty;
 
   if (millis() - lastTimeUpdateDataPusher > TIME_DATA_PUSH) {
     lastTimeUpdateDataPusher = millis();

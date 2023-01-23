@@ -1,3 +1,5 @@
+#pragma once
+
 #include "WString.h"
 #include "DataStruct.h"
 #include <EEPROM.h>

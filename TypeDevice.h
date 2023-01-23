@@ -1,3 +1,5 @@
+#pragma once
+
 #include "WString.h"
 
 #define SIZE_TYPE_CONTROL_MAP 6

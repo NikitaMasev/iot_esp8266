@@ -1,14 +1,19 @@
+#pragma once
+
 #include "WString.h"
-#include <GyverOS.h>
 #include "TypeDevice.h"
 #include "Config.h"
+#include "Tasker.h"
+#include "DataConstruct.h"
+#include "Persistent.h"
+
 #if defined(TYPE_DEVICE_LAMP)
 #include "PowerControl.h"
 #endif
 #if defined(TYPE_DEVICE_UPS)
-#include "Persistent.h"
 #include "CoolerControl.h"
 #include "VoltCur.h"
+#include "TempDetector.h"
 #endif
 #if defined(TYPE_DEVICE_RGBA)
 #include "RgbaControl.h"
@@ -17,107 +22,18 @@
 #include "RgbaAddressControl.h"
 #endif
 #if defined(TYPE_DEVICE_TEMP_SENSOR)
-#include "Persistent.h"
 #include "TempDetector.h"
 #endif
 
 const char *empty = "";
 
-#if defined(TYPE_DEVICE_UPS)
-GyverOS<3> tasker;
-#endif
-#if defined(TYPE_DEVICE_RGBA_ADDRESS)
-GyverOS<2> tasker;
-#endif
-#if defined(TYPE_DEVICE_TEMP_SENSOR)
-GyverOS<1> tasker;
-#endif
-
-#include <ESP8266WiFiMulti.h>
-#include <ArduinoWebsockets.h>
-
-#define TIME_RETRY_CONNECTION 10000
-long lastTimeRetryConnection = 0;
-
-using namespace websockets;
-// #include <WebSocketsClient.h>
-
-ESP8266WiFiMulti WiFiMulti;
-WebsocketsClient client;
-// WebSocketsClient webSocket;
-
-const char *ssid = "CrynetSystem";
-const char *password = "gish4264";
-//const char *ipServer = "192.168.50.143";
-const char *iotServer = "ws://192.168.50.143:5080";
-
-uint8_t cipher_key[16] = { 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 53, 54, 49, 48, 49, 49 };
-uint8_t cipher_iv[16] = { 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48 };
-
-bool iotServerConnected = false;
-
-void onMessageCallback(WebsocketsMessage message) {
-  Serial.print("Got Message: ");
-  Serial.println(message.data());
-}
-
-void onEventsCallback(WebsocketsEvent event, String data) {
-  if (event == WebsocketsEvent::ConnectionOpened) {
-    iotServerConnected = true;
-  } else if (event == WebsocketsEvent::ConnectionClosed) {
-    iotServerConnected = false;
-  } else if (event == WebsocketsEvent::GotPing) {
-    client.pong();
-    client.send("Hi Server!");
-  } else if (event == WebsocketsEvent::GotPong) {
-  }
-}
-
-void startWifi() {
-  WiFiMulti.addAP(ssid, password);
-
-  while (WiFiMulti.run() != WL_CONNECTED) {
-    Serial.println("Try connecting to WIFI");
-    delay(1000);
-  }
-
-  // Setup Callbacks
-  client.onMessage(onMessageCallback);
-  client.onEvent(onEventsCallback);
-
-  client.connect(iotServer);
-
-  // WiFiMulti.addAP(ssid, password);
-
-  // while (WiFiMulti.run() != WL_CONNECTED) {
-  //   Serial.println("Try connecting to WIFI");
-  //   delay(1000);
-  // }
-  // Serial.println("WIFI CONNECTED");
-  //webSocket.begin(ipServer, port);
-  //lastTimeUpdateWebsocket = millis();
-}
-
-void networkLoop() {
-  if (iotServerConnected) {
-    client.poll();
-  } else if (millis() - lastTimeRetryConnection > TIME_RETRY_CONNECTION) {
-    client.connect(iotServer);
-    lastTimeRetryConnection = millis();    
-  }
-}
-
 void setupIotController() {
   setupPersistent();
+  setupTasker();
 #if defined(TYPE_DEVICE_UPS)
   setupCoolerControl();
   setupVoltageCurrentSensor();
   setupTempDetector();
-
-  tasker.attach(0, loopCooler, 5000);
-  tasker.attach(1, loopTempDetector, 750);
-  tasker.attach(2, loopVoltCur, 200);
-
   currentTypeDevice = ups;
 #elif defined(TYPE_DEVICE_LAMP)
   setupPowerControl();
@@ -127,12 +43,9 @@ void setupIotController() {
   currentTypeDevice = rgba;
 #elif defined(TYPE_DEVICE_RGBA_ADDRESS)
   setupLedAddressControl();
-  tasker.attach(0, loopLedAddress, 80);
-  tasker.attach(1, networkLoop, 100);  //250 OK
   currentTypeDevice = rgbaAddress;
 #elif defined(TYPE_DEVICE_TEMP_SENSOR)
   setupTempDetector();
-  tasker.attach(0, loopTempDetector, 750);
   currentTypeDevice = tempSensor;
 #endif
 }
@@ -210,7 +123,6 @@ String controlIncomingText(String data) {
 }
 
 void loopController() {
-#if defined(TYPE_DEVICE_UPS) || defined(TYPE_DEVICE_RGBA_ADDRESS) || defined(TYPE_DEVICE_TEMP_SENSOR)
-  tasker.tick();
-#endif
+  loopTasker();
 }
+

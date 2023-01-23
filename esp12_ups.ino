@@ -1,6 +1,6 @@
 #include "Base64.h"
 #include "Network.h"
-//#include "IotController.h"
+#include "IotController.h"
 #include "DataPusher.h"
 
 #define SERIAL_COMMUNICATION_SPEED 9600
@@ -10,64 +10,46 @@ void setup() {
 
   setupIotController();
   delay(1000);
-  startWifi();
-  //webSocket.onEvent(webSocketEvent);
+  setupNetwork();
+
+  client.onMessage(onMessageCallback);
+  client.onEvent(onEventsCallback);
+  client.connect(iotServer);
 }
 
-// void webSocketEvent(WStype_t type, uint8_t *payload, size_t length) {
-//   switch (type) {
-//     case WStype_DISCONNECTED:
-//       break;
-//     case WStype_CONNECTED:
-//       {
-//         Serial.println("WStype_CONNECTED");
-//         String dataForService = controlConnected();
-//         String encrypted = encrypt(dataForService);
-//         webSocket.sendTXT(encrypted);
-//       }
-//       break;
-//     case WStype_TEXT:
-//       {
-//         Serial.println("WStype_TEXT");
-//         String normalizedData = decryptAndFormatToString(payload, length);
-//         String dataForService = controlIncomingText(normalizedData);
+void onMessageCallback(WebsocketsMessage message) {
+  String decryptedData = decrypt(message.data());
+  String dataForService = controlIncomingText(decryptedData);
 
-//         if (!dataForService.isEmpty()) {
-//           String encrypted = encrypt(dataForService);
-//           webSocket.sendTXT(encrypted);
-//         }
-//       }
-//       break;
-//     case WStype_BIN:
-//       break;
-//     case WStype_PING:
-//       break;
-//     case WStype_PONG:
-//       break;
-//   }
-// }
+  if (!dataForService.isEmpty()) {
+    String encrypted = encrypt(dataForService);
+    client.send(encrypted);
+  }
+}
+
+void onEventsCallback(WebsocketsEvent event, String data) {
+  if (event == WebsocketsEvent::ConnectionOpened) {
+    iotServerConnected = true;
+    String dataForService = controlConnected();
+    String encrypted = encrypt(dataForService);
+    client.send(encrypted);
+  } else if (event == WebsocketsEvent::ConnectionClosed) {
+    iotServerConnected = false;
+  } else if (event == WebsocketsEvent::GotPing) {
+    client.pong();
+  } else if (event == WebsocketsEvent::GotPong) {
+  }
+}
 
 void loop() {
- // networkLoop();
   loopController();
 
-  // String dataForService = loopDataPusher();
+  String dataForService = loopDataPusher();
 
-  // if (!dataForService.isEmpty()) {
-  //   String encrypted = encrypt(dataForService);
-  //   webSocket.sendTXT(encrypted);
-  // }
-}
-
-String decryptAndFormatToString(uint8_t *payload, size_t length) {
-  char encrCmd[length + 1];
-
-  memcpy(encrCmd, payload, length);
-  encrCmd[length] = '\0';
-
-  String decrCmd = decrypt(String(encrCmd));
-  Serial.println(decrCmd);
-  return decrCmd;
+  if (!dataForService.isEmpty()) {
+    String encrypted = encrypt(dataForService);
+    client.send(encrypted);
+  }
 }
 
 ///CBC

@@ -1,4 +1,5 @@
-#include "core_esp8266_features.h"
+#pragma once
+
 #include <Adafruit_INA219.h>
 
 #define SAMPLES_VOLT_CUR 10

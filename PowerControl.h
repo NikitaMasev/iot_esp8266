@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Persistent.h"
 
 #define PIN_POWER_CONTROL 14

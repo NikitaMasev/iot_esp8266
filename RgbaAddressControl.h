@@ -1,3 +1,5 @@
+#pragma once
+
 #define FASTLED_INTERRUPT_RETRY_COUNT 0  // fix flickering first led
 //#define FASTLED_ALLOW_INTERRUPTS 0
 //#define INTERRUPT_THRESHOLD 1

@@ -1,3 +1,5 @@
+#pragma once
+
 //#define TYPE_DEVICE_UPS +
 //#define TYPE_DEVICE_LAMP +
 //#define TYPE_DEVICE_RGBA

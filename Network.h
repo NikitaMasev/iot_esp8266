@@ -1,34 +1,39 @@
-// #include <ESP8266WiFiMulti.h>
-// #include <WebSocketsClient.h>
+#pragma once
 
-// ESP8266WiFiMulti WiFiMulti;
-// WebSocketsClient webSocket;
+#include <ESP8266WiFiMulti.h>
+#include <ArduinoWebsockets.h>
 
-// const char *ssid = "CrynetSystem";
-// const char *password = "gish4264";
-// const char *ipServer = "192.168.50.143";
-// const uint16_t port = 5080;
+#define TIME_RETRY_CONNECTION 10000
 
-// uint8_t cipher_key[16] = { 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 53, 54, 49, 48, 49, 49 };
-// uint8_t cipher_iv[16] = { 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48 };
+using namespace websockets;
 
-// long lastTimeUpdateWebsocket;
+ESP8266WiFiMulti WiFiMulti;
+WebsocketsClient client;
 
-// void startWifi() {
-//   WiFiMulti.addAP(ssid, password);
+const char *ssid = "CrynetSystem";
+const char *password = "gish4264";
+const char *iotServer = "ws://192.168.50.143:5080";
 
-//   while (WiFiMulti.run() != WL_CONNECTED) {
-//     Serial.println("Try connecting to WIFI");
-//     delay(1000);
-//   }
-//   Serial.println("WIFI CONNECTED");
-//   webSocket.begin(ipServer, port);
-//   lastTimeUpdateWebsocket = millis();
-// }
+uint8_t cipher_key[16] = { 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 53, 54, 49, 48, 49, 49 };
+uint8_t cipher_iv[16] = { 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48 };
 
-// void networkLoop() {
-//   //if (millis() - lastTimeUpdateWebsocket > 100) {
-//     webSocket.loop();
-//     lastTimeUpdateWebsocket = millis();
-//   //}
-// }
+bool iotServerConnected = false;
+long lastTimeRetryConnection = 0;
+
+void setupNetwork() {
+  WiFiMulti.addAP(ssid, password);
+
+  while (WiFiMulti.run() != WL_CONNECTED) {
+    Serial.println("Try connecting to WIFI");
+    delay(1000);
+  }
+}
+
+void networkLoop() {
+  if (iotServerConnected) {
+    client.poll();
+  } else if (millis() - lastTimeRetryConnection > TIME_RETRY_CONNECTION) {
+    client.connect(iotServer);
+    lastTimeRetryConnection = millis();    
+  }
+}

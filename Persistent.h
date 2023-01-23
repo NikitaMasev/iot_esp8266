@@ -1,5 +1,7 @@
+#pragma once
+
 #include "WString.h"
-#include "DataConstruct.h"
+#include "DataStruct.h"
 #include <EEPROM.h>
 
 #define SIZE_EEPROM 512

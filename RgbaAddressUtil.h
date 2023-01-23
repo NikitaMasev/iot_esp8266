@@ -1,3 +1,5 @@
+#pragma once
+
 //------------------------------------- UTILITY FXNS --------------------------------------
 //---SET THE COLOR OF A SINGLE RGB LED
 void set_color_led(int adex, int cred, int cgrn, int cblu) {

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Persistent.h"
 
 #define LED_COUNT 100  // число светодиодов в кольце/ленте

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <GRGB.h>
 #include "Persistent.h"
 

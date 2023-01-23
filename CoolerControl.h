@@ -1,3 +1,5 @@
+#pragma once
+
 #include "TempDetector.h"
 
 #define PIN_PWM_COOLER 14

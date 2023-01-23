@@ -1,3 +1,5 @@
+#pragma once
+
 struct ParsedHeaderPayload {
   String header;
   String payload;
