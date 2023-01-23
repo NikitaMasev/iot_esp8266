@@ -11,52 +11,52 @@ void setup() {
   setupIotController();
   delay(1000);
   startWifi();
-  webSocket.onEvent(webSocketEvent);
+  //webSocket.onEvent(webSocketEvent);
 }
 
-void webSocketEvent(WStype_t type, uint8_t *payload, size_t length) {
-  switch (type) {
-    case WStype_DISCONNECTED:
-      break;
-    case WStype_CONNECTED:
-      {
-        Serial.println("WStype_CONNECTED");
-        String dataForService = controlConnected();
-        String encrypted = encrypt(dataForService);
-        webSocket.sendTXT(encrypted);
-      }
-      break;
-    case WStype_TEXT:
-      {
-        Serial.println("WStype_TEXT");
-        String normalizedData = decryptAndFormatToString(payload, length);
-        String dataForService = controlIncomingText(normalizedData);
+// void webSocketEvent(WStype_t type, uint8_t *payload, size_t length) {
+//   switch (type) {
+//     case WStype_DISCONNECTED:
+//       break;
+//     case WStype_CONNECTED:
+//       {
+//         Serial.println("WStype_CONNECTED");
+//         String dataForService = controlConnected();
+//         String encrypted = encrypt(dataForService);
+//         webSocket.sendTXT(encrypted);
+//       }
+//       break;
+//     case WStype_TEXT:
+//       {
+//         Serial.println("WStype_TEXT");
+//         String normalizedData = decryptAndFormatToString(payload, length);
+//         String dataForService = controlIncomingText(normalizedData);
 
-        if (!dataForService.isEmpty()) {
-          String encrypted = encrypt(dataForService);
-          webSocket.sendTXT(encrypted);
-        }
-      }
-      break;
-    case WStype_BIN:
-      break;
-    case WStype_PING:
-      break;
-    case WStype_PONG:
-      break;
-  }
-}
+//         if (!dataForService.isEmpty()) {
+//           String encrypted = encrypt(dataForService);
+//           webSocket.sendTXT(encrypted);
+//         }
+//       }
+//       break;
+//     case WStype_BIN:
+//       break;
+//     case WStype_PING:
+//       break;
+//     case WStype_PONG:
+//       break;
+//   }
+// }
 
 void loop() {
-  networkLoop();
+ // networkLoop();
   loopController();
 
-  String dataForService = loopDataPusher();
+  // String dataForService = loopDataPusher();
 
-  if (!dataForService.isEmpty()) {
-    String encrypted = encrypt(dataForService);
-    webSocket.sendTXT(encrypted);
-  }
+  // if (!dataForService.isEmpty()) {
+  //   String encrypted = encrypt(dataForService);
+  //   webSocket.sendTXT(encrypted);
+  // }
 }
 
 String decryptAndFormatToString(uint8_t *payload, size_t length) {

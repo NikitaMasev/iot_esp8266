@@ -49,7 +49,7 @@ void applyLedInternalConfig() {
       break;                          //---VERTICAL SOMETHING
     case 13: thisdelay = 100; break;  //---CELL AUTO - RULE 30 (RED)
     case 14: thisdelay = 80; break;   //---MARCH RANDOM COLORS
-    case 15: thisdelay = 10; break;   //---MARCH RWB COLORS
+    case 15: thisdelay = 80; break;   //---MARCH RWB COLORS
     case 16:
       thisdelay = 60;
       ledConfigData.h = 95;
@@ -136,7 +136,7 @@ void updateLedAddressPower(bool controlOn) {
 volatile long lastTimeLoopLedAddress = 0;
 
 void loopLedAddress() {
-  if (millis() - lastTimeLoopLedAddress > thisdelay) {
+  //if (millis() - lastTimeLoopLedAddress > thisdelay) {
     switch (ledConfigData.mode) {
       case 1: break;                              // пазуа
       case 2: rainbow_fade(); break;              // плавная смена цветов всей ленты OK
@@ -159,22 +159,22 @@ void loopLedAddress() {
       case 22: flame(); break;                    // эффект пламени                   OK
       case 23: rainbow_vertical(); break;         // радуга в вертикаьной плоскости (кольцо)  OK
       case 25: random_color_pop(); break;         // безумие случайных вспышек        OK
-      case 26: ems_lightsSTROBE(); break;         // полицейская мигалка              OK НО МОЖНО УБРАТЬ ЗАДЕРЖКИ
+      case 26: ems_lightsSTROBE(); break;         // полицейская мигалка              OK
       case 27: rgb_propeller(); break;            // RGB пропеллер                    OK
       case 28: kitt(); break;                     // случайные вспышки красного в вертикаьной плоскости OK
-      case 29: matrix(); break;                   // зелёненькие бегают по кругу случайно OK 
+      case 29: matrix(); break;                   // зелёненькие бегают по кругу случайно OK
       case 30: new_rainbow_loop(); break;         // крутая плавная вращающаяся радуга  OK
       case 33:
         colorWipe(0x00, 0xff, 0x00, 0x00, 0x00, 0x00);  // OK
         break;
-      case 35: Fire(55, 120); break;                               // линейный огонь          OK
-      case 37: rainbowCycle(); break;                              // очень плавная вращающаяся радуга OK
-      case 38: TwinkleRandom(); break;                        // случайные разноцветные включения (1 - танцуют все, 0 - случайный 1 диод) OK
+      case 35: Fire(55, 120); break;                    // линейный огонь          OK
+      case 37: rainbowCycle(); break;                   // очень плавная вращающаяся радуга OK
+      case 38: TwinkleRandom(); break;                  // случайные разноцветные включения (1 - танцуют все, 0 - случайный 1 диод) OK
       case 39: RunningLights(0xff, 0xff, 0x00); break;  // бегущие огни        OK
       case 42: theaterChase(0xff, 0, 0); break;         // бегущие каждые 3 (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3) OK, НО НЕ РАБОТАЕТ АДЕКВАТНО
-      case 43: theaterChaseRainbow(thisdelay); break;              // бегущие каждые 3 радуга (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3) НЕ РАБОТАЕТ АДЕКВАТНО
-      case 44: Strobe(0xff, 0xff, 0xff); break;                    // стробоскоп OK
+      case 43: theaterChaseRainbow(thisdelay); break;   // бегущие каждые 3 радуга (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3) НЕ РАБОТАЕТ АДЕКВАТНО
+      case 44: Strobe(0xff, 0xff, 0xff); break;         // стробоскоп OK
     }
-    lastTimeLoopLedAddress = millis() + 12;
-  }
+    //lastTimeLoopLedAddress = millis() + 12;
+  //}
 }

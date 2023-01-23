@@ -21,17 +21,91 @@
 #include "TempDetector.h"
 #endif
 
-const char* empty = "";
+const char *empty = "";
 
 #if defined(TYPE_DEVICE_UPS)
 GyverOS<3> tasker;
 #endif
 #if defined(TYPE_DEVICE_RGBA_ADDRESS)
-GyverOS<1> tasker;
+GyverOS<2> tasker;
 #endif
 #if defined(TYPE_DEVICE_TEMP_SENSOR)
 GyverOS<1> tasker;
 #endif
+
+#include <ESP8266WiFiMulti.h>
+#include <ArduinoWebsockets.h>
+
+#define TIME_RETRY_CONNECTION 10000
+long lastTimeRetryConnection = 0;
+
+using namespace websockets;
+// #include <WebSocketsClient.h>
+
+ESP8266WiFiMulti WiFiMulti;
+WebsocketsClient client;
+// WebSocketsClient webSocket;
+
+const char *ssid = "CrynetSystem";
+const char *password = "gish4264";
+//const char *ipServer = "192.168.50.143";
+const char *iotServer = "ws://192.168.50.143:5080";
+
+uint8_t cipher_key[16] = { 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 53, 54, 49, 48, 49, 49 };
+uint8_t cipher_iv[16] = { 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48 };
+
+bool iotServerConnected = false;
+
+void onMessageCallback(WebsocketsMessage message) {
+  Serial.print("Got Message: ");
+  Serial.println(message.data());
+}
+
+void onEventsCallback(WebsocketsEvent event, String data) {
+  if (event == WebsocketsEvent::ConnectionOpened) {
+    iotServerConnected = true;
+  } else if (event == WebsocketsEvent::ConnectionClosed) {
+    iotServerConnected = false;
+  } else if (event == WebsocketsEvent::GotPing) {
+    client.pong();
+    client.send("Hi Server!");
+  } else if (event == WebsocketsEvent::GotPong) {
+  }
+}
+
+void startWifi() {
+  WiFiMulti.addAP(ssid, password);
+
+  while (WiFiMulti.run() != WL_CONNECTED) {
+    Serial.println("Try connecting to WIFI");
+    delay(1000);
+  }
+
+  // Setup Callbacks
+  client.onMessage(onMessageCallback);
+  client.onEvent(onEventsCallback);
+
+  client.connect(iotServer);
+
+  // WiFiMulti.addAP(ssid, password);
+
+  // while (WiFiMulti.run() != WL_CONNECTED) {
+  //   Serial.println("Try connecting to WIFI");
+  //   delay(1000);
+  // }
+  // Serial.println("WIFI CONNECTED");
+  //webSocket.begin(ipServer, port);
+  //lastTimeUpdateWebsocket = millis();
+}
+
+void networkLoop() {
+  if (iotServerConnected) {
+    client.poll();
+  } else if (millis() - lastTimeRetryConnection > TIME_RETRY_CONNECTION) {
+    client.connect(iotServer);
+    lastTimeRetryConnection = millis();    
+  }
+}
 
 void setupIotController() {
   setupPersistent();
@@ -53,7 +127,8 @@ void setupIotController() {
   currentTypeDevice = rgba;
 #elif defined(TYPE_DEVICE_RGBA_ADDRESS)
   setupLedAddressControl();
-  tasker.attach(0, loopLedAddress, 10);
+  tasker.attach(0, loopLedAddress, 80);
+  tasker.attach(1, networkLoop, 100);  //250 OK
   currentTypeDevice = rgbaAddress;
 #elif defined(TYPE_DEVICE_TEMP_SENSOR)
   setupTempDetector();
