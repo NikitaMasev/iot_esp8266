@@ -1,5 +1,7 @@
 #pragma once
 
+#include <FastLED.h>
+
 #define LED_COUNT 100  // число светодиодов в кольце/ленте
 #define LED_DT 14      // пин, куда подключен DIN ленты
 

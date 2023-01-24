@@ -144,7 +144,6 @@ void ems_lightsONE() {  //-m7-EMERGENCY LIGHTS (TWO COLOR SINGLE LED)
     }
   }
   LEDS.show();
-  //delay(thisdelay);
 }
 
 void ems_lightsALL() {  //-m8-EMERGENCY LIGHTS (TWO COLOR SOLID)
@@ -158,14 +157,13 @@ void ems_lightsALL() {  //-m8-EMERGENCY LIGHTS (TWO COLOR SOLID)
   leds[idexR] = CHSV(ledConfigData.h, ledConfigData.s, 255);
   leds[idexB] = CHSV(thathue, ledConfigData.s, 255);
   LEDS.show();
-  //delay(thisdelay);
 }
 
 void flicker() {  //-m9-FLICKER EFFECT
   int random_bright = random(0, 255);
-  int random_delay = random(10, 100);
+  int random_delay = random(5, 45);
   int random_bool = random(0, random_bright);
-  if (random_bool < 10) {
+  if (random_bool < 20) {
     for (int i = 0; i < LED_COUNT; i++) {
       leds[i] = CHSV(ledConfigData.h, ledConfigData.s, random_bright);
     }
@@ -228,7 +226,6 @@ void fade_vertical() {  //-m12-FADE 'UP' THE LOOP
   leds[idexA] = CHSV(ledConfigData.h, ledConfigData.s, ibright);
   leds[idexB] = CHSV(ledConfigData.h, ledConfigData.s, ibright);
   LEDS.show();
-  //delay(thisdelay);
 }
 
 void random_red() {  //QUICK 'N DIRTY RANDOMIZE TO GET CELL AUTOMATA STARTED
@@ -285,7 +282,6 @@ void rule30() {  //-m13-1D CELLULAR AUTOMATA - RULE 30 (RED FOR NOW)
     }
   }
   LEDS.show();
-  //delay(thisdelay);
 }
 
 void random_march() {  //-m14-RANDOM MARCH CCW
@@ -299,7 +295,6 @@ void random_march() {  //-m14-RANDOM MARCH CCW
     leds[idex].b = ledsX[iCCW][2];
   }
   LEDS.show();
-  //delay(thisdelay);
 }
 
 void rwb_march() {  //-m15-R,W,B MARCH CCW
@@ -451,7 +446,6 @@ void pop_horizontal() {  //-m20-POP FROM LEFT TO RIGHT UP THE RING
     }
   }
   LEDS.show();
-  //delay(thisdelay);
 }
 
 void quad_bright_curve() {  //-m21-QUADRATIC BRIGHTNESS CURVER
@@ -521,7 +515,6 @@ void rainbow_vertical() {  //-m23-RAINBOW 'UP' THE LOOP
   leds[idexA] = CHSV(ihue, ledConfigData.s, 255);
   leds[idexB] = CHSV(ihue, ledConfigData.s, 255);
   LEDS.show();
-  //delay(thisdelay);
 }
 
 void random_color_pop() {  //-m25-RANDOM COLOR POP
@@ -530,51 +523,45 @@ void random_color_pop() {  //-m25-RANDOM COLOR POP
   one_color_all(0, 0, 0);
   leds[idex] = CHSV(ihue, ledConfigData.s, 255);
   LEDS.show();
-  //delay(thisdelay);
 }
 
 const int emsXCount = 5;
 int indexEmsX = 0;
 bool emsModeFirstHue = true;
 bool emsModeDelayBeforeOff = false;
-long timeEms = 0;
 
 void ems_lightsSTROBE() {  //-m26-EMERGENCY LIGHTS (STROBE LEFT/RIGHT)
-  if (millis() - timeEms >= 25) {
-    int newHue = 0;
-    int thathue = (newHue + 160) % 255;
+  int newHue = 0;
+  int thathue = (newHue + 160) % 255;
 
-    if (indexEmsX < emsXCount && emsModeFirstHue && !emsModeDelayBeforeOff) {
-      for (int i = 0; i < TOP_INDEX; i++) {
-        leds[i] = CHSV(newHue, ledConfigData.s, 255);
-      }
-      LEDS.show();
-      emsModeDelayBeforeOff = true;
-    } else if (indexEmsX < emsXCount && emsModeFirstHue && emsModeDelayBeforeOff) {
-      one_color_all(0, 0, 0);
-      LEDS.show();
-      emsModeDelayBeforeOff = false;
-      indexEmsX++;
-    } else if (indexEmsX == emsXCount && emsModeFirstHue) {
-      indexEmsX = 0;
-      emsModeFirstHue = false;
-    } else if (indexEmsX < emsXCount && !emsModeFirstHue && !emsModeDelayBeforeOff) {
-      for (int i = TOP_INDEX; i < LED_COUNT; i++) {
-        leds[i] = CHSV(thathue, ledConfigData.s, 255);
-      }
-      LEDS.show();
-      emsModeDelayBeforeOff = true;
-    } else if (indexEmsX < emsXCount && !emsModeFirstHue && emsModeDelayBeforeOff) {
-      one_color_all(0, 0, 0);
-      LEDS.show();
-      emsModeDelayBeforeOff = false;
-      indexEmsX++;
-    } else if (indexEmsX == emsXCount && !emsModeFirstHue) {
-      indexEmsX = 0;
-      emsModeFirstHue = true;
+  if (indexEmsX < emsXCount && emsModeFirstHue && !emsModeDelayBeforeOff) {
+    for (int i = 0; i < TOP_INDEX; i++) {
+      leds[i] = CHSV(newHue, ledConfigData.s, 255);
     }
-
-    timeEms = millis();
+    LEDS.show();
+    emsModeDelayBeforeOff = true;
+  } else if (indexEmsX < emsXCount && emsModeFirstHue && emsModeDelayBeforeOff) {
+    one_color_all(0, 0, 0);
+    LEDS.show();
+    emsModeDelayBeforeOff = false;
+    indexEmsX++;
+  } else if (indexEmsX == emsXCount && emsModeFirstHue) {
+    indexEmsX = 0;
+    emsModeFirstHue = false;
+  } else if (indexEmsX < emsXCount && !emsModeFirstHue && !emsModeDelayBeforeOff) {
+    for (int i = TOP_INDEX; i < LED_COUNT; i++) {
+      leds[i] = CHSV(thathue, ledConfigData.s, 255);
+    }
+    LEDS.show();
+    emsModeDelayBeforeOff = true;
+  } else if (indexEmsX < emsXCount && !emsModeFirstHue && emsModeDelayBeforeOff) {
+    one_color_all(0, 0, 0);
+    LEDS.show();
+    emsModeDelayBeforeOff = false;
+    indexEmsX++;
+  } else if (indexEmsX == emsXCount && !emsModeFirstHue) {
+    indexEmsX = 0;
+    emsModeFirstHue = true;
   }
 }
 
