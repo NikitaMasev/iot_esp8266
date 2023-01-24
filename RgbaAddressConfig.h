@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Persistent.h"
-
 #define LED_COUNT 100  // число светодиодов в кольце/ленте
 #define LED_DT 14      // пин, куда подключен DIN ленты
 
@@ -19,5 +17,5 @@ LedConfigData ledConfigData = {
 struct CRGB leds[LED_COUNT];
 int ledsX[LED_COUNT][3];  //-ARRAY FOR COPYING WHATS IN THE LED STRIP CURRENTLY (FOR CELL-AUTOMATA, MARCH, ETC)
 
-volatile int thisdelay = 20;  //-FX LOOPS DELAY VAR
+int thisdelay = 20;  //-FX LOOPS DELAY VAR
 int thisstep = 10;   //-FX LOOPS DELAY VAR

@@ -1,5 +1,8 @@
 #pragma once
 
+#include "RgbaAddressConfig.h"
+#include "Persistent.h"
+
 #define FASTLED_INTERRUPT_RETRY_COUNT 0  // fix flickering first led
 //#define FASTLED_ALLOW_INTERRUPTS 0
 //#define INTERRUPT_THRESHOLD 1
@@ -87,7 +90,7 @@ void applyLedInternalConfig() {
       ledConfigData.h = 0;
       break;  //---KITT
     case 29:
-      thisdelay = 10;
+      thisdelay = 100;
       ledConfigData.h = 95;
       break;                         //---MATRIX RAIN
     case 30: thisdelay = 15; break;  //---NEW RAINBOW LOOP

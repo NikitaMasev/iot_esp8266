@@ -3,6 +3,7 @@
 #include "WString.h"
 #include "CryptoAesUtil.h"
 #include "Network.h"
+#include "Config.h"
 #include "DataConstruct.h"
 
 #if defined(TYPE_DEVICE_LAMP)

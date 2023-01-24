@@ -40,7 +40,7 @@ void setupTasker() {
   tasker.attach(3, loopTempDetector, 750);
   tasker.attach(4, loopVoltCur, 200);
 #elif defined(TYPE_DEVICE_RGBA_ADDRESS)
-  tasker.attach(2, loopLedAddress, 80);
+  tasker.attach(2, loopLedAddress, 10);
 #elif defined(TYPE_DEVICE_TEMP_SENSOR)
   tasker.attach(2, loopTempDetector, 750);
 #endif
