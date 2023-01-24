@@ -28,14 +28,11 @@ void applyLedInternalConfig() {
       break;  //---CYLON v2
     case 7:
       thisdelay = 40;
-      ledConfigData.h = 0;
       break;  //---POLICE LIGHTS SINGLE
     case 8:
       thisdelay = 40;
-      ledConfigData.h = 0;
       break;  //---POLICE LIGHTS SOLID
     case 9:
-      ledConfigData.h = 160;
       ledConfigData.s = 50;
       thisdelay = 35;
       break;  //---STRIP FLICKER
@@ -45,29 +42,21 @@ void applyLedInternalConfig() {
       break;  //---PULSE COLOR BRIGHTNESS
     case 11:
       thisdelay = 30;
-      ledConfigData.h = 0;
       break;  //---PULSE COLOR SATURATION
     case 12:
       thisdelay = 60;
-      ledConfigData.h = 180;
       break;                          //---VERTICAL SOMETHING
     case 13: thisdelay = 100; break;  //---CELL AUTO - RULE 30 (RED)
     case 14: thisdelay = 80; break;   //---MARCH RANDOM COLORS
     case 15: thisdelay = 80; break;   //---MARCH RWB COLORS
-    case 16:
-      thisdelay = 60;
-      ledConfigData.h = 95;
-      break;  //---RADIATION SYMBOL
     case 18:
       thisdelay = 100;
       break;
     case 20:
       thisdelay = 100;
-      ledConfigData.h = 0;
       break;  //---POP LEFT/RIGHT
     case 21:
       thisdelay = 100;
-      ledConfigData.h = 180;
       break;  //---QUADRATIC BRIGHTNESS CURVE
     case 22:
       thisdelay = 0;
@@ -82,15 +71,12 @@ void applyLedInternalConfig() {
       break;  //---EMERGECNY STROBE
     case 27:
       thisdelay = 100;
-      ledConfigData.h = 0;
       break;  //---RGB PROPELLER
     case 28:
       thisdelay = 100;
-      ledConfigData.h = 0;
       break;  //---KITT
     case 29:
       thisdelay = 100;
-      ledConfigData.h = 95;
       break;                         //---MATRIX RAIN
     case 30: thisdelay = 15; break;  //---NEW RAINBOW LOOP
     case 33: thisdelay = 50; break;  // colorWipe

@@ -209,7 +209,6 @@ void pulse_one_color_all_rev() {  //-m11-PULSE SATURATION ON ALL LEDS TO ONE COL
     leds[idex] = CHSV(ledConfigData.h, isat, 255);
   }
   LEDS.show();
-  //delay(thisdelay);
 }
 
 void fade_vertical() {  //-m12-FADE 'UP' THE LOOP
@@ -465,7 +464,6 @@ void quad_bright_curve() {  //-m21-QUADRATIC BRIGHTNESS CURVER
     leds[x] = CHSV(ledConfigData.h, ledConfigData.s, ibright);
   }
   LEDS.show();
-  //delay(thisdelay);
 }
 
 const float hmin = 0.1;
