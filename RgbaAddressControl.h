@@ -83,15 +83,18 @@ void applyLedInternalConfig() {
     case 35: thisdelay = 15; break;  // Fire
     case 37: thisdelay = 20; break;  // rainbowCycle
     case 38: thisdelay = 10; break;  // rainbowTwinkle
-    case 39: thisdelay = 50; break;  // RunningLights
-    case 42: thisdelay = 50; break;  // theaterChase
-    case 43: thisdelay = 50; break;  // theaterChaseRainbow
-    case 44: thisdelay = 0; break;   // Strobe
+    case 39:
+      thisdelay = 50;
+      break;  // RunningLights
+    //case 42: thisdelay = 50; break;  // theaterChase
+    //case 43: thisdelay = 50; break;  // theaterChaseRainbow
+    case 44: thisdelay = 0; break;  // Strobe
     case 45:
       one_color_allHSV();
       LEDS.show();
       break;
   }
+
   bouncedirection = 0;
   one_color_all(0, 0, 0);
 }
@@ -118,6 +121,7 @@ void setupLedAddressControl() {
   applyLedInternalConfig();
 }
 
+///TODO more flexible power control
 void updateLedAddressPower(bool controlOn) {
   LEDS.setBrightness(controlOn ? ledConfigData.v : 0);
   LEDS.show();
@@ -157,13 +161,21 @@ void loopLedAddress() {
       case 33:
         colorWipe(0x00, 0xff, 0x00, 0x00, 0x00, 0x00);  // OK
         break;
-      case 35: Fire(55, 120); break;                    // линейный огонь          OK
-      case 37: rainbowCycle(); break;                   // очень плавная вращающаяся радуга OK
-      case 38: TwinkleRandom(); break;                  // случайные разноцветные включения (1 - танцуют все, 0 - случайный 1 диод) OK
-      case 39: RunningLights(0xff, 0xff, 0x00); break;  // бегущие огни        OK ?
-      case 42: theaterChase(0xff, 0, 0); break;         // бегущие каждые 3 (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3) OK, НО НЕ РАБОТАЕТ АДЕКВАТНО
-      case 43: theaterChaseRainbow(thisdelay); break;   // бегущие каждые 3 радуга (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3) НЕ РАБОТАЕТ АДЕКВАТНО
-      case 44: Strobe(0xff, 0xff, 0xff); break;         // стробоскоп OK
+      case 35: Fire(55, 120); break;    // линейный огонь          OK
+      case 37: rainbowCycle(); break;   // очень плавная вращающаяся радуга OK
+      case 38: TwinkleRandom(); break;  // случайные разноцветные включения (1 - танцуют все, 0 - случайный 1 диод) OK
+      case 39:
+        RunningLights(0xff, 0xff, 0x00);
+        break;  // бегущие огни        OK ?
+      //case 42: theaterChase(0xff, 0, 0); break;         // бегущие каждые 3 (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3) OK, НО НЕ РАБОТАЕТ АДЕКВАТНО
+      //case 43: theaterChaseRainbow(thisdelay); break;   // бегущие каждые 3 радуга (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3) НЕ РАБОТАЕТ АДЕКВАТНО
+      case 44:
+        Strobe(0xff, 0xff, 0xff);
+        break;  // стробоскоп OK
+      case 45:
+        one_color_allHSV();
+        LEDS.show();
+        break;
     }
     lastTimeUpdateLed = millis() + 12;
   }
