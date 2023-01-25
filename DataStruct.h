@@ -10,4 +10,5 @@ struct LedConfigData {
   int s;
   int v;
   int mode;
+  bool powerOn;
 };

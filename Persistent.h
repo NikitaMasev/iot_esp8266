@@ -71,16 +71,19 @@ void saveLedConfigData(LedConfigData ledConfigData) {
   sizeS++;
   int sizeV = sizeof(ledConfigData.v);
   sizeV++;
+  int sizeMode = sizeof(ledConfigData.mode);
+  sizeMode++;
 
   EEPROM.begin(SIZE_EEPROM);
   EEPROM.put(startAddress, ledConfigData.h);
   EEPROM.put(startAddress + sizeH, ledConfigData.s);
   EEPROM.put(startAddress + sizeH + sizeS, ledConfigData.v);
   EEPROM.put(startAddress + sizeH + sizeS + sizeV, ledConfigData.mode);
+  EEPROM.put(startAddress + sizeH + sizeS + sizeV + sizeMode, ledConfigData.powerOn ? 1 : 0);
   EEPROM.commit();
   EEPROM.end();
 
-  
+
   Serial.println("saveLedConfigData");
   Serial.println("ledConfigData.h");
   Serial.println(ledConfigData.h);
@@ -90,10 +93,13 @@ void saveLedConfigData(LedConfigData ledConfigData) {
   Serial.println(ledConfigData.v);
   Serial.println("ledConfigData.mode");
   Serial.println(ledConfigData.mode);
+  Serial.println("ledConfigData.powerOn");
+  Serial.println(ledConfigData.powerOn);
 }
 
 LedConfigData getSavedLedConfigData() {
   LedConfigData ledConfigData;
+  int powerOn = 0;
 
   int startAddress = getAddressForSavingSideData();
 
@@ -103,13 +109,18 @@ LedConfigData getSavedLedConfigData() {
   sizeS++;
   int sizeV = sizeof(ledConfigData.v);
   sizeV++;
+  int sizeMode = sizeof(ledConfigData.mode);
+  sizeMode++;
 
   EEPROM.begin(SIZE_EEPROM);
   EEPROM.get(startAddress, ledConfigData.h);
   EEPROM.get(startAddress + sizeH, ledConfigData.s);
   EEPROM.get(startAddress + sizeH + sizeS, ledConfigData.v);
   EEPROM.get(startAddress + sizeH + sizeS + sizeV, ledConfigData.mode);
+  EEPROM.get(startAddress + sizeH + sizeS + sizeV + sizeMode, powerOn);
   EEPROM.end();
+
+  ledConfigData.powerOn = powerOn == 1;
 
   Serial.println("getSavedLedConfigData");
   Serial.println("ledConfigData.h");
@@ -120,6 +131,8 @@ LedConfigData getSavedLedConfigData() {
   Serial.println(ledConfigData.v);
   Serial.println("ledConfigData.mode");
   Serial.println(ledConfigData.mode);
+  Serial.println("ledConfigData.powerOn");
+  Serial.println(ledConfigData.powerOn);
 
   return ledConfigData;
 }

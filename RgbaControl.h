@@ -2,6 +2,7 @@
 
 #include <GRGB.h>
 #include "Persistent.h"
+#include "DataStruct.h"
 
 // указать тип драйвера COMMON_CATHODE/COMMON_ANODE
 // и пины в порядке R,G,B
@@ -12,13 +13,11 @@ LedConfigData ledConfigData = {
   s: 255,
   v: 180,
   mode: 10,
+  powerOn: true,
 };
 
-void updateLedPower(bool controlOn) {
-  ledControl.setPower(controlOn);
-}
-
 void ledConfigApplyControl() {
+  ledControl.setPower(ledConfigData.powerOn);
   ledControl.setBrightness(ledConfigData.v);
   ledControl.setHSV(ledConfigData.h, ledConfigData.s, ledConfigData.v);
 }

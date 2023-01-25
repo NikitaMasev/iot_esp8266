@@ -54,8 +54,8 @@ const static struct {
 } typeDeviceToTypeControl[] = {
   { ups, { register_c } },
   { lamp, { powerOn_c, powerOff_c, register_c } },
-  { rgba, { powerOn_c, powerOff_c, register_c, rgba_c } },
-  { rgbaAddress, { powerOn_c, powerOff_c, register_c, rgbaEffects_c, rgba_c } },
+  { rgba, { register_c, rgba_c } },
+  { rgbaAddress, { register_c, rgbaEffects_c } },
   { tempSensor, { register_c } },
   { unknown, {} },
 };

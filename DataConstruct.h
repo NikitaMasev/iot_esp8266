@@ -36,7 +36,7 @@ String constructRegister(String typeDevice) {
   strcat(api, String(PKG_CMD_SYMB).c_str());
   strcat(api, typeDevice.c_str());
   strcat(api, String(PKG_CMD_SYMB).c_str());
-  
+
   apiStr = api;
   return apiStr;
 }
@@ -91,6 +91,9 @@ LedConfigData parseLedConfig(String data) {
         break;
       case 3:
         ledConfigData.mode = pars.str.toInt();
+        break;
+      case 4:
+        ledConfigData.powerOn = pars.str.toInt() == 1;
         break;
     }
     index++;
@@ -147,6 +150,9 @@ String constructLedConfigData(LedConfigData ledConfigData) {
   strcat(data, tmp);
   strcat(data, DELIMITER_IOT_DATA_SYMB);
   itoa(ledConfigData.mode, tmp, DEC);
+  strcat(data, tmp);
+  strcat(data, DELIMITER_IOT_DATA_SYMB);
+  itoa(ledConfigData.powerOn ? 1 : 0, tmp, DEC);
   strcat(data, tmp);
   strcat(data, END_PKG_DATA_SYMB);
 

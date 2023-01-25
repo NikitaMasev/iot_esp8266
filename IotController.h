@@ -68,12 +68,6 @@ String handlePower(bool controlOn) {
 #if defined(TYPE_DEVICE_LAMP)
   updatePower(controlOn);
 #endif
-#if defined(TYPE_DEVICE_RGBA)
-  updateLedPower(controlOn);
-#endif
-#if defined(TYPE_DEVICE_RGBA_ADDRESS)
-  updateLedAddressPower(controlOn);
-#endif
   return empty;
 }
 

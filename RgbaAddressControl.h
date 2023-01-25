@@ -99,9 +99,18 @@ void applyLedInternalConfig() {
   one_color_all(0, 0, 0);
 }
 
+void updatePowerState() {
+  if (ledConfigData.powerOn) {
+    LEDS.setBrightness(ledConfigData.v);  // ограничить максимальную яркость
+  } else {     
+    LEDS.setBrightness(0);  
+  }
+}
+
 void updateLedAddressConfig(LedConfigData newConfigData) {
   ledConfigData = newConfigData;
   saveLedConfigData(newConfigData);
+  updatePowerState();
   applyLedInternalConfig();
 }
 
@@ -111,7 +120,7 @@ void setupLedAddressControl() {
     ledConfigData = savedLedConfigData;
   }
 
-  LEDS.setBrightness(ledConfigData.v);  // ограничить максимальную яркость
+  updatePowerState();
 
   LEDS.addLeds<WS2811, LED_DT, BRG>(leds, LED_COUNT);  // настрйоки для нашей ленты (ленты на WS2811, WS2812, WS2812B)
   one_color_all(0, 0, 0);                              // погасить все светодиоды
@@ -119,12 +128,6 @@ void setupLedAddressControl() {
 
   randomSeed(analogRead(0));
   applyLedInternalConfig();
-}
-
-///TODO more flexible power control
-void updateLedAddressPower(bool controlOn) {
-  LEDS.setBrightness(controlOn ? ledConfigData.v : 0);
-  LEDS.show();
 }
 
 long lastTimeUpdateLed = 0;

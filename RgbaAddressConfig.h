@@ -1,6 +1,7 @@
 #pragma once
 
 #include <FastLED.h>
+#include "DataStruct.h"
 
 #define LED_COUNT 100  // число светодиодов в кольце/ленте
 #define LED_DT 14      // пин, куда подключен DIN ленты
@@ -14,6 +15,7 @@ LedConfigData ledConfigData = {
   s: 255,
   v: 180,
   mode: 10,
+  powerOn: true,
 };
 
 struct CRGB leds[LED_COUNT];
