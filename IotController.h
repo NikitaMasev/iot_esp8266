@@ -61,7 +61,7 @@ String controlConnected() {
 String handleRegister(String payload) {
   int newId = payload.toInt();
   saveIdDevice(newId);
-  return empty;
+  return constructAuth(idDevice, typeDeviceToString(currentTypeDevice));
 }
 
 String handlePower(bool controlOn) {
