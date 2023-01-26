@@ -19,6 +19,7 @@ enum TypeControl {
   rgba_c,
   rgbaEffects_c,
   register_c,
+  reset_c,
   unknown_c,
 };
 
@@ -45,6 +46,7 @@ const static struct {
   { rgba_c, "rgba" },
   { rgbaEffects_c, "rgbaEffects" },
   { register_c, "register" },
+  { reset_c, "reset" },
   { unknown_c, "unknown" },
 };
 
@@ -52,11 +54,11 @@ const static struct {
   TypeDevice typeDevice;
   TypeControl typeControl[SIZE_TYPE_CONTROL_MAP];
 } typeDeviceToTypeControl[] = {
-  { ups, { register_c } },
-  { lamp, { powerOn_c, powerOff_c, register_c } },
-  { rgba, { register_c, rgba_c } },
-  { rgbaAddress, { register_c, rgbaEffects_c } },
-  { tempSensor, { register_c } },
+  { ups, { register_c, reset_c } },
+  { lamp, { powerOn_c, powerOff_c, register_c, reset_c } },
+  { rgba, { register_c, rgba_c, reset_c } },
+  { rgbaAddress, { register_c, rgbaEffects_c, reset_c } },
+  { tempSensor, { register_c, reset_c } },
   { unknown, {} },
 };
 

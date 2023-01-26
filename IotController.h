@@ -61,7 +61,12 @@ String controlConnected() {
 String handleRegister(String payload) {
   int newId = payload.toInt();
   saveIdDevice(newId);
-  return constructAuth(idDevice, typeDeviceToString(currentTypeDevice));
+  return empty;
+}
+
+String handleReset() {
+  saveIdDevice(-1);
+  return constructRegister(typeDeviceToString(currentTypeDevice));
 }
 
 String handlePower(bool controlOn) {
@@ -99,6 +104,8 @@ String controlIncomingText(String data) {
   switch (typeControl) {
     case register_c:
       return handleRegister(headerPayload.payload);
+    case reset_c:
+      return handleReset();
     case powerOff_c:
       return handlePower(false);
     case powerOn_c:
@@ -114,4 +121,3 @@ String controlIncomingText(String data) {
 void loopController() {
   loopTasker();
 }
-
