@@ -11,8 +11,8 @@ ESP8266WiFiMulti WiFiMulti;
 WebsocketsClient client;
 
 const char *ssid = "CrynetSystem";
-const char *password = "gish4264";
-const char *iotServer = "ws://192.168.50.143:5080";
+const char *password = "*************";
+const char *iotServer = "ws://192.168.50.213:5080";
 
 bool iotServerConnected = false;
 long lastTimeRetryConnection = 0;

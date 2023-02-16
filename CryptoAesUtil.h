@@ -2,8 +2,8 @@
 
 #include "Base64.h"
 
-uint8_t cipher_key[16] = { 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 53, 54, 49, 48, 49, 49 };
-uint8_t cipher_iv[16] = { 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48 };
+uint8_t cipher_key[16] = {};
+uint8_t cipher_iv[16] = {};
 
 ///CBC
 String encrypt(String src) {
