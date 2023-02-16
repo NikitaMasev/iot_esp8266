@@ -1,7 +1,7 @@
 #pragma once
 
 #include "WString.h"
-#include "CryptoAesUtil.h"
+//#include "CryptoAesUtil.h"
 #include "Network.h"
 #include "Config.h"
 #include "DataConstruct.h"
@@ -23,6 +23,8 @@
 #if defined(TYPE_DEVICE_TEMP_SENSOR)
 #include "TempDetector.h"
 #endif
+
+//CryptoAesUtil cryptoAes();
 
 void loopDataPusher() {
   if (!iotServerConnected) return;
@@ -46,7 +48,7 @@ void loopDataPusher() {
 #endif
 
   if (!dataForService.isEmpty()) {
-    String encrypted = encrypt(dataForService);
-    client.send(encrypted);
+    // String encrypted = cryptoAes.encryptStr(dataForService);
+    // client.send(encrypted);
   }
 }

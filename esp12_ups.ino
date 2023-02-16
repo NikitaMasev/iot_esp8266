@@ -4,6 +4,8 @@
 
 #define SERIAL_COMMUNICATION_SPEED 9600
 
+CryptoAesUtil cryptoAesUtil;
+
 void setup() {
   Serial.begin(SERIAL_COMMUNICATION_SPEED);
 
@@ -17,11 +19,11 @@ void setup() {
 }
 
 void onMessageCallback(WebsocketsMessage message) {
-  String decryptedData = decrypt(message.data());
+  String decryptedData = cryptoAesUtil.decrypt(message.data());
   String dataForService = controlIncomingText(decryptedData);
 
   if (!dataForService.isEmpty()) {
-    String encrypted = encrypt(dataForService);
+    String encrypted = cryptoAesUtil.encrypt(dataForService);
     client.send(encrypted);
   }
 }
@@ -30,7 +32,7 @@ void onEventsCallback(WebsocketsEvent event, String data) {
   if (event == WebsocketsEvent::ConnectionOpened) {
     iotServerConnected = true;
     String dataForService = controlConnected();
-    String encrypted = encrypt(dataForService);
+    String encrypted = cryptoAesUtil.encrypt(dataForService);
     client.send(encrypted);
   } else if (event == WebsocketsEvent::ConnectionClosed) {
     iotServerConnected = false;
