@@ -1,5 +1,9 @@
 #pragma once
 
+#define BOTTOM_INDEX 0  // светодиод начала отсчёта
+#define TOP_INDEX (int(LED_COUNT / 2))
+#define EVENODD (LED_COUNT % 2)
+
 //------------------------------------- UTILITY FXNS --------------------------------------
 //---SET THE COLOR OF A SINGLE RGB LED
 void set_color_led(int adex, int cred, int cgrn, int cblu) {

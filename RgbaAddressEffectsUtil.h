@@ -1,6 +1,5 @@
 #pragma once
 
-#include "RgbaAddressConfig.h"
 #include "RgbaAddressUtil.h"
 
 int idex = 0;             //-LED INDEX (0 to LED_COUNT-1

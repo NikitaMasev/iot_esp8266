@@ -1,7 +1,6 @@
 #pragma once
 
 #include "WString.h"
-#include "CryptoAesUtil.h"
 #include "Network.h"
 #include "Config.h"
 #include "DataConstruct.h"
@@ -24,8 +23,7 @@
 #include "TempDetector.h"
 #endif
 
-CryptoAesUtil cryptoAes;
-
+///TODO - need extracting to single class or not???
 void loopDataPusher() {
   //if (!iotServerConnected) return;
 

@@ -1,15 +1,14 @@
-#pragma once
-
-#include <Adafruit_INA219.h>
+#include "VoltCurController.h"
 
 #define SAMPLES_VOLT_CUR 10
 
-Adafruit_INA219 ina219;
+VoltCurController::VoltCurController() {
+  if (!ina219.begin()) {
+    Serial.println("Failed to find INA219 chip");
+  }
+}
 
-float currentDC;
-float voltageDC;
-
-void updateVoltageAndCurrent() {
+VoltCurController::updateVoltageAndCurrent() {
   float current_mA = 0.0;
   float loadvoltage = 0.0;
 
@@ -23,12 +22,6 @@ void updateVoltageAndCurrent() {
   voltageDC = loadvoltage / SAMPLES_VOLT_CUR;
 }
 
-void setupVoltageCurrentSensor() {
-  if (!ina219.begin()) {
-    Serial.println("Failed to find INA219 chip");
-  }
-}
-
-void loopVoltCur() {
+VoltCurController::tick() {
   updateVoltageAndCurrent();
 }
