@@ -1,4 +1,4 @@
-#include "VoltCurController.h"
+#include "VoltCurControl.h"
 
 #define SAMPLES_VOLT_CUR 10
 
