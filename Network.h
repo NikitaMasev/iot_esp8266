@@ -12,16 +12,26 @@ class Network {
 private:
   ESP8266WiFiMulti WiFiMulti;
   WebsocketsClient client;
+
   String ssid;
   String pass;
   String serverAddress;
-public:
+
   bool iotServerConnected = false;
   long lastTimeRetryConnection = 0;
 
+  String (*onConnected)();
+  String (*onMessage)(String data);
+
+  void onMessageCallback(WebsocketsMessage message);
+  void onEventsCallback(WebsocketsEvent event, String data);
+public:
   Network(String ssid, String pass, String serverAddress);
+
+  long getTimeRetryConnection();
+  bool getConnectedState();
   
-  void setup(const MessageCallback onMessageCallback, const EventCallback onEventsCallback);
+  void setup(String (*onConnected)(), String (*onMessage)(String data));
   void tick();
   void reconnect();
   void send(String data);

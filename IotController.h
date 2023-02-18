@@ -27,6 +27,16 @@
 
 const char *empty = "";
 
+class IotController {
+private:
+  IotModel iotModel;
+public:
+  IotController(IotModel iotModel);
+  void setup();
+  void tick();
+};
+
+///setupHardware
 void setupIotController() {
   setupPersistent();
   setupTasker();
