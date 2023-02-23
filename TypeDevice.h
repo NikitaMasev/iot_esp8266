@@ -23,7 +23,19 @@ enum TypeControl {
   unknown_c,
 };
 
-TypeDevice currentTypeDevice = unknown;
+#if defined(TYPE_DEVICE_UPS)
+const TypeDevice currentTypeDevice = ups;
+#elif defined(TYPE_DEVICE_LAMP)
+const TypeDevice currentTypeDevice = lamp;
+#elif defined(TYPE_DEVICE_RGBA)
+const TypeDevice currentTypeDevice = rgba;
+#elif defined(TYPE_DEVICE_RGBA_ADDRESS)
+const TypeDevice currentTypeDevice = rgbaAddress;
+#elif defined(TYPE_DEVICE_TEMP_SENSOR)
+const TypeDevice currentTypeDevice = tempSensor;
+#elif
+const TypeDevice currentTypeDevice = unknown;
+#endif
 
 const static struct {
   TypeDevice val;
@@ -62,7 +74,7 @@ const static struct {
   { unknown, {} },
 };
 
-TypeDevice stringToTypeDevice(const char *str) {
+inline TypeDevice stringToTypeDevice(const char *str) {
   for (int j = 0; j < sizeof(typeDeviceToStr) / sizeof(typeDeviceToStr[0]); ++j) {
     if (!strcmp(typeDeviceToStr[j].str, str)) {
       return typeDeviceToStr[j].val;
@@ -71,7 +83,7 @@ TypeDevice stringToTypeDevice(const char *str) {
   return unknown;
 }
 
-String typeDeviceToString(TypeDevice typeDevice) {
+inline String typeDeviceToString(TypeDevice typeDevice) {
   for (int j = 0; j < sizeof(typeDeviceToStr) / sizeof(typeDeviceToStr[0]); ++j) {
     if (typeDevice == typeDeviceToStr[j].val) {
       return typeDeviceToStr[j].str;
@@ -80,7 +92,7 @@ String typeDeviceToString(TypeDevice typeDevice) {
   return typeDeviceToStr[unknown].str;
 }
 
-TypeControl stringToTypeControl(const char *str) {
+inline TypeControl stringToTypeControl(const char *str) {
   for (int j = 0; j < sizeof(typeControlToStr) / sizeof(typeControlToStr[0]); ++j) {
     if (!strcmp(typeControlToStr[j].str, str)) {
       return typeControlToStr[j].val;
@@ -89,7 +101,7 @@ TypeControl stringToTypeControl(const char *str) {
   return unknown_c;
 }
 
-String typeControlToString(TypeControl typeControl) {
+inline String typeControlToString(TypeControl typeControl) {
   for (int j = 0; j < sizeof(typeControlToStr) / sizeof(typeControlToStr[0]); ++j) {
     if (typeControl == typeControlToStr[j].val) {
       return typeControlToStr[j].str;
@@ -98,7 +110,7 @@ String typeControlToString(TypeControl typeControl) {
   return typeControlToStr[unknown_c].str;
 }
 
-bool allowedTypeControl(TypeControl typeControl) {
+inline bool allowedTypeControl(TypeControl typeControl) {
   for (int i = 0; i < sizeof(typeDeviceToTypeControl) / sizeof(typeDeviceToTypeControl[0]); i++) {
     if (typeDeviceToTypeControl[i].typeDevice == currentTypeDevice) {
       for (int j = 0; j < sizeof(typeDeviceToTypeControl[i].typeControl) / sizeof(typeDeviceToTypeControl[i].typeControl[0]); j++) {

@@ -2,13 +2,14 @@
 
 #include "WString.h"
 #include "DataStruct.h"
+#include "AuthDataConstruct.h"
+#include "ModelDataConstruct.h"
 
-class DataConstruct {
+class DataConstruct: public AuthDataConstruct, public ModelDataConstruct {
 public:
   String constructRegister(String typeDevice);
   String constructAuth(int idDevice, String typeDevice);
-  ParsedHeaderPayload parseTextData(String data);
-  LedConfigData parseLedConfig(String data);
+
   String constructUpsData(
     float tempUps,
     float tempAcc,

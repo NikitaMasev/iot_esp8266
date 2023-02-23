@@ -1,22 +1,20 @@
-#include "RgbaControl"
+#include "RgbaControl.h"
 
-RgbaControl::RgbaControl() {
-  LedConfigData savedLedConfigData = getSavedLedConfigData();
-  if (savedLedConfigData.h != -1) {
-    ledConfigData = savedLedConfigData;
-  }
-  ledControl.setCRT(true);
-  ledConfigApplyControl();
+LedConfigData RgbaControl::getLedConfig() {
+  return ledConfigData;
 }
 
-RgbaControl::ledConfigApplyControl() {
+RgbaControl::RgbaControl() {
+  ledControl.setCRT(true);
+}
+
+void RgbaControl::ledConfigApplyControl() {
   ledControl.setPower(ledConfigData.powerOn);
   ledControl.setBrightness(ledConfigData.v);
   ledControl.setHSV(ledConfigData.h, ledConfigData.s, ledConfigData.v);
 }
 
-RgbaControl::updateLedConfig(LedConfigData newConfigData) {
+void RgbaControl::updateLedConfig(LedConfigData newConfigData) {
   ledConfigData = newConfigData;
-  saveLedConfigData(ledConfigData);
   ledConfigApplyControl();
 }

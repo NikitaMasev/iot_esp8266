@@ -7,7 +7,7 @@ class RgbaControl {
 private:
   // указать тип драйвера COMMON_CATHODE/COMMON_ANODE
   // и пины в порядке R,G,B
-  GRGB ledControl(COMMON_CATHODE, 9, 10, 11);
+  GRGB ledControl={COMMON_CATHODE, 9, 10, 11};
   LedConfigData ledConfigData = {
     h: 59,
     s: 255,
@@ -19,4 +19,5 @@ private:
 public:
   RgbaControl();
   void updateLedConfig(LedConfigData newConfigData);
+  LedConfigData getLedConfig();
 };

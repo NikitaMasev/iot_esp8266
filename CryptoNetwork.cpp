@@ -1,52 +1,49 @@
 #include "CryptoNetwork.h"
 
-CryptoNetwork::CryptoNetwork(Network network, CryptoAesUtil cryptoAesUtil) {
-  this->network = network;
-  this->cryptoAesUtil = cryptoAesUtil;
-}
+const String empty = "";
 
-CryptoNetwork::getConnectedState() {
+bool CryptoNetwork::getConnectedState() {
   return network.getConnectedState();
 }
 
-CryptoNetwork::getTimeRetryConnection() {
+long CryptoNetwork::getTimeRetryConnection() {
   return network.getTimeRetryConnection();
 }
 
-CryptoNetwork::setup(String (*onConnected)(), String (*onMessage)(String)) {
-  this->onConnected = onConnected;
-  this->onMessage = onMessage;
-  network.setup(onConnectedProxy, onMessageProxy);
+void CryptoNetwork::setup(CallbackConnected callbackConnected, CallbackMessage callbackMessage) {
+  network.setup([callbackConnected, this] {
+    String dataForService = callbackConnected();
+
+    if (!dataForService.isEmpty()) {
+      String encr = cryptoAesUtil.encrypt(dataForService);
+      return encr;
+    } else {
+      return empty;
+    }
+  },
+                [callbackMessage, this](String data) {
+                  if (data.isEmpty()) return empty;
+
+                  String dataForService = callbackMessage(cryptoAesUtil.decrypt(data));
+
+                  if (!dataForService.isEmpty()) {
+                    String encr = cryptoAesUtil.encrypt(dataForService);
+                    return encr;
+                  } else {
+                    return empty;
+                  }
+                });
 }
 
-CryptoNetwork::onMessageProxy(String data) {
-  if (data.isEmpty()) return;
-
-  String dataForService = (*onMessage)(cryptoAesUtil.decrypt(data));
-
-  if (!dataForService.isEmpty()) {
-    String encr = cryptoAesUtil.encrypt(dataForService);
-    network.send(encr);
-  }
-}
-
-CryptoNetwork::onConnectedProxy() {
-  String dataForService = (*onConnected)();
-
-  if (!dataForService.isEmpty()) {
-    String encr = cryptoAesUtil.encrypt(dataForService);
-    network.send(encr);
-  }
-}
-
-CryptoNetwork::tick() {
+void CryptoNetwork::tick() {
   network.tick();
 }
 
-CryptoNetwork::reconnect() {
+void CryptoNetwork::reconnect() {
   network.reconnect();
 }
 
-CryptoNetwork::send(String data) {
-  network.send(data);
+void CryptoNetwork::send(String data) {
+  String encr = cryptoAesUtil.encrypt(data);
+  network.send(encr);
 }

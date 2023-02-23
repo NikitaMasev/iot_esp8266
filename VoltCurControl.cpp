@@ -8,7 +8,7 @@ VoltCurController::VoltCurController() {
   }
 }
 
-VoltCurController::updateVoltageAndCurrent() {
+void VoltCurController::updateVoltageAndCurrent() {
   float current_mA = 0.0;
   float loadvoltage = 0.0;
 
@@ -22,6 +22,6 @@ VoltCurController::updateVoltageAndCurrent() {
   voltageDC = loadvoltage / SAMPLES_VOLT_CUR;
 }
 
-VoltCurController::tick() {
+void VoltCurController::tick() {
   updateVoltageAndCurrent();
 }

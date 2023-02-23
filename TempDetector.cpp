@@ -3,7 +3,7 @@
 #define TEMP_NOT_UPDATED -8000L
 #define TIME_UPDATE_TEMP 750
 
-TempDetector::detectTemperature(OneWire *wireTemp, long *lastTimeUpdateTemp, bool *cmdWireTemp) {
+float TempDetector::detectTemperature(OneWire *wireTemp, long *lastTimeUpdateTemp, bool *cmdWireTemp) {
   float temp = TEMP_NOT_UPDATED;
   byte data[2];
 
@@ -31,7 +31,7 @@ TempDetector::detectTemperature(OneWire *wireTemp, long *lastTimeUpdateTemp, boo
   return temp;  
 }
 
-TempDetector::tick() {
+void TempDetector::tick() {
   for (int i = 0; i < TEMP_SENSOR_COUNT; i++) {
     float temp = detectTemperature(&wireTemps[i], &lastTimesUpdateTemps[i], &cmdWireTemps[i]);
     if (temp != TEMP_NOT_UPDATED) {

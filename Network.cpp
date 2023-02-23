@@ -1,69 +1,62 @@
 #include "Network.h"
 
-Network::Network(String ssid, String pass, String serverAddress) {
-  this->ssid = ssid;
-  this->pass = pass;
-  this->serverAddress = serverAddress;
-  init();
-}
-
-Network::getConnectedState() {
+bool Network::getConnectedState() {
   return iotServerConnected;
 }
 
-Network::getTimeRetryConnection() {
+long Network::getTimeRetryConnection() {
   return lastTimeRetryConnection;
 }
 
-Network::setup(String (*onConnected)(), String (*onMessage)(String data)) {
-  this->onConnected = onConnected;
-  this->onMessage = onMessage;
+void Network::setup(CallbackConnected callbackConnected, CallbackMessage callbackMessage) {
+  // client.onMessage([callbackMessage, this](WebsocketsMessage message) {
+  //   String dataForService = callbackMessage(message.data());
 
-  WiFiMulti.addAP(ssid, password);
+  //   if (!dataForService.isEmpty()) {
+  //     client.send(dataForService);
+  //   }
+  // });
 
-  while (WiFiMulti.run() != WL_CONNECTED) {
-    Serial.println("Try connecting to WIFI");
-    delay(1000);
-  }
+  // client.onEvent([callbackConnected, this](WebsocketsEvent event, String data) {
+  //   if (event == WebsocketsEvent::ConnectionOpened) {
+  //     iotServerConnected = true;
+  //     String dataForService = callbackConnected();
 
-  client.onMessage(onMessageCallback);
-  client.onEvent(onEventsCallback);
-  client.connect(serverAddress);
+  //     if (!dataForService.isEmpty()) {
+  //       client.send(dataForService);
+  //     }
+  //   } else if (event == WebsocketsEvent::ConnectionClosed) {
+  //     iotServerConnected = false;
+  //   } else if (event == WebsocketsEvent::GotPing) {
+  //     client.pong();
+  //   } else if (event == WebsocketsEvent::GotPong) {
+  //     client.ping();
+  //   }
+  // });
+
+  // WiFiMulti.addAP(ssid.c_str(), pass.c_str());
+
+  // while (WiFiMulti.run() != WL_CONNECTED) {
+  //   Serial.println("Try connecting to WIFI");
+  //   delay(1000);
+  // }
+
+  // client.connect(serverAddress);
 }
 
-Network::onEventsCallback(WebsocketsEvent event, String data) {
-  if (event == WebsocketsEvent::ConnectionOpened) {
-    iotServerConnected = true;
-    String dataForService = (*onConnected)();
-    
-    if (!dataForService.isEmpty()) {
-      client.send(dataForService);
-    }
-  } else if (event == WebsocketsEvent::ConnectionClosed) {
-    iotServerConnected = false;
-  } else if (event == WebsocketsEvent::GotPing) {
-    client.pong();
-  } else if (event == WebsocketsEvent::GotPong) {
-    client.ping();
-  }
+void Network::tick() {
+  // if (iotServerConnected) {
+  //   client.poll();
+  // } else if (millis() - lastTimeRetryConnection > TIME_RETRY_CONNECTION) {
+  //   client.connect(serverAddress);
+  //   lastTimeRetryConnection = millis();
+  // }
 }
 
-Network::onMessageCallback(WebsocketsMessage message) {
-  String dataForService = (*onMessage)(message.data());
-
-  if (!dataForService.isEmpty()) {
-    client.send(dataForService);
-  }
+void Network::reconnect() {
+  //client.connect(serverAddress);
 }
 
-Network::tick() {
-  client.poll();
-}
-
-Network::reconnect() {
-  client.connect(serverAddress);
-}
-
-Network::send(String data) {
-  client.send(data);
+void Network::send(String data) {
+  //client.send(data);
 }

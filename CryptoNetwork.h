@@ -1,22 +1,19 @@
+#pragma once
+
 #include "CryptoAesUtil.h"
 #include "Network.h"
+#include "WString.h"
+#include "DataTypes.h"
 
 class CryptoNetwork {
 private:
   Network network;
   CryptoAesUtil cryptoAesUtil;
-
-  String (*onConnected)();
-  String (*onMessage)(String data);
-
-  String onMessageProxy(String data);
-  String onConnectedProxy();
-
 public:
-  CryptoNetwork(Network network, CryptoAesUtil cryptoAesUtil);
+  CryptoNetwork(Network network, CryptoAesUtil cryptoAesUtil) : network(network), cryptoAesUtil(cryptoAesUtil) {};
   long getTimeRetryConnection();
   bool getConnectedState();
-  void setup(String (*onConnected)(), String (*onMessage)(String data));
+  void setup(CallbackConnected callbackConnected, CallbackMessage callbackMessage);
   void tick();
   void reconnect();
   void send(String data);

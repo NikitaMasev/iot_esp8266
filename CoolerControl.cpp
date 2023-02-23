@@ -1,4 +1,5 @@
 #include "CoolerControl.h"
+#include "Arduino.h"
 
 #define PIN_PWM_COOLER 14
 
@@ -12,7 +13,7 @@ CoolerControl::CoolerControl() {
   pinMode(PIN_PWM_COOLER, OUTPUT);
 }
 
-CoolerControl::controlCooler(float tempAcc) {
+void CoolerControl::controlCooler(float tempAcc) {
   if (tempAcc >= (TEMP_HIGH_ACC + TEMP_HYSTERESIS_ACC)) {
     pwmCooler = HIGH_PWM_COOLER * 0.75;
   } else if (tempAcc >= TEMP_HIGH_ACC) {
@@ -29,6 +30,6 @@ CoolerControl::controlCooler(float tempAcc) {
   analogWrite(PIN_PWM_COOLER, pwmCooler);
 }
 
-CoolerControl::tick(float tempControl) {
+void CoolerControl::tick(float tempControl) {
   controlCooler(tempControl);
 }

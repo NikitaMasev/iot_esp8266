@@ -1,18 +1,21 @@
 #pragma once
 
 #include "WString.h"
-#include "DataStruct.h"
+#include "DataStruct.h" 
 #include <EEPROM.h>
+#include "AuthPersistent.h"
+#include "ModelPersistent.h"
 
-class Persistent {
+class Persistent: public AuthPersistent, public ModelPersistent {
 private:
   int getAddressForSavingSideData();
   void updateRegisteredState();
 public:
-  Persistent();
-  bool registered = false;
-  int idDevice;
-  void saveIdDevice(int newId);
+  void setup();
+  void saveId(int newId);
+  int getSavedId();
+  bool getRegistered();
+
   void savePowerControlState(bool newState);
   bool getSavedPowerControlState();
   void saveLedConfigData(LedConfigData ledConfigData);

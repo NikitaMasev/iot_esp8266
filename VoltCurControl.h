@@ -4,7 +4,7 @@
 
 class VoltCurController {
 private:
-  Adafruit_INA219 ina219;
+  Adafruit_INA219 ina219 = {};
   void updateVoltageAndCurrent();
 public:
   VoltCurController();

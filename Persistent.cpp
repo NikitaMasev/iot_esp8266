@@ -1,23 +1,24 @@
 #include "Persistent.h"
+#include "Arduino.h"
 
 #define SIZE_EEPROM 512
 
-Persistent::Persistent() {
+void Persistent::setup() {
   EEPROM.begin(SIZE_EEPROM);
   EEPROM.get(0, idDevice);
   EEPROM.end();
   updateRegisteredState();
   Serial.println("ID");
-  Serial.println(idDevice);
+  Serial.println(idDevice);  
 }
 
-Persistent::updateRegisteredState() {
+void Persistent::updateRegisteredState() {
   registered = idDevice != -1;
   Serial.println("registered");
   Serial.println(registered);
 }
 
-Persistent::saveIdDevice(int newId) {
+void Persistent::saveId(int newId) {
   idDevice = newId;
 
   EEPROM.begin(sizeof(idDevice));
@@ -28,20 +29,28 @@ Persistent::saveIdDevice(int newId) {
   updateRegisteredState();
 }
 
-Persistent::getAddressForSavingSideData() {
+bool Persistent::getRegistered() {
+  return registered;
+}
+
+int Persistent::getSavedId() {
+  return idDevice;
+}
+
+int Persistent::getAddressForSavingSideData() {
   int sizeIdDevice = sizeof(idDevice);
   sizeIdDevice++;
   return sizeIdDevice;
 }
 
-Persistent::savePowerControlState(bool newState) {
+void Persistent::savePowerControlState(bool newState) {
   EEPROM.begin(SIZE_EEPROM);
   EEPROM.put(getAddressForSavingSideData(), newState ? 1 : 0);
   EEPROM.commit();
   EEPROM.end();
 }
 
-Persistent::getSavedPowerControlState() {
+bool Persistent::getSavedPowerControlState() {
   int data = 0;
 
   EEPROM.begin(SIZE_EEPROM);
@@ -55,7 +64,7 @@ Persistent::getSavedPowerControlState() {
   return !(data == -1 || data == 0);
 }
 
-Persistent::saveLedConfigData(LedConfigData ledConfigData) {
+void Persistent::saveLedConfigData(LedConfigData ledConfigData) {
   int startAddress = getAddressForSavingSideData();
 
   int sizeH = sizeof(ledConfigData.h);
@@ -90,7 +99,7 @@ Persistent::saveLedConfigData(LedConfigData ledConfigData) {
   Serial.println(ledConfigData.powerOn);
 }
 
-Persistent::getSavedLedConfigData() {
+LedConfigData Persistent::getSavedLedConfigData() {
   LedConfigData ledConfigData;
   int powerOn = 0;
 

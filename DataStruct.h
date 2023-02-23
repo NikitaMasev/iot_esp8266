@@ -1,5 +1,7 @@
 #pragma once
 
+#include "WString.h"
+
 struct ParsedHeaderPayload {
   String header;
   String payload;
