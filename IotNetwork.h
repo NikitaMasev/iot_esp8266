@@ -7,12 +7,12 @@
 
 #define TIME_RETRY_CONNECTION 10000
 
-//using namespace websockets;
+using namespace websockets;
 
-class Network {
+class IotNetwork {
 private:
-  ESP8266WiFiMulti WiFiMulti = {};
-  //WebsocketsClient client = {};
+  ESP8266WiFiMulti WiFiMulti;
+  WebsocketsClient client;
 
   String ssid;
   String pass;
@@ -22,7 +22,7 @@ private:
   long lastTimeRetryConnection = 0;
 
 public:
-  Network(String ssid, String pass, String serverAddress)
+  IotNetwork(String ssid, String pass, String serverAddress)
     : ssid(ssid), pass(pass), serverAddress(serverAddress){};
 
   long getTimeRetryConnection();

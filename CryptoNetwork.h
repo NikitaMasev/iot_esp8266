@@ -1,16 +1,16 @@
 #pragma once
 
 #include "CryptoAesUtil.h"
-#include "Network.h"
+#include "IotNetwork.h"
 #include "WString.h"
 #include "DataTypes.h"
 
 class CryptoNetwork {
 private:
-  Network network;
+  IotNetwork iotNetwork;
   CryptoAesUtil cryptoAesUtil;
 public:
-  CryptoNetwork(Network network, CryptoAesUtil cryptoAesUtil) : network(network), cryptoAesUtil(cryptoAesUtil) {};
+  CryptoNetwork(IotNetwork iotNetwork, CryptoAesUtil cryptoAesUtil) : iotNetwork(iotNetwork), cryptoAesUtil(cryptoAesUtil) {};
   long getTimeRetryConnection();
   bool getConnectedState();
   void setup(CallbackConnected callbackConnected, CallbackMessage callbackMessage);
