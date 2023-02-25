@@ -21,7 +21,9 @@ void IotNetwork::setup(CallbackConnected callbackConnected, CallbackMessage call
   Serial.println("WIFI CONNECTED");
 
   client.onMessage([callbackMessage, this](WebsocketsMessage message) {
+    Serial.println("IotNetwork onMessage BEFORE callbackMessage");
     String dataForService = callbackMessage(message.data());
+    Serial.println("IotNetwork onMessage AFTER callbackMessage");
 
     if (!dataForService.isEmpty()) {
       client.send(dataForService);
@@ -30,20 +32,25 @@ void IotNetwork::setup(CallbackConnected callbackConnected, CallbackMessage call
 
   client.onEvent([callbackConnected, this](WebsocketsEvent event, String data) {
     if (event == WebsocketsEvent::ConnectionOpened) {
-      Serial.println("Network AFTER WebsocketsEvent::ConnectionOpened");
+      Serial.println("IotNetwork AFTER WebsocketsEvent::ConnectionOpened");
       iotServerConnected = true;
       String dataForService = callbackConnected();
+      Serial.println("IotNetwork AFTER callbackConnected");
+      Serial.println(dataForService);
+
       if (!dataForService.isEmpty()) {
+        Serial.println("IotNetwork BEFORE client.send");
         client.send(dataForService);
+        Serial.println("IotNetwork AFTER client.send");
       }
     } else if (event == WebsocketsEvent::ConnectionClosed) {
-      Serial.println("Network WebsocketsEvent::ConnectionClosed");
+      Serial.println("IotNetwork WebsocketsEvent::ConnectionClosed");
       iotServerConnected = false;
     } else if (event == WebsocketsEvent::GotPing) {
-      Serial.println("Network WebsocketsEvent::GotPing");
+      Serial.println("IotNetwork WebsocketsEvent::GotPing");
       client.pong();
     } else if (event == WebsocketsEvent::GotPong) {
-      Serial.println("Network WebsocketsEvent::GotPong");
+      Serial.println("IotNetwork WebsocketsEvent::GotPong");
       client.ping();
     }
   });

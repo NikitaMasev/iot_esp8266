@@ -2,16 +2,21 @@
 
 #include "WString.h"
 #include "DataStruct.h"
+#include "DataConstruct.h"
 
 class ModelDataConstruct {
+private:
+  DataConstruct *dataConstruct;
 public:
-  virtual String constructUpsData(
+  ModelDataConstruct(DataConstruct *dataConstruct)
+    : dataConstruct(dataConstruct){};
+  String constructUpsData(
     float tempUps,
     float tempAcc,
     int pwmCooler,
     float currentDC,
-    float voltageDC) = 0;
-  virtual String constructLedConfigData(LedConfigData ledConfigData) = 0;
-  virtual String constructSwitchData(bool powerState) = 0;
-  virtual String constructTempsData(float temps[], int length) = 0;
+    float voltageDC);
+  String constructLedConfigData(LedConfigData ledConfigData);
+  String constructSwitchData(bool powerState);
+  String constructTempsData(float temps[], int length);
 };

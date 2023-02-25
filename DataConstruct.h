@@ -2,10 +2,8 @@
 
 #include "WString.h"
 #include "DataStruct.h"
-#include "AuthDataConstruct.h"
-#include "ModelDataConstruct.h"
 
-class DataConstruct: public AuthDataConstruct, public ModelDataConstruct {
+class DataConstruct {
 public:
   String constructRegister(String typeDevice);
   String constructAuth(int idDevice, String typeDevice);

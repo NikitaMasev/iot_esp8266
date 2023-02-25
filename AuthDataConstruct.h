@@ -1,10 +1,14 @@
 #pragma once
 
 #include "WString.h"
-#include "DataStruct.h"
+#include "DataConstruct.h"
 
 class AuthDataConstruct {
+private:
+  DataConstruct *dataConstruct;
 public:
-  virtual String constructRegister(String typeDevice) = 0;
-  virtual String constructAuth(int idDevice, String typeDevice) = 0;
+  AuthDataConstruct(DataConstruct *dataConstruct)
+    : dataConstruct(dataConstruct){};
+  String constructRegister(String typeDevice);
+  String constructAuth(int idDevice, String typeDevice);
 };

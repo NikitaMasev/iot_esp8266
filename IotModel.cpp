@@ -1,26 +1,38 @@
+#include "DataTypes.h"
+#include "HardwareSerial.h"
 #include "IotModel.h"
 #include "TypeDevice.h"
+#include "Arduino.h"
 
 void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callbackMessage) {
+  Serial.println("IotModel::setup");
   tasker.runMainTasks(
     [this]() {
+      Serial.println("IotModel::setup inside tasker.runMainTasks cryptoNetwork.tick()");
       this->cryptoNetwork.tick();
     },
     [this]() {
+      Serial.println("IotModel::setup inside tasker.runMainTasks tickDataPusher()");
       this->tickDataPusher();
     });
+  Serial.println("IotModel::setup AFTER tasker.runMainTasks");
 #if defined(TYPE_DEVICE_UPS)
   updatePower((*persistent).getSavedPowerControlState());
+  Serial.println("IotModel::setup TYPE_DEVICE_UPS AFTER updatePower((*persistent).getSavedPowerControlState())");
   tasker.runUpsTasks(
     [this]() {
+      Serial.println("IotModel::setup inside tasker.runUpsTasks coolerControl.tick");
       this->coolerControl.tick(this->tempDetector.temps[0]);
     },
     [this]() {
+      Serial.println("IotModel::setup inside tasker.runUpsTasks tempDetector.tick");
       this->tempDetector.tick();
     },
     [this]() {
+      Serial.println("IotModel::setup inside tasker.runUpsTasks voltCurController.tick");
       this->voltCurController.tick();
     });
+  Serial.println("IotModel::setup TYPE_DEVICE_UPS AFTER  tasker.runUpsTasks");
 #elif defined(TYPE_DEVICE_LAMP)
 #elif defined(TYPE_DEVICE_RGBA)
   updateLedConfig((*persistent).getSavedLedConfigData());
@@ -36,6 +48,7 @@ void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callba
       this->tempDetector.tick();
     });
 #endif
+  Serial.println("IotModel::setup BEFORE cryptoNetwork.setup");
   cryptoNetwork.setup(callbackConnected, callbackMessage);
 }
 
@@ -55,6 +68,7 @@ void IotModel::updateLedConfig(LedConfigData parsedLedConfig) {
 }
 
 void IotModel::tickDataPusher() {
+  Serial.println("IotModel::tickDataPusher");
   if (!cryptoNetwork.getConnectedState()) return;
 
   String dataForService = "";
@@ -63,7 +77,9 @@ void IotModel::tickDataPusher() {
   dataForService = (*dataConstruct).constructSwitchData(powerControl.getPowerState());
 #endif
 #if defined(TYPE_DEVICE_UPS)
+  Serial.println("IotModel::tickDataPusher TYPE_DEVICE_UPS");
   dataForService = (*dataConstruct).constructUpsData(tempDetector.temps[0], tempDetector.temps[1], coolerControl.pwmCooler, voltCurController.currentDC, voltCurController.voltageDC);
+  Serial.println("IotModel::tickDataPusher AFTER TYPE_DEVICE_UPS");
 #endif
 #if defined(TYPE_DEVICE_RGBA)
   dataForService = (*dataConstruct).constructLedConfigData(rgbaControl.getLedConfig());

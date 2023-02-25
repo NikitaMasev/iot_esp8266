@@ -1,11 +1,13 @@
 #include "IotController.h"
 #include "DataStruct.h"
 #include "TypeDevice.h"
+#include "Arduino.h"
 
 void IotController::setup() {
   (*persistent).setup();
   iotModel.setup(
     [this]() {
+      Serial.println("IotController::setup ONCONNECTED BEFORE (*persistent).getRegistered()");
       if ((*persistent).getRegistered()) {
         return (*dataConstruct).constructAuth((*persistent).getSavedId(), typeDeviceToString(currentTypeDevice));
       } else {
@@ -13,7 +15,9 @@ void IotController::setup() {
       }
     },
     [this](String data) {
+      Serial.println("IotController::setup ONMESSAGE BEFORE dataParser.parseTextData(data)");
       ParsedHeaderPayload headerPayload = dataParser.parseTextData(data);
+      Serial.println("IotController::setup ONMESSAGE AFTER dataParser.parseTextData(data)");
 
       if (headerPayload.header.isEmpty()) {
         return empty;
@@ -24,7 +28,8 @@ void IotController::setup() {
       if (typeControl == unknown_c || !allowedTypeControl(typeControl)) {
         return empty;
       }
-
+      Serial.println("IotController::setup ONMESSAGE typeControl");
+      Serial.println(typeControl);
       switch (typeControl) {
         case register_c:
           return handleRegister(headerPayload.payload);

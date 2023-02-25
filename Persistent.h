@@ -1,13 +1,14 @@
 #pragma once
 
 #include "WString.h"
-#include "DataStruct.h" 
+#include "DataStruct.h"
 #include <EEPROM.h>
-#include "AuthPersistent.h"
-#include "ModelPersistent.h"
 
-class Persistent: public AuthPersistent, public ModelPersistent {
+class Persistent {
 private:
+  bool registered = false;
+  int idDevice;
+
   int getAddressForSavingSideData();
   void updateRegisteredState();
 public:

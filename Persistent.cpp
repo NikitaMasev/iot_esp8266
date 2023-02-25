@@ -1,5 +1,5 @@
 #include "Persistent.h"
-#include "Arduino.h"
+//#include "Arduino.h"
 
 #define SIZE_EEPROM 512
 
@@ -8,14 +8,14 @@ void Persistent::setup() {
   EEPROM.get(0, idDevice);
   EEPROM.end();
   updateRegisteredState();
-  Serial.println("ID");
-  Serial.println(idDevice);  
+  // Serial.println("ID");
+  // Serial.println(idDevice);  
 }
 
 void Persistent::updateRegisteredState() {
   registered = idDevice != -1;
-  Serial.println("registered");
-  Serial.println(registered);
+  // Serial.println("registered");
+  // Serial.println(registered);
 }
 
 void Persistent::saveId(int newId) {
@@ -57,9 +57,9 @@ bool Persistent::getSavedPowerControlState() {
   EEPROM.get(getAddressForSavingSideData(), data);
   EEPROM.end();
 
-  Serial.println("getSavedPowerControlState");
-  Serial.println(data);
-  Serial.println(!(data == -1 || data == 0));
+  // Serial.println("getSavedPowerControlState");
+  // Serial.println(data);
+  // Serial.println(!(data == -1 || data == 0));
 
   return !(data == -1 || data == 0);
 }
@@ -86,17 +86,17 @@ void Persistent::saveLedConfigData(LedConfigData ledConfigData) {
   EEPROM.end();
 
 
-  Serial.println("saveLedConfigData");
-  Serial.println("ledConfigData.h");
-  Serial.println(ledConfigData.h);
-  Serial.println("ledConfigData.s");
-  Serial.println(ledConfigData.s);
-  Serial.println("ledConfigData.v");
-  Serial.println(ledConfigData.v);
-  Serial.println("ledConfigData.mode");
-  Serial.println(ledConfigData.mode);
-  Serial.println("ledConfigData.powerOn");
-  Serial.println(ledConfigData.powerOn);
+  // Serial.println("saveLedConfigData");
+  // Serial.println("ledConfigData.h");
+  // Serial.println(ledConfigData.h);
+  // Serial.println("ledConfigData.s");
+  // Serial.println(ledConfigData.s);
+  // Serial.println("ledConfigData.v");
+  // Serial.println(ledConfigData.v);
+  // Serial.println("ledConfigData.mode");
+  // Serial.println(ledConfigData.mode);
+  // Serial.println("ledConfigData.powerOn");
+  // Serial.println(ledConfigData.powerOn);
 }
 
 LedConfigData Persistent::getSavedLedConfigData() {
@@ -124,17 +124,17 @@ LedConfigData Persistent::getSavedLedConfigData() {
 
   ledConfigData.powerOn = powerOn == 1;
 
-  Serial.println("getSavedLedConfigData");
-  Serial.println("ledConfigData.h");
-  Serial.println(ledConfigData.h);
-  Serial.println("ledConfigData.s");
-  Serial.println(ledConfigData.s);
-  Serial.println("ledConfigData.v");
-  Serial.println(ledConfigData.v);
-  Serial.println("ledConfigData.mode");
-  Serial.println(ledConfigData.mode);
-  Serial.println("ledConfigData.powerOn");
-  Serial.println(ledConfigData.powerOn);
+  // Serial.println("getSavedLedConfigData");
+  // Serial.println("ledConfigData.h");
+  // Serial.println(ledConfigData.h);
+  // Serial.println("ledConfigData.s");
+  // Serial.println(ledConfigData.s);
+  // Serial.println("ledConfigData.v");
+  // Serial.println(ledConfigData.v);
+  // Serial.println("ledConfigData.mode");
+  // Serial.println(ledConfigData.mode);
+  // Serial.println("ledConfigData.powerOn");
+  // Serial.println(ledConfigData.powerOn);
 
   return ledConfigData;
 }

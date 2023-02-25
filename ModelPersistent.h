@@ -1,11 +1,17 @@
 #pragma once
 
 #include "DataStruct.h"
+#include "Persistent.h"
 
 class ModelPersistent {
+private:
+  Persistent *persistent;
 public:
-  virtual void savePowerControlState(bool newState) = 0;
-  virtual bool getSavedPowerControlState() = 0;
-  virtual void saveLedConfigData(LedConfigData ledConfigData) = 0;
-  virtual LedConfigData getSavedLedConfigData() = 0;
+  ModelPersistent(Persistent *persistent)
+    : persistent(persistent){};
+
+  void savePowerControlState(bool newState);
+  bool getSavedPowerControlState();
+  void saveLedConfigData(LedConfigData ledConfigData);
+  LedConfigData getSavedLedConfigData();
 };

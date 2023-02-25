@@ -1,7 +1,4 @@
-#include "Arduino.h"
 #include "CryptoNetwork.h"
-
-const String empty = "";
 
 bool CryptoNetwork::getConnectedState() {
   return iotNetwork.getConnectedState();
@@ -12,30 +9,29 @@ long CryptoNetwork::getTimeRetryConnection() {
 }
 
 void CryptoNetwork::setup(CallbackConnected callbackConnected, CallbackMessage callbackMessage) {
-  iotNetwork.setup([callbackConnected, this] {
-    String dataForService = callbackConnected();
-    Serial.println("CryptoNetwork AFTER CALLBACK CONNECTED");
-    if (!dataForService.isEmpty()) {
-      String encr = cryptoAesUtil.encrypt(dataForService);
-      Serial.println("CryptoNetwork AFTER ENCRYPTED");
-      return encr;
-    } else {
-      Serial.println("CryptoNetwork BEFORE RETURN EMPTY ");
-      return empty;
-    }
-  },
-                [callbackMessage, this](String data) {
-                  if (data.isEmpty()) return empty;
+  iotNetwork.setup(
+    [callbackConnected, this] {
+      String dataForService = callbackConnected();
 
-                  String dataForService = callbackMessage(cryptoAesUtil.decrypt(data));
+      if (!dataForService.isEmpty()) {
+        String encr = cryptoAesUtil.encrypt(dataForService);
+        return encr;
+      } else {
+        return empty;
+      }
+    },
+    [callbackMessage, this](String data) {
+      if (data.isEmpty()) return empty;
 
-                  if (!dataForService.isEmpty()) {
-                    String encr = cryptoAesUtil.encrypt(dataForService);
-                    return encr;
-                  } else {
-                    return empty;
-                  }
-                });
+      String dataForService = callbackMessage(cryptoAesUtil.decrypt(data));
+
+      if (!dataForService.isEmpty()) {
+        String encr = cryptoAesUtil.encrypt(dataForService);
+        return encr;
+      } else {
+        return empty;
+      }
+    });
 }
 
 void CryptoNetwork::tick() {

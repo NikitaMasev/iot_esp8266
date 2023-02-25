@@ -1,12 +1,14 @@
 #pragma once
 
+#include "Persistent.h"
+
 class AuthPersistent {
-protected:
-  bool registered = false;
-  int idDevice;
+private:
+  Persistent *persistent;
 public:
-  virtual void setup() = 0;
-  virtual void saveId(int newId) = 0;
-  virtual int getSavedId() = 0;
-  virtual bool getRegistered() = 0;
+  AuthPersistent(Persistent *persistent) : persistent(persistent) {};
+  void setup();
+  void saveId(int newId);
+  int getSavedId();
+  bool getRegistered();
 };

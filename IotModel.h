@@ -45,8 +45,8 @@ private:
   TempDetector tempDetector = {};
 #endif
 public:
-  IotModel(CryptoNetwork cryptoNetwork, ModelDataConstruct *dataConstruct, ModelPersistent *persistent, Tasker tasker)
-    : cryptoNetwork(cryptoNetwork), dataConstruct(dataConstruct), persistent(persistent), tasker(tasker){};
+  IotModel(CryptoNetwork cryptoNetwork, ModelPersistent *persistent, Tasker tasker, ModelDataConstruct *dataConstruct)
+    : cryptoNetwork(cryptoNetwork), persistent(persistent), tasker(tasker), dataConstruct(dataConstruct){};
   void setup(CallbackConnected callbackConnected, CallbackMessage callbackMessage);
   void tick();
   void updatePower(bool controlOn);
