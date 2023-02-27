@@ -6,6 +6,4 @@
 //#define FASTLED_ESP8266_RAW_PIN_ORDER
 
 #include <FastLED.h>
-
-#define LED_DT 14      // пин, куда подключен DIN ленты
-#define LED_COUNT 100  // число светодиодов в кольце/ленте
+#include "Config.h"

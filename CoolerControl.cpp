@@ -1,13 +1,6 @@
 #include "CoolerControl.h"
 #include "Arduino.h"
-
-#define PIN_PWM_COOLER 14
-
-#define TEMP_HIGH_UPS 58.0f    //C
-#define TEMP_HIGH_ACC 35.0f    //C
-#define TEMP_HYSTERESIS_ACC 5  //C
-#define LOW_PWM_COOLER 65
-#define HIGH_PWM_COOLER 255
+#include "Config.h"
 
 CoolerControl::CoolerControl() {
   pinMode(PIN_PWM_COOLER, OUTPUT);

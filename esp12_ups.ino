@@ -24,12 +24,12 @@ IotModel *iotModel;
 void setup() {
   Serial.begin(SERIAL_COMMUNICATION_SPEED);
 
-  CryptoAesUtil cryptoAesUtil(cipher_key, cipher_iv);
-  IotNetwork iotNetwork(ssid, password, iotServer);
-  CryptoNetwork cryptoNetwork(iotNetwork, cryptoAesUtil);
+  CryptoAesUtil cryptoAesUtil(cipher_key, cipher_iv);//-
+  IotNetwork iotNetwork(ssid, password, iotServer);//-
+  CryptoNetwork cryptoNetwork(iotNetwork, cryptoAesUtil);//-
 
   DataConstruct dataConstruct;
-  ModelDataConstruct modelDataConstruct(&dataConstruct);
+  ModelDataConstruct modelDataConstruct(&dataConstruct);//+
   AuthDataConstruct authDataConstruct(&dataConstruct);
 
   Persistent persistent;
@@ -37,12 +37,12 @@ void setup() {
   ModelPersistent modelPersistent(&persistent);
 
   DataParser dataParser;
-  Tasker tasker;
+  Tasker tasker; //-
 
-  // IotModel iotModel(cryptoNetwork, modelPersistent, tasker, modelDataConstruct);
+  // IotModel iotModel(cryptoNetwork, modelPersistent, tasker, &modelDataConstruct);
   // iotController = new IotController(iotModel, authPersistent, dataParser, authDataConstruct);
   // (*iotController).setup();
-  iotModel = new IotModel(cryptoNetwork, modelPersistent, tasker, modelDataConstruct);
+  iotModel = new IotModel(cryptoNetwork, modelPersistent, tasker, &modelDataConstruct);
   persistent.setup();
   (*iotModel).setup(
     [&authDataConstruct, &authPersistent]() {

@@ -1,8 +1,5 @@
 #include "TempDetector.h"
 
-#define TEMP_NOT_UPDATED -8000L
-#define TIME_UPDATE_TEMP 750
-
 float TempDetector::detectTemperature(OneWire *wireTemp, long *lastTimeUpdateTemp, bool *cmdWireTemp) {
   float temp = TEMP_NOT_UPDATED;
   byte data[2];

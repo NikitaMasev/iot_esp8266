@@ -1,8 +1,7 @@
 #pragma once
 
 #include "Arduino.h"
-
-#define PIN_POWER_CONTROL 14
+#include "Config.h"
 
 class PowerControl {
 private:

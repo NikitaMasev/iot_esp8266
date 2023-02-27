@@ -6,13 +6,16 @@
 
 void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callbackMessage) {
   Serial.println("IotModel::setup");
+  
+  CryptoNetwork *cryptoNetworkVar = &this->cryptoNetwork;
+
   tasker.runMainTasks(
-    [this]() {
+    [cryptoNetworkVar]() {
       Serial.println("IotModel::setup inside tasker.runMainTasks cryptoNetwork.tick()");
-      this->cryptoNetwork.tick();
+      //this->cryptoNetwork.tick();
+      cryptoNetworkVar->tick();
     },
     [this]() {
-      Serial.println("IotModel::setup inside tasker.runMainTasks tickDataPusher()");
       this->tickDataPusher();
     });
   Serial.println("IotModel::setup AFTER tasker.runMainTasks");
@@ -33,11 +36,11 @@ void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callba
     });
   Serial.println("IotModel::setup TYPE_DEVICE_UPS AFTER  tasker.runUpsTasks");
 #elif defined(TYPE_DEVICE_LAMP)
-  updatePower(persistent.getSavedPowerControlState());  
+  updatePower(persistent.getSavedPowerControlState());
 #elif defined(TYPE_DEVICE_RGBA)
   updateLedConfig(persistent.getSavedLedConfigData());
 #elif defined(TYPE_DEVICE_RGBA_ADDRESS)
-  updateLedConfig(persistent.getSavedLedConfigData());
+  updateLedConfig(persistent, getSavedLedConfigData());
   tasker.runRgbaAddressTask(
     [this]() {
       this->rgbaAddressControl.tick();
@@ -69,30 +72,31 @@ void IotModel::updateLedConfig(LedConfigData parsedLedConfig) {
 }
 
 void IotModel::tickDataPusher() {
-  Serial.println("IotModel::tickDataPusher");
-  if (!cryptoNetwork.getConnectedState()) return;
+    Serial.println("IotModel::tickDataPusher");
+    if (!cryptoNetwork.getConnectedState()) return;
 
-  String dataForService = "";
+    String dataForService = "";
 
-#if defined(TYPE_DEVICE_LAMP)
-  dataForService = dataConstruct.constructSwitchData(powerControl.getPowerState());
-#endif
-#if defined(TYPE_DEVICE_UPS)
-  dataForService = dataConstruct.constructUpsData(tempDetector.temps[0], tempDetector.temps[1], coolerControl.pwmCooler, voltCurController.currentDC, voltCurController.voltageDC);
-#endif
-#if defined(TYPE_DEVICE_RGBA)
-  dataForService = dataConstruct.constructLedConfigData(rgbaControl.getLedConfig());
-#endif
-#if defined(TYPE_DEVICE_RGBA_ADDRESS)
-  dataForService = dataConstruct.constructLedConfigData(rgbaAddressControl.getLedAddressConfig());
-#endif
-#if defined(TYPE_DEVICE_TEMP_SENSOR)
-  dataForService = dataConstruct.constructTempsData(tempDetector.temps, TEMP_SENSOR_COUNT);
-#endif
+  #if defined(TYPE_DEVICE_LAMP)
+    dataForService = dataConstruct->constructSwitchData(powerControl.getPowerState());
+  #endif
+  #if defined(TYPE_DEVICE_UPS)
+    dataForService = dataConstruct->constructUpsData(tempDetector.temps[0], tempDetector.temps[1], coolerControl.pwmCooler, voltCurController.currentDC, voltCurController.voltageDC);
+  #endif
+  #if defined(TYPE_DEVICE_RGBA)
+    dataForService = dataConstruct->constructLedConfigData(rgbaControl.getLedConfig());
+  #endif
+  #if defined(TYPE_DEVICE_RGBA_ADDRESS)
+    dataForService = dataConstruct->constructLedConfigData(rgbaAddressControl.getLedAddressConfig());
+  #endif
+  #if defined(TYPE_DEVICE_TEMP_SENSOR)
+    dataForService = dataConstruct->constructTempsData(tempDetector.temps, TEMP_SENSOR_COUNT);
+  #endif
 
-  if (!dataForService.isEmpty()) {
-    cryptoNetwork.send(dataForService);
-  }
+    if (!dataForService.isEmpty()) {
+      Serial.println("IotModel::tickDataPusher");
+      cryptoNetwork.send(dataForService);
+    }
 }
 
 void IotModel::tick() {
