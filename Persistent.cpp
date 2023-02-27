@@ -1,5 +1,5 @@
 #include "Persistent.h"
-//#include "Arduino.h"
+#include "Arduino.h"
 
 #define SIZE_EEPROM 512
 
@@ -8,14 +8,12 @@ void Persistent::setup() {
   EEPROM.get(0, idDevice);
   EEPROM.end();
   updateRegisteredState();
-  // Serial.println("ID");
-  // Serial.println(idDevice);  
+  Serial.println("ID");
+  Serial.println(idDevice);  
 }
 
 void Persistent::updateRegisteredState() {
   registered = idDevice != -1;
-  // Serial.println("registered");
-  // Serial.println(registered);
 }
 
 void Persistent::saveId(int newId) {

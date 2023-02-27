@@ -77,9 +77,7 @@ void IotModel::tickDataPusher() {
   dataForService = (*dataConstruct).constructSwitchData(powerControl.getPowerState());
 #endif
 #if defined(TYPE_DEVICE_UPS)
-  Serial.println("IotModel::tickDataPusher TYPE_DEVICE_UPS");
   dataForService = (*dataConstruct).constructUpsData(tempDetector.temps[0], tempDetector.temps[1], coolerControl.pwmCooler, voltCurController.currentDC, voltCurController.voltageDC);
-  Serial.println("IotModel::tickDataPusher AFTER TYPE_DEVICE_UPS");
 #endif
 #if defined(TYPE_DEVICE_RGBA)
   dataForService = (*dataConstruct).constructLedConfigData(rgbaControl.getLedConfig());

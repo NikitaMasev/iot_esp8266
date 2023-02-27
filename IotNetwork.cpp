@@ -22,10 +22,12 @@ void IotNetwork::setup(CallbackConnected callbackConnected, CallbackMessage call
 
   client.onMessage([callbackMessage, this](WebsocketsMessage message) {
     Serial.println("IotNetwork onMessage BEFORE callbackMessage");
-    String dataForService = callbackMessage(message.data());
+    String data = String(message.data());
+    String dataForService = callbackMessage(data);
     Serial.println("IotNetwork onMessage AFTER callbackMessage");
 
     if (!dataForService.isEmpty()) {
+      Serial.println("IotNetwork onMessage !dataForService.isEmpty()");
       client.send(dataForService);
     }
   });
@@ -40,7 +42,7 @@ void IotNetwork::setup(CallbackConnected callbackConnected, CallbackMessage call
 
       if (!dataForService.isEmpty()) {
         Serial.println("IotNetwork BEFORE client.send");
-        client.send(dataForService);
+        //client.send(dataForService);
         Serial.println("IotNetwork AFTER client.send");
       }
     } else if (event == WebsocketsEvent::ConnectionClosed) {

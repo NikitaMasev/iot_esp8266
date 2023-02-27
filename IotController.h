@@ -8,9 +8,9 @@
 
 class IotController {
 private:
-  IotModel iotModel;
+  IotModel *iotModel;
   AuthPersistent *persistent;
-  DataParser dataParser;
+  DataParser *dataParser;
   AuthDataConstruct *dataConstruct;
 
   const String empty = "";
@@ -20,7 +20,7 @@ private:
   String handlePower(bool controlOn);
   String handleRgba(String payload);
 public:
-  IotController(IotModel iotModel, AuthPersistent *persistent, DataParser dataParser, AuthDataConstruct *dataConstruct)
+  IotController(IotModel *iotModel, AuthPersistent *persistent, DataParser *dataParser, AuthDataConstruct *dataConstruct)
     : iotModel(iotModel), persistent(persistent), dataParser(dataParser), dataConstruct(dataConstruct){};
   void setup();
   void tick();
