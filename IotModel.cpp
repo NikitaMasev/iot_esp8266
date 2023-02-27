@@ -17,8 +17,7 @@ void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callba
     });
   Serial.println("IotModel::setup AFTER tasker.runMainTasks");
 #if defined(TYPE_DEVICE_UPS)
-  updatePower((*persistent).getSavedPowerControlState());
-  Serial.println("IotModel::setup TYPE_DEVICE_UPS AFTER updatePower((*persistent).getSavedPowerControlState())");
+  Serial.println("IotModel::setup TYPE_DEVICE_UPS BEFORE  tasker.runUpsTasks");
   tasker.runUpsTasks(
     [this]() {
       Serial.println("IotModel::setup inside tasker.runUpsTasks coolerControl.tick");
@@ -34,10 +33,11 @@ void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callba
     });
   Serial.println("IotModel::setup TYPE_DEVICE_UPS AFTER  tasker.runUpsTasks");
 #elif defined(TYPE_DEVICE_LAMP)
+  updatePower(persistent.getSavedPowerControlState());  
 #elif defined(TYPE_DEVICE_RGBA)
-  updateLedConfig((*persistent).getSavedLedConfigData());
+  updateLedConfig(persistent.getSavedLedConfigData());
 #elif defined(TYPE_DEVICE_RGBA_ADDRESS)
-  updateLedConfig((*persistent).getSavedLedConfigData());
+  updateLedConfig(persistent.getSavedLedConfigData());
   tasker.runRgbaAddressTask(
     [this]() {
       this->rgbaAddressControl.tick();
@@ -50,6 +50,7 @@ void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callba
 #endif
   Serial.println("IotModel::setup BEFORE cryptoNetwork.setup");
   cryptoNetwork.setup(callbackConnected, callbackMessage);
+  Serial.println("IotModel::setup AFTER cryptoNetwork.setup");
 }
 
 void IotModel::updatePower(bool controlOn) {
@@ -74,19 +75,19 @@ void IotModel::tickDataPusher() {
   String dataForService = "";
 
 #if defined(TYPE_DEVICE_LAMP)
-  dataForService = (*dataConstruct).constructSwitchData(powerControl.getPowerState());
+  dataForService = dataConstruct.constructSwitchData(powerControl.getPowerState());
 #endif
 #if defined(TYPE_DEVICE_UPS)
-  dataForService = (*dataConstruct).constructUpsData(tempDetector.temps[0], tempDetector.temps[1], coolerControl.pwmCooler, voltCurController.currentDC, voltCurController.voltageDC);
+  dataForService = dataConstruct.constructUpsData(tempDetector.temps[0], tempDetector.temps[1], coolerControl.pwmCooler, voltCurController.currentDC, voltCurController.voltageDC);
 #endif
 #if defined(TYPE_DEVICE_RGBA)
-  dataForService = (*dataConstruct).constructLedConfigData(rgbaControl.getLedConfig());
+  dataForService = dataConstruct.constructLedConfigData(rgbaControl.getLedConfig());
 #endif
 #if defined(TYPE_DEVICE_RGBA_ADDRESS)
-  dataForService = (*dataConstruct).constructLedConfigData(rgbaAddressControl.getLedAddressConfig());
+  dataForService = dataConstruct.constructLedConfigData(rgbaAddressControl.getLedAddressConfig());
 #endif
 #if defined(TYPE_DEVICE_TEMP_SENSOR)
-  dataForService = (*dataConstruct).constructTempsData(tempDetector.temps, TEMP_SENSOR_COUNT);
+  dataForService = dataConstruct.constructTempsData(tempDetector.temps, TEMP_SENSOR_COUNT);
 #endif
 
   if (!dataForService.isEmpty()) {

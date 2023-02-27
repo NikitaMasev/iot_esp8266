@@ -42,7 +42,7 @@ void IotNetwork::setup(CallbackConnected callbackConnected, CallbackMessage call
 
       if (!dataForService.isEmpty()) {
         Serial.println("IotNetwork BEFORE client.send");
-        //client.send(dataForService);
+        client.send(dataForService);
         Serial.println("IotNetwork AFTER client.send");
       }
     } else if (event == WebsocketsEvent::ConnectionClosed) {

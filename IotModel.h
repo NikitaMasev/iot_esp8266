@@ -26,8 +26,8 @@ class IotModel {
 private:
   CryptoNetwork cryptoNetwork;
   Tasker tasker;
-  ModelDataConstruct *dataConstruct;
-  ModelPersistent *persistent;
+  ModelDataConstruct dataConstruct;
+  ModelPersistent persistent;
 
   void tickDataPusher();
 
@@ -45,7 +45,7 @@ private:
   TempDetector tempDetector = {};
 #endif
 public:
-  IotModel(CryptoNetwork cryptoNetwork, ModelPersistent *persistent, Tasker tasker, ModelDataConstruct *dataConstruct)
+  IotModel(CryptoNetwork cryptoNetwork, ModelPersistent persistent, Tasker tasker, ModelDataConstruct dataConstruct)
     : cryptoNetwork(cryptoNetwork), persistent(persistent), tasker(tasker), dataConstruct(dataConstruct){};
   void setup(CallbackConnected callbackConnected, CallbackMessage callbackMessage);
   void tick();

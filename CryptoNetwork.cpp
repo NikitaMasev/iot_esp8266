@@ -23,11 +23,11 @@ void CryptoNetwork::setup(CallbackConnected callbackConnected, CallbackMessage c
         Serial.println("CryptoNetwork AFTER cryptoAesUtil.encrypt(dataForService)");
         return encr;
       } else {
-        return empty;
+        return String("");
       }
     },
     [callbackMessage, this](String data) {
-      if (data.isEmpty()) return empty;
+      if (data.isEmpty()) return String("");
 
       String decrData = cryptoAesUtil.decrypt(data);
       String dataForService = callbackMessage(decrData);
@@ -36,7 +36,7 @@ void CryptoNetwork::setup(CallbackConnected callbackConnected, CallbackMessage c
         String encr = cryptoAesUtil.encrypt(dataForService);
         return encr;
       } else {
-        return empty;
+        return String("");
       }
     });
 }

@@ -9,8 +9,6 @@ class CryptoNetwork {
 private:
   IotNetwork iotNetwork;
   CryptoAesUtil cryptoAesUtil;
-
-  const String empty = "";
 public:
   CryptoNetwork(IotNetwork iotNetwork, CryptoAesUtil cryptoAesUtil)
     : iotNetwork(iotNetwork), cryptoAesUtil(cryptoAesUtil){};
