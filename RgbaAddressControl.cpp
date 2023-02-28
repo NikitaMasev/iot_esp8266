@@ -1,5 +1,4 @@
 #include "RgbaAddressControl.h"
-#include "RgbaAddressEffectsUtil.h"
 
 LedConfigData RgbaAddressControl::getLedAddressConfig() {
   return ledConfigData;

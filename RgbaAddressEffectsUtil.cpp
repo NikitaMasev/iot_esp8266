@@ -5,7 +5,7 @@
 #define EVENODD (LED_COUNT % 2)
 
 void RgbaAddressEffectsUtil::updateConfig(LedConfigData newConfigData) {
-   ledConfigData = newConfigData;
+  ledConfigData = newConfigData;
 }
 
 //------------------------LED EFFECT FUNCTIONS------------------------
@@ -706,7 +706,7 @@ void RgbaAddressEffectsUtil::Fire(int Cooling, int Sparking) {
 }
 
 //-------------------------------newKITT---------------------------------------
-byte *Wheel(byte WheelPos) {
+byte *RgbaAddressEffectsUtil::Wheel(byte WheelPos) {
   static byte c[3];
 
   if (WheelPos < 85) {
@@ -766,8 +766,6 @@ void RgbaAddressEffectsUtil::TwinkleRandom() {
 }
 
 //-------------------------------RunningLights---------------------------------------
-
-
 void RgbaAddressEffectsUtil::RunningLights(byte red, byte green, byte blue) {
   if (indexRunningLights < runningLightsCount) {
     for (int i = 0; i < LED_COUNT; i++) {
@@ -783,8 +781,6 @@ void RgbaAddressEffectsUtil::RunningLights(byte red, byte green, byte blue) {
 }
 
 //-------------------------------theaterChase---------------------------------------
-
-
 void RgbaAddressEffectsUtil::theaterChase(byte red, byte green, byte blue) {
   if (indexQTheaterChase < theaterChaseQ && theaterChaseTurnMode) {
     for (int i = 0; i < LED_COUNT; i = i + 3) {
@@ -828,8 +824,6 @@ void RgbaAddressEffectsUtil::theaterChaseRainbow(int SpeedDelay) {
 }
 
 //-------------------------------Strobe---------------------------------------
-
-
 void RgbaAddressEffectsUtil::Strobe(byte red, byte green, byte blue) {
   if (millis() - lastTimeStrobe > strobeAnim) {
     if (strobeCounter == strobeCount) {
@@ -856,7 +850,7 @@ void RgbaAddressEffectsUtil::Strobe(byte red, byte green, byte blue) {
 //------------------------------------- UTILITY FXNS --------------------------------------
 //---SET THE COLOR OF A SINGLE RGB LED
 void RgbaAddressEffectsUtil::set_color_led(int adex, int cred, int cgrn, int cblu) {
-  leds[adex].setRGB( cred, cgrn, cblu);
+  leds[adex].setRGB(cred, cgrn, cblu);
 }
 
 //---FIND INDEX OF HORIZONAL OPPOSITE LED
@@ -878,7 +872,7 @@ int RgbaAddressEffectsUtil::horizontal_index(int i) {
 int RgbaAddressEffectsUtil::antipodal_index(int i) {
   int iN = i + TOP_INDEX;
   if (i >= TOP_INDEX) {
-    iN = ( i + TOP_INDEX ) % LED_COUNT;
+    iN = (i + TOP_INDEX) % LED_COUNT;
   }
   return iN;
 }
@@ -888,8 +882,7 @@ int RgbaAddressEffectsUtil::adjacent_cw(int i) {
   int r;
   if (i < LED_COUNT - 1) {
     r = i + 1;
-  }
-  else {
+  } else {
     r = 0;
   }
   return r;
@@ -900,15 +893,14 @@ int RgbaAddressEffectsUtil::adjacent_ccw(int i) {
   int r;
   if (i > 0) {
     r = i - 1;
-  }
-  else {
+  } else {
     r = LED_COUNT - 1;
   }
   return r;
 }
 
 void RgbaAddressEffectsUtil::copy_led_array() {
-  for (int i = 0; i < LED_COUNT; i++ ) {
+  for (int i = 0; i < LED_COUNT; i++) {
     ledsX[i][0] = leds[i].r;
     ledsX[i][1] = leds[i].g;
     ledsX[i][2] = leds[i].b;
@@ -922,7 +914,7 @@ void RgbaAddressEffectsUtil::setPixel(int Pixel, byte red, byte green, byte blue
 }
 
 void RgbaAddressEffectsUtil::setAll(byte red, byte green, byte blue) {
-  for (int i = 0; i < LED_COUNT; i++ ) {
+  for (int i = 0; i < LED_COUNT; i++) {
     setPixel(i, red, green, blue);
   }
   FastLED.show();

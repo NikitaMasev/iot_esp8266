@@ -40,7 +40,7 @@ void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callba
 #elif defined(TYPE_DEVICE_RGBA)
   updateLedConfig(persistent.getSavedLedConfigData());
 #elif defined(TYPE_DEVICE_RGBA_ADDRESS)
-  updateLedConfig(persistent, getSavedLedConfigData());
+  updateLedConfig(persistent.getSavedLedConfigData());
   tasker.runRgbaAddressTask(
     [this]() {
       this->rgbaAddressControl.tick();

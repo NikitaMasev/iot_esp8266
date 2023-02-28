@@ -16,9 +16,6 @@
 
 //IotController *iotController;
 IotModel *iotModel;
-//Persistent persistent;
-//DataConstruct dataConstruct;
-//DataParser dataParser;
 
 const CryptoAesUtil cryptoAesUtil(cipher_key, cipher_iv);      //-
 const IotNetwork iotNetwork(ssid, password, iotServer);        //-
@@ -30,15 +27,9 @@ const Persistent persistent = {};
 void setup() {
   Serial.begin(SERIAL_COMMUNICATION_SPEED);
 
-  // CryptoAesUtil cryptoAesUtil(cipher_key, cipher_iv);      //-
-  // IotNetwork iotNetwork(ssid, password, iotServer);        //-
-  // CryptoNetwork cryptoNetwork(iotNetwork, cryptoAesUtil);  //-
-
-  // DataConstruct dataConstruct;
   ModelDataConstruct modelDataConstruct(dataConstruct);  //+
   AuthDataConstruct authDataConstruct(dataConstruct);
 
-  //Persistent persistent;
   AuthPersistent authPersistent(persistent);
   ModelPersistent modelPersistent(persistent);
 
