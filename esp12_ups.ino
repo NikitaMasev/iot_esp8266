@@ -24,12 +24,12 @@ IotModel *iotModel;
 void setup() {
   Serial.begin(SERIAL_COMMUNICATION_SPEED);
 
-  CryptoAesUtil cryptoAesUtil(cipher_key, cipher_iv);//-
-  IotNetwork iotNetwork(ssid, password, iotServer);//-
-  CryptoNetwork cryptoNetwork(iotNetwork, cryptoAesUtil);//-
+  CryptoAesUtil cryptoAesUtil(cipher_key, cipher_iv);      //-
+  IotNetwork iotNetwork(ssid, password, iotServer);        //-
+  CryptoNetwork cryptoNetwork(iotNetwork, cryptoAesUtil);  //-
 
   DataConstruct dataConstruct;
-  ModelDataConstruct modelDataConstruct(&dataConstruct);//+
+  ModelDataConstruct modelDataConstruct(&dataConstruct);  //+
   AuthDataConstruct authDataConstruct(&dataConstruct);
 
   Persistent persistent;
@@ -37,7 +37,7 @@ void setup() {
   ModelPersistent modelPersistent(&persistent);
 
   DataParser dataParser;
-  Tasker tasker; //-
+  Tasker tasker;  //-
 
   // IotModel iotModel(cryptoNetwork, modelPersistent, tasker, &modelDataConstruct);
   // iotController = new IotController(iotModel, authPersistent, dataParser, authDataConstruct);
@@ -45,16 +45,16 @@ void setup() {
   iotModel = new IotModel(cryptoNetwork, modelPersistent, tasker, &modelDataConstruct);
   persistent.setup();
   (*iotModel).setup(
-    [&authDataConstruct, &authPersistent]() {
+    [&authDataConstruct, &persistent]() {
       Serial.println("IotController::setup ONCONNECTED BEFORE (*persistent).getRegistered()");
-      if (authPersistent.getRegistered()) {
-        return authDataConstruct.constructAuth(authPersistent.getSavedId(), typeDeviceToString(currentTypeDevice));
+      if (persistent.getRegistered()) {
+        return authDataConstruct.constructAuth(persistent.getSavedId(), typeDeviceToString(currentTypeDevice));
       } else {
         return authDataConstruct.constructRegister(typeDeviceToString(currentTypeDevice));
       }
       return String("");
     },
-    [&dataParser, &authPersistent, &authDataConstruct](String data) {
+    [&dataParser, &persistent, &authDataConstruct, iotModel](String data) {
       Serial.println("IotController::setup ONMESSAGE BEFORE dataParser.parseTextData(data)");
       ParsedHeaderPayload headerPayload = dataParser.parseTextData(data);
       Serial.println("IotController::setup ONMESSAGE AFTER dataParser.parseTextData(data)");
@@ -76,18 +76,32 @@ void setup() {
             int newId = headerPayload.payload.toInt();
             Serial.println("newId");
             Serial.println(newId);
-            authPersistent.saveId(newId);
+            persistent.saveId(newId);
             Serial.println("AFTER SAVE ID");
             return String("");
           }
         case reset_c:
           {
-            authPersistent.saveId(-1);
+            persistent.saveId(-1);
             return authDataConstruct.constructRegister(typeDeviceToString(currentTypeDevice));
+          }
+        case powerOff_c:
+          {
+            iotModel->updatePower(false);
+            return String("");
+          }
+        case powerOn_c:
+          {
+            iotModel->updatePower(false);
+            return String("");
           }
         case rgba_c:
         case rgbaEffects_c:
-          break;
+          {
+            LedConfigData parsedLedConfig = dataParser.parseLedConfig(headerPayload.payload);
+            iotModel->updateLedConfig(parsedLedConfig);
+            return String("");
+          }
       }
 
       return String("");
