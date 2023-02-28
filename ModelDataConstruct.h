@@ -6,9 +6,9 @@
 
 class ModelDataConstruct {
 private:
-  DataConstruct *dataConstruct;
+  DataConstruct dataConstruct;
 public:
-  ModelDataConstruct(DataConstruct *dataConstruct)
+  ModelDataConstruct(DataConstruct dataConstruct)
     : dataConstruct(dataConstruct){};
   String constructUpsData(
     float tempUps,

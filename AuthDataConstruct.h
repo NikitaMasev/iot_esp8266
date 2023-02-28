@@ -5,9 +5,9 @@
 
 class AuthDataConstruct {
 private:
-  DataConstruct *dataConstruct;
+  DataConstruct dataConstruct;
 public:
-  AuthDataConstruct(DataConstruct *dataConstruct)
+  AuthDataConstruct(DataConstruct dataConstruct)
     : dataConstruct(dataConstruct){};
   String constructRegister(String typeDevice);
   String constructAuth(int idDevice, String typeDevice);

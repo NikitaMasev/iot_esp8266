@@ -5,9 +5,9 @@
 
 class ModelPersistent {
 private:
-  Persistent *persistent;
+  Persistent persistent;
 public:
-  ModelPersistent(Persistent *persistent)
+  ModelPersistent(Persistent persistent)
     : persistent(persistent){};
 
   void savePowerControlState(bool newState);

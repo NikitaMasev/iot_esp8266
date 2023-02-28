@@ -6,17 +6,17 @@ String ModelDataConstruct::constructUpsData(
   int pwmCooler,
   float currentDC,
   float voltageDC) {
-  return (*dataConstruct).constructUpsData(tempUps, tempAcc, pwmCooler, currentDC, voltageDC);
+  return dataConstruct.constructUpsData(tempUps, tempAcc, pwmCooler, currentDC, voltageDC);
 }
 
 String ModelDataConstruct::constructLedConfigData(LedConfigData ledConfigData) {
-  return (*dataConstruct).constructLedConfigData(ledConfigData);
+  return dataConstruct.constructLedConfigData(ledConfigData);
 }
 
 String ModelDataConstruct::constructSwitchData(bool powerState) {
-  return (*dataConstruct).constructSwitchData(powerState);
+  return dataConstruct.constructSwitchData(powerState);
 }
 
 String ModelDataConstruct::constructTempsData(float temps[], int length) {
-  return (*dataConstruct).constructTempsData(temps, length);
+  return dataConstruct.constructTempsData(temps, length);
 }
