@@ -48,7 +48,7 @@ void setup() {
   // IotModel iotModel(cryptoNetwork, modelPersistent, tasker, &modelDataConstruct);
   // iotController = new IotController(iotModel, authPersistent, dataParser, authDataConstruct);
   // (*iotController).setup();
-  iotModel = new IotModel(cryptoNetwork, modelPersistent, tasker, &modelDataConstruct);
+  iotModel = new IotModel(cryptoNetwork, modelPersistent, tasker, modelDataConstruct);
   authPersistent.setup();
   (*iotModel).setup(
     [&authDataConstruct, &authPersistent]() {

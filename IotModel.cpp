@@ -78,19 +78,19 @@ void IotModel::tickDataPusher() {
     String dataForService = "";
 
   #if defined(TYPE_DEVICE_LAMP)
-    dataForService = dataConstruct->constructSwitchData(powerControl.getPowerState());
+    dataForService = dataConstruct.constructSwitchData(powerControl.getPowerState());
   #endif
   #if defined(TYPE_DEVICE_UPS)
-    dataForService = dataConstruct->constructUpsData(tempDetector.temps[0], tempDetector.temps[1], coolerControl.pwmCooler, voltCurController.currentDC, voltCurController.voltageDC);
+    dataForService = dataConstruct.constructUpsData(tempDetector.temps[0], tempDetector.temps[1], coolerControl.pwmCooler, voltCurController.currentDC, voltCurController.voltageDC);
   #endif
   #if defined(TYPE_DEVICE_RGBA)
-    dataForService = dataConstruct->constructLedConfigData(rgbaControl.getLedConfig());
+    dataForService = dataConstruct.constructLedConfigData(rgbaControl.getLedConfig());
   #endif
   #if defined(TYPE_DEVICE_RGBA_ADDRESS)
-    dataForService = dataConstruct->constructLedConfigData(rgbaAddressControl.getLedAddressConfig());
+    dataForService = dataConstruct.constructLedConfigData(rgbaAddressControl.getLedAddressConfig());
   #endif
   #if defined(TYPE_DEVICE_TEMP_SENSOR)
-    dataForService = dataConstruct->constructTempsData(tempDetector.temps, TEMP_SENSOR_COUNT);
+    dataForService = dataConstruct.constructTempsData(tempDetector.temps, TEMP_SENSOR_COUNT);
   #endif
 
     if (!dataForService.isEmpty()) {
