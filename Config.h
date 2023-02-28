@@ -20,8 +20,8 @@ const constexpr char *ssid = "CrynetSystem";
 const constexpr char *password = "****";
 const constexpr char *iotServer = "ws://192.168.50.213:5080";
 
-const constexpr uint8_t cipher_key[] = {};
-const constexpr uint8_t cipher_iv[] = {};
+const constexpr uint8_t cipher_key[] = { };
+const constexpr uint8_t cipher_iv[] = {  };
 
 ///UPS START
 ////For Cooler
