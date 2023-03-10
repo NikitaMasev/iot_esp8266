@@ -10,7 +10,7 @@ private:
 #if defined(TYPE_DEVICE_UPS)
   GyverOS<5> os = {};
 #elif defined(TYPE_DEVICE_RGBA_ADDRESS)
-  GyverOS<3> os = {};
+  GyverOS<4> os = {};
 #elif defined(TYPE_DEVICE_TEMP_SENSOR)
   GyverOS<3> os = {};
 #elif defined(TYPE_DEVICE_LAMP)
@@ -23,5 +23,6 @@ public:
   void runUpsTasks(CallbackTaskerLoop taskCooler, CallbackTaskerLoop taskTemp, CallbackTaskerLoop taskVoltCurSensor);
   void runRgbaAddressTask(CallbackTaskerLoop taskRgba);
   void runTempTask(CallbackTaskerLoop taskTemp);
+  void runGestureDetector(CallbackTaskerLoop taskGestureDetector);
   void tick();
 };

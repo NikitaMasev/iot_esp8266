@@ -23,7 +23,7 @@
 #endif
 
 #if defined(CONTROL_LED_PAJ7620_SENSOR)
-#include "RevEng_PAJ7620.h"
+#include "GestureDetector.h"
 #endif
 
 class IotModel {
@@ -34,6 +34,9 @@ private:
   ModelPersistent persistent;
 
   void tickDataPusher();
+  #if defined(CONTROL_LED_PAJ7620_SENSOR)
+  void tickSensorRgba();
+#endif
 
 #if defined(TYPE_DEVICE_UPS)
   TempDetector tempDetector = {};
@@ -50,7 +53,7 @@ private:
 #endif
 
 #if defined(CONTROL_LED_PAJ7620_SENSOR)
-RevEng_PAJ7620 sensorPajLed = RevEng_PAJ7620();
+GestureDetector gestureDetector = {};
 #endif
 public:
   IotModel(CryptoNetwork cryptoNetwork, ModelPersistent persistent, Tasker tasker, ModelDataConstruct dataConstruct)
