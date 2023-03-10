@@ -6,9 +6,9 @@ LedConfigData RgbaAddressControl::getLedAddressConfig() {
 
 void RgbaAddressControl::updateLedAddressConfig(LedConfigData newConfigData) {
   if (newConfigData.h == -1 || newConfigData.s == -1 || newConfigData.v == -1) {
-    return;    
+    return;
   }
-  
+
   ledConfigData = newConfigData;
   rgbaAddressEffectsUtil.updateConfig(ledConfigData);
   updatePowerState();
@@ -24,13 +24,17 @@ void RgbaAddressControl::updatePowerState() {
 }
 
 void RgbaAddressControl::nextEffect() {
-  ledConfigData.mode = 2;
-  updateLedAddressConfig(ledConfigData);
+  if (ledConfigData.mode != END_EFFECT_LED_ADDR) {
+    ledConfigData.mode++;
+    updateLedAddressConfig(ledConfigData);
+  }    
 }
 
 void RgbaAddressControl::previousEffect() {
-  ledConfigData.mode = 7;
-  updateLedAddressConfig(ledConfigData);
+  if (ledConfigData.mode != START_EFFECT_LED_ADDR) {
+    ledConfigData.mode--;
+    updateLedAddressConfig(ledConfigData);
+  }
 }
 
 void RgbaAddressControl::applyLedInternalConfig() {
@@ -72,47 +76,47 @@ void RgbaAddressControl::applyLedInternalConfig() {
     case 13: rgbaAddressEffectsUtil.thisdelay = 100; break;  //---CELL AUTO - RULE 30 (RED)
     case 14: rgbaAddressEffectsUtil.thisdelay = 80; break;   //---MARCH RANDOM COLORS
     case 15: rgbaAddressEffectsUtil.thisdelay = 80; break;   //---MARCH RWB COLORS
-    case 18:
+    case 16:
       rgbaAddressEffectsUtil.thisdelay = 100;
       break;
-    case 20:
+    case 17:
       rgbaAddressEffectsUtil.thisdelay = 100;
       break;  //---POP LEFT/RIGHT
-    case 21:
+    case 18:
       rgbaAddressEffectsUtil.thisdelay = 100;
       break;  //---QUADRATIC BRIGHTNESS CURVE
-    case 22:
+    case 19:
       rgbaAddressEffectsUtil.thisdelay = 0;
       break;
-    case 23:
+    case 20:
       rgbaAddressEffectsUtil.thisdelay = 50;
       rgbaAddressEffectsUtil.thisstep = 15;
       break;                                                //---VERITCAL RAINBOW
-    case 25: rgbaAddressEffectsUtil.thisdelay = 35; break;  //---RANDOM COLOR POP
-    case 26:
+    case 21: rgbaAddressEffectsUtil.thisdelay = 35; break;  //---RANDOM COLOR POP
+    case 22:
       rgbaAddressEffectsUtil.thisdelay = 25;
       break;  //---EMERGECNY STROBE
-    case 27:
+    case 23:
       rgbaAddressEffectsUtil.thisdelay = 100;
       break;  //---RGB PROPELLER
-    case 28:
+    case 24:
       rgbaAddressEffectsUtil.thisdelay = 100;
       break;  //---KITT
-    case 29:
+    case 25:
       rgbaAddressEffectsUtil.thisdelay = 100;
       break;                                                //---MATRIX RAIN
-    case 30: rgbaAddressEffectsUtil.thisdelay = 15; break;  //---NEW RAINBOW LOOP
-    case 33: rgbaAddressEffectsUtil.thisdelay = 50; break;  // colorWipe
-    case 35: rgbaAddressEffectsUtil.thisdelay = 15; break;  // Fire
-    case 37: rgbaAddressEffectsUtil.thisdelay = 20; break;  // rainbowCycle
-    case 38: rgbaAddressEffectsUtil.thisdelay = 10; break;  // rainbowTwinkle
-    case 39:
+    case 26: rgbaAddressEffectsUtil.thisdelay = 15; break;  //---NEW RAINBOW LOOP
+    case 27: rgbaAddressEffectsUtil.thisdelay = 50; break;  // colorWipe
+    case 28: rgbaAddressEffectsUtil.thisdelay = 15; break;  // Fire
+    case 29: rgbaAddressEffectsUtil.thisdelay = 20; break;  // rainbowCycle
+    case 30: rgbaAddressEffectsUtil.thisdelay = 10; break;  // rainbowTwinkle
+    case 31:
       rgbaAddressEffectsUtil.thisdelay = 50;
       break;  // RunningLights
     //case 42: thisdelay = 50; break;  // theaterChase
     //case 43: thisdelay = 50; break;  // theaterChaseRainbow
-    case 44: rgbaAddressEffectsUtil.thisdelay = 0; break;  // Strobe
-    case 45:
+    case 32: rgbaAddressEffectsUtil.thisdelay = 0; break;  // Strobe
+    case 33:
       rgbaAddressEffectsUtil.one_color_allHSV();
       LEDS.show();
       break;
@@ -140,32 +144,32 @@ void RgbaAddressControl::tick() {
       case 13: rgbaAddressEffectsUtil.rule30(); break;                   // безумие красных светодиодов      OK
       case 14: rgbaAddressEffectsUtil.random_march(); break;             // безумие случайных цветов         OK
       case 15: rgbaAddressEffectsUtil.rwb_march(); break;                // белый синий красный бегут по кругу OK ?
-      case 18: rgbaAddressEffectsUtil.white_temps(); break;              // бело синий градиент              OK
-      case 20: rgbaAddressEffectsUtil.pop_horizontal(); break;           // красные вспышки спускаются вниз  OK
-      case 21: rgbaAddressEffectsUtil.quad_bright_curve(); break;        // полумесяц                        OK
-      case 22: rgbaAddressEffectsUtil.flame(); break;                    // эффект пламени                   OK
-      case 23: rgbaAddressEffectsUtil.rainbow_vertical(); break;         // радуга в вертикаьной плоскости (кольцо)  OK
-      case 25: rgbaAddressEffectsUtil.random_color_pop(); break;         // безумие случайных вспышек        OK
-      case 26: rgbaAddressEffectsUtil.ems_lightsSTROBE(); break;         // полицейская мигалка              OK
-      case 27: rgbaAddressEffectsUtil.rgb_propeller(); break;            // RGB пропеллер                    OK
-      case 28: rgbaAddressEffectsUtil.kitt(); break;                     // случайные вспышки красного в вертикаьной плоскости OK
-      case 29: rgbaAddressEffectsUtil.matrix(); break;                   // зелёненькие бегают по кругу случайно OK ?
-      case 30: rgbaAddressEffectsUtil.new_rainbow_loop(); break;         // крутая плавная вращающаяся радуга  OK
-      case 33:
+      case 16: rgbaAddressEffectsUtil.white_temps(); break;              // бело синий градиент              OK
+      case 17: rgbaAddressEffectsUtil.pop_horizontal(); break;           // красные вспышки спускаются вниз  OK
+      case 18: rgbaAddressEffectsUtil.quad_bright_curve(); break;        // полумесяц                        OK
+      case 19: rgbaAddressEffectsUtil.flame(); break;                    // эффект пламени                   OK
+      case 20: rgbaAddressEffectsUtil.rainbow_vertical(); break;         // радуга в вертикаьной плоскости (кольцо)  OK
+      case 21: rgbaAddressEffectsUtil.random_color_pop(); break;         // безумие случайных вспышек        OK
+      case 22: rgbaAddressEffectsUtil.ems_lightsSTROBE(); break;         // полицейская мигалка              OK
+      case 23: rgbaAddressEffectsUtil.rgb_propeller(); break;            // RGB пропеллер                    OK
+      case 24: rgbaAddressEffectsUtil.kitt(); break;                     // случайные вспышки красного в вертикаьной плоскости OK
+      case 25: rgbaAddressEffectsUtil.matrix(); break;                   // зелёненькие бегают по кругу случайно OK ?
+      case 26: rgbaAddressEffectsUtil.new_rainbow_loop(); break;         // крутая плавная вращающаяся радуга  OK
+      case 27:
         rgbaAddressEffectsUtil.colorWipe(0x00, 0xff, 0x00, 0x00, 0x00, 0x00);  // OK
         break;
-      case 35: rgbaAddressEffectsUtil.Fire(55, 120); break;    // линейный огонь          OK
-      case 37: rgbaAddressEffectsUtil.rainbowCycle(); break;   // очень плавная вращающаяся радуга OK
-      case 38: rgbaAddressEffectsUtil.TwinkleRandom(); break;  // случайные разноцветные включения (1 - танцуют все, 0 - случайный 1 диод) OK
-      case 39:
+      case 28: rgbaAddressEffectsUtil.Fire(55, 120); break;    // линейный огонь          OK
+      case 29: rgbaAddressEffectsUtil.rainbowCycle(); break;   // очень плавная вращающаяся радуга OK
+      case 30: rgbaAddressEffectsUtil.TwinkleRandom(); break;  // случайные разноцветные включения (1 - танцуют все, 0 - случайный 1 диод) OK
+      case 31:
         rgbaAddressEffectsUtil.RunningLights(0xff, 0xff, 0x00);
         break;  // бегущие огни        OK ?
       //case 42: theaterChase(0xff, 0, 0); break;         // бегущие каждые 3 (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3) OK, НО НЕ РАБОТАЕТ АДЕКВАТНО
       //case 43: theaterChaseRainbow(thisdelay); break;   // бегущие каждые 3 радуга (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3) НЕ РАБОТАЕТ АДЕКВАТНО
-      case 44:
+      case 32:
         rgbaAddressEffectsUtil.Strobe(0xff, 0xff, 0xff);
         break;  // стробоскоп OK
-      case 45:
+      case 33:
         rgbaAddressEffectsUtil.one_color_allHSV();
         LEDS.show();
         break;

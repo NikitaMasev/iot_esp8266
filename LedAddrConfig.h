@@ -5,5 +5,8 @@
 //#define INTERRUPT_THRESHOLD 1
 //#define FASTLED_ESP8266_RAW_PIN_ORDER
 
+#define START_EFFECT_LED_ADDR 1
+#define END_EFFECT_LED_ADDR 33
+
 #include <FastLED.h>
 #include "Config.h"

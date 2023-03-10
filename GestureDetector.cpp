@@ -10,6 +10,17 @@ void GestureDetector::attachRight(CallbackTaskerLoop callback) {
   indexRight++;
 }
 
+void GestureDetector::attachUp(CallbackTaskerLoop callback) {
+  callbacksUp[indexUp] = callback;
+  indexUp++;
+}
+
+void GestureDetector::attachDown(CallbackTaskerLoop callback) {
+  callbacksDown[indexDown] = callback;
+  indexDown++;
+}
+
+
 void GestureDetector::tick() {
   Gesture gesture;                       // Gesture is an enum type from RevEng_PAJ7620.h
   gesture = sensorPajLed.readGesture();  // Read back current gesture (if any) of type Gesture
@@ -52,12 +63,22 @@ void GestureDetector::tick() {
     case GES_UP:
       {
         Serial.print("GES_UP");
+        for (int i = 0; i < COUNT_CALLBACKS; i++) {
+          if (callbacksUp[i] != nullptr) {
+            callbacksUp[i]();
+          }
+        }
         break;
       }
 
     case GES_DOWN:
       {
         Serial.print("GES_DOWN");
+        for (int i = 0; i < COUNT_CALLBACKS; i++) {
+          if (callbacksDown[i] != nullptr) {
+            callbacksDown[i]();
+          }
+        }
         break;
       }
 

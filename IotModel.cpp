@@ -53,7 +53,17 @@ void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callba
   gestureDetector.attachRight([rgbaAddrEffectSwitching]() {
     rgbaAddrEffectSwitching->nextEffect();
   });
-  
+  gestureDetector.attachUp([rgbaAddrEffectSwitching]() {
+    LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
+    newConfigLed.powerOn = true;
+    rgbaAddrEffectSwitching->updateLedAddressConfig(newConfigLed);
+  });
+  gestureDetector.attachDown([rgbaAddrEffectSwitching]() {
+    LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
+    newConfigLed.powerOn = false;
+    rgbaAddrEffectSwitching->updateLedAddressConfig(newConfigLed);
+  });
+
   GestureDetector *gestureTick = &this->gestureDetector;
 
   tasker.runGestureDetector([gestureTick]() {
