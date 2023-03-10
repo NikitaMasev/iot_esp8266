@@ -5,22 +5,16 @@
 #include "Arduino.h"
 
 void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callbackMessage) {
-  Serial.println("IotModel::setup");
-  
   CryptoNetwork *cryptoNetworkVar = &this->cryptoNetwork;
 
   tasker.runMainTasks(
     [cryptoNetworkVar]() {
-      Serial.println("IotModel::setup inside tasker.runMainTasks cryptoNetwork.tick()");
-      //this->cryptoNetwork.tick();
       cryptoNetworkVar->tick();
     },
     [this]() {
       this->tickDataPusher();
     });
-  Serial.println("IotModel::setup AFTER tasker.runMainTasks");
 #if defined(TYPE_DEVICE_UPS)
-  Serial.println("IotModel::setup TYPE_DEVICE_UPS BEFORE  tasker.runUpsTasks");
   tasker.runUpsTasks(
     [this]() {
       Serial.println("IotModel::setup inside tasker.runUpsTasks coolerControl.tick");
@@ -41,9 +35,10 @@ void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callba
   updateLedConfig(persistent.getSavedLedConfigData());
 #elif defined(TYPE_DEVICE_RGBA_ADDRESS)
   updateLedConfig(persistent.getSavedLedConfigData());
+  RgbaAddressControl *rgbaAddressControl = &this->rgbaAddressControl;
   tasker.runRgbaAddressTask(
-    [this]() {
-      this->rgbaAddressControl.tick();
+    [rgbaAddressControl]() {
+      rgbaAddressControl->tick();
     });
 #elif defined(TYPE_DEVICE_TEMP_SENSOR)
   tasker.runTempTask(
@@ -51,9 +46,13 @@ void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callba
       this->tempDetector.tick();
     });
 #endif
-  Serial.println("IotModel::setup BEFORE cryptoNetwork.setup");
   cryptoNetwork.setup(callbackConnected, callbackMessage);
   Serial.println("IotModel::setup AFTER cryptoNetwork.setup");
+#if defined(CONTROL_LED_PAJ7620_SENSOR)
+  if (!sensorPajLed.begin()) {
+    Serial.println("PAJ7620 I2C error - halting");
+  }
+#endif
 }
 
 void IotModel::updatePower(bool controlOn) {
@@ -72,31 +71,97 @@ void IotModel::updateLedConfig(LedConfigData parsedLedConfig) {
 }
 
 void IotModel::tickDataPusher() {
-    Serial.println("IotModel::tickDataPusher");
-    if (!cryptoNetwork.getConnectedState()) return;
+  if (!cryptoNetwork.getConnectedState()) return;
 
-    String dataForService = "";
+  String dataForService = "";
 
-  #if defined(TYPE_DEVICE_LAMP)
-    dataForService = dataConstruct.constructSwitchData(powerControl.getPowerState());
-  #endif
-  #if defined(TYPE_DEVICE_UPS)
-    dataForService = dataConstruct.constructUpsData(tempDetector.temps[0], tempDetector.temps[1], coolerControl.pwmCooler, voltCurController.currentDC, voltCurController.voltageDC);
-  #endif
-  #if defined(TYPE_DEVICE_RGBA)
-    dataForService = dataConstruct.constructLedConfigData(rgbaControl.getLedConfig());
-  #endif
-  #if defined(TYPE_DEVICE_RGBA_ADDRESS)
-    dataForService = dataConstruct.constructLedConfigData(rgbaAddressControl.getLedAddressConfig());
-  #endif
-  #if defined(TYPE_DEVICE_TEMP_SENSOR)
-    dataForService = dataConstruct.constructTempsData(tempDetector.temps, TEMP_SENSOR_COUNT);
-  #endif
+#if defined(TYPE_DEVICE_LAMP)
+  dataForService = dataConstruct.constructSwitchData(powerControl.getPowerState());
+#endif
+#if defined(TYPE_DEVICE_UPS)
+  dataForService = dataConstruct.constructUpsData(tempDetector.temps[0], tempDetector.temps[1], coolerControl.pwmCooler, voltCurController.currentDC, voltCurController.voltageDC);
+#endif
+#if defined(TYPE_DEVICE_RGBA)
+  dataForService = dataConstruct.constructLedConfigData(rgbaControl.getLedConfig());
+#endif
+#if defined(TYPE_DEVICE_RGBA_ADDRESS)
+  dataForService = dataConstruct.constructLedConfigData(rgbaAddressControl.getLedAddressConfig());
+#endif
+#if defined(TYPE_DEVICE_TEMP_SENSOR)
+  dataForService = dataConstruct.constructTempsData(tempDetector.temps, TEMP_SENSOR_COUNT);
+#endif
 
-    if (!dataForService.isEmpty()) {
-      Serial.println("IotModel::tickDataPusher");
-      cryptoNetwork.send(dataForService);
-    }
+  if (!dataForService.isEmpty()) {
+    cryptoNetwork.send(dataForService);
+  }
+
+#if defined(CONTROL_LED_PAJ7620_SENSOR) && defined(TYPE_DEVICE_RGBA_ADDRESS)
+  Gesture gesture;                       // Gesture is an enum type from RevEng_PAJ7620.h
+  gesture = sensorPajLed.readGesture();  // Read back current gesture (if any) of type Gesture
+
+  switch (gesture) {
+    case GES_FORWARD:
+      {
+        Serial.print("GES_FORWARD");
+        break;
+      }
+
+    case GES_BACKWARD:
+      {
+        Serial.print("GES_BACKWARD");
+        break;
+      }
+
+    case GES_LEFT:
+      {
+        Serial.print("GES_LEFT");
+        rgbaAddressControl.nextEffect();
+        break;
+      }
+
+    case GES_RIGHT:
+      {
+        Serial.print("GES_RIGHT");
+        rgbaAddressControl.previousEffect();
+        break;
+      }
+
+    case GES_UP:
+      {
+        Serial.print("GES_UP");
+        break;
+      }
+
+    case GES_DOWN:
+      {
+        Serial.print("GES_DOWN");
+        break;
+      }
+
+    case GES_CLOCKWISE:
+      {
+        Serial.print("GES_CLOCKWISE");
+        break;
+      }
+
+    case GES_ANTICLOCKWISE:
+      {
+        Serial.print("GES_ANTICLOCKWISE");
+        break;
+      }
+
+    case GES_WAVE:
+      {
+        Serial.print("GES_WAVE");
+        break;
+      }
+
+    case GES_NONE:
+      {
+        break;
+      }
+  }
+#endif
 }
 
 void IotModel::tick() {

@@ -5,6 +5,10 @@ LedConfigData RgbaAddressControl::getLedAddressConfig() {
 }
 
 void RgbaAddressControl::updateLedAddressConfig(LedConfigData newConfigData) {
+  if (newConfigData.h == -1 || newConfigData.s == -1 || newConfigData.v == -1) {
+    return;    
+  }
+  
   ledConfigData = newConfigData;
   rgbaAddressEffectsUtil.updateConfig(ledConfigData);
   updatePowerState();
@@ -17,6 +21,16 @@ void RgbaAddressControl::updatePowerState() {
   } else {
     LEDS.setBrightness(0);
   }
+}
+
+void RgbaAddressControl::nextEffect() {
+  ledConfigData.mode = 2;
+  updateLedAddressConfig(ledConfigData);
+}
+
+void RgbaAddressControl::previousEffect() {
+  ledConfigData.mode = 7;
+  updateLedAddressConfig(ledConfigData);
 }
 
 void RgbaAddressControl::applyLedInternalConfig() {

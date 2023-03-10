@@ -31,6 +31,9 @@ public:
 
     randomSeed(analogRead(0));
   };
+  
+  void nextEffect();
+  void previousEffect();
   void updateLedAddressConfig(LedConfigData newConfigData);
   LedConfigData getLedAddressConfig();
   void tick();

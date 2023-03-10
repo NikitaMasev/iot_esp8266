@@ -8,6 +8,8 @@
 #define TYPE_DEVICE_RGBA_ADDRESS
 //#define TYPE_DEVICE_TEMP_SENSOR
 
+#define CONTROL_LED_PAJ7620_SENSOR
+
 #define PKG_CMD_SYMB "^"
 #define PKG_CMD_DELIMITER_SYMB ":"
 #define START_PKG_DATA_SYMB "#"
@@ -17,7 +19,7 @@
 #define SERIAL_COMMUNICATION_SPEED 9600
 
 const constexpr char *ssid = "CrynetSystem";
-const constexpr char *password = "***";
+const constexpr char *password = "****";
 const constexpr char *iotServer = "ws://192.168.50.213:5080";
 
 const constexpr uint8_t cipher_key[] = {  };

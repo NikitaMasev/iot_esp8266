@@ -22,6 +22,10 @@
 #include "TempDetector.h"
 #endif
 
+#if defined(CONTROL_LED_PAJ7620_SENSOR)
+#include "RevEng_PAJ7620.h"
+#endif
+
 class IotModel {
 private:
   CryptoNetwork cryptoNetwork;
@@ -43,6 +47,10 @@ private:
   RgbaAddressControl rgbaAddressControl = {};
 #elif defined(TYPE_DEVICE_TEMP_SENSOR)
   TempDetector tempDetector = {};
+#endif
+
+#if defined(CONTROL_LED_PAJ7620_SENSOR)
+RevEng_PAJ7620 sensorPajLed = RevEng_PAJ7620();
 #endif
 public:
   IotModel(CryptoNetwork cryptoNetwork, ModelPersistent persistent, Tasker tasker, ModelDataConstruct dataConstruct)
