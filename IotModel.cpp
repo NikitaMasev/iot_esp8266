@@ -28,9 +28,9 @@ void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callba
 #elif defined(TYPE_DEVICE_LAMP)
   updatePower(persistent.getSavedPowerControlState());
 #elif defined(TYPE_DEVICE_RGBA)
-  updateLedConfig(persistent.getSavedLedConfigData());
+  rgbaControl.updateLedConfig(persistent.getSavedLedConfigData());
 #elif defined(TYPE_DEVICE_RGBA_ADDRESS)
-  updateLedConfig(persistent.getSavedLedConfigData());
+  rgbaAddressControl.updateLedAddressConfig(persistent.getSavedLedConfigData());
   RgbaAddressControl *rgbaTick = &this->rgbaAddressControl;
   tasker.runRgbaAddressTask(
     [rgbaTick]() {
@@ -46,22 +46,29 @@ void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callba
 
 #if defined(CONTROL_LED_PAJ7620_SENSOR)
   RgbaAddressControl *rgbaAddrEffectSwitching = &this->rgbaAddressControl;
+  ModelPersistent *persistentEffectSave = &this->persistent;
 
-  gestureDetector.attachLeft([rgbaAddrEffectSwitching]() {
+  gestureDetector.attachLeft([rgbaAddrEffectSwitching, persistentEffectSave]() {
     rgbaAddrEffectSwitching->previousEffect();
+    LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
+    persistentEffectSave->saveLedConfigData(newConfigLed);
   });
-  gestureDetector.attachRight([rgbaAddrEffectSwitching]() {
+  gestureDetector.attachRight([rgbaAddrEffectSwitching, persistentEffectSave]() {
     rgbaAddrEffectSwitching->nextEffect();
+    LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
+    persistentEffectSave->saveLedConfigData(newConfigLed);
   });
-  gestureDetector.attachUp([rgbaAddrEffectSwitching]() {
+  gestureDetector.attachUp([rgbaAddrEffectSwitching, persistentEffectSave]() {
     LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
     newConfigLed.powerOn = true;
     rgbaAddrEffectSwitching->updateLedAddressConfig(newConfigLed);
+    persistentEffectSave->saveLedConfigData(newConfigLed);
   });
-  gestureDetector.attachDown([rgbaAddrEffectSwitching]() {
+  gestureDetector.attachDown([rgbaAddrEffectSwitching, persistentEffectSave]() {
     LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
     newConfigLed.powerOn = false;
     rgbaAddrEffectSwitching->updateLedAddressConfig(newConfigLed);
+    persistentEffectSave->saveLedConfigData(newConfigLed);
   });
 
   GestureDetector *gestureTick = &this->gestureDetector;
@@ -79,6 +86,7 @@ void IotModel::updatePower(bool controlOn) {
 }
 
 void IotModel::updateLedConfig(LedConfigData parsedLedConfig) {
+  persistent.saveLedConfigData(parsedLedConfig);
 #if defined(TYPE_DEVICE_RGBA)
   rgbaControl.updateLedConfig(parsedLedConfig);
 #endif
