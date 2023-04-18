@@ -20,7 +20,7 @@ void Tasker::runTempTask(CallbackTaskerLoop taskTemp) {
 }
 
 void Tasker::runGestureDetector(CallbackTaskerLoop taskGestureDetector) {
-  os.attach(3, taskGestureDetector, 150);  
+  os.attach(3, taskGestureDetector, 70);  
 }
 
 void Tasker::tick() {

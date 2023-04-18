@@ -7,7 +7,7 @@
 class Persistent {
 private:
   bool registered = false;
-  int idDevice;
+  int idDevice = -1;
 
   int getAddressForSavingSideData();
   void updateRegisteredState();

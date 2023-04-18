@@ -20,15 +20,15 @@ String DataConstruct::constructAuth(int idDevice, String typeDevice) {
   String apiStr;
   uint8_t lengthApiChar = String(PKG_CMD_SYMB).length() * 2
                           + String(PKG_CMD_DELIMITER_SYMB).length();
-  String idStr = String(idDevice);
-  char api[lengthApiChar + idStr.length()] = "";
+  char api[lengthApiChar + 8] = "";
+  char tmp[8] = "";
 
   strcat(api, PKG_CMD_SYMB);
-  strcat(api, idStr.c_str());
+  itoa(idDevice, tmp, DEC);
+  strcat(api, tmp);
   strcat(api, PKG_CMD_DELIMITER_SYMB);
   strcat(api, typeDevice.c_str());
   strcat(api, PKG_CMD_SYMB);
-
   apiStr = api;
   return apiStr;
 }

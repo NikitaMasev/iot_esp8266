@@ -13,12 +13,12 @@ void IotNetwork::setup(CallbackConnected callbackConnected, CallbackMessage call
   lastTimeRetryConnection = millis();
   WiFiMulti.addAP(ssid.c_str(), pass.c_str());
 
-  while (WiFiMulti.run() != WL_CONNECTED) {
-    Serial.println("Try connecting to WIFI");
-    delay(1000);
-  }
+  WiFiMulti.run();
 
-  Serial.println("WIFI CONNECTED");
+  // while (WiFiMulti.run() != WL_CONNECTED) {
+  //   Serial.println("Try connecting to WIFI");
+  //   delay(1000);
+  // }
 
   client.onMessage([callbackMessage, this](WebsocketsMessage message) {
     Serial.println("IotNetwork onMessage BEFORE callbackMessage");
@@ -49,7 +49,7 @@ void IotNetwork::setup(CallbackConnected callbackConnected, CallbackMessage call
       Serial.println("IotNetwork WebsocketsEvent::ConnectionClosed");
       iotServerConnected = false;
     } else if (event == WebsocketsEvent::GotPing) {
-      Serial.println("IotNetwork WebsocketsEvent::GotPing");
+      //Serial.println("IotNetwork WebsocketsEvent::GotPing");
       client.pong();
     } else if (event == WebsocketsEvent::GotPong) {
       Serial.println("IotNetwork WebsocketsEvent::GotPong");
@@ -62,6 +62,8 @@ void IotNetwork::setup(CallbackConnected callbackConnected, CallbackMessage call
 }
 
 void IotNetwork::tick() {
+  //WiFiMulti.run();
+
   if (iotServerConnected) {
     client.poll();
   } else if (millis() - lastTimeRetryConnection > TIME_RETRY_CONNECTION) {

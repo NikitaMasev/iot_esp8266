@@ -6,10 +6,11 @@
 void Persistent::setup() {
   EEPROM.begin(SIZE_EEPROM);
   EEPROM.get(0, idDevice);
+  EEPROM.commit();
   EEPROM.end();
   updateRegisteredState();
   Serial.println("ID");
-  Serial.println(idDevice);  
+  Serial.println(idDevice);
 }
 
 void Persistent::updateRegisteredState() {
@@ -19,7 +20,7 @@ void Persistent::updateRegisteredState() {
 void Persistent::saveId(int newId) {
   idDevice = newId;
 
-  EEPROM.begin(sizeof(idDevice));
+  EEPROM.begin(SIZE_EEPROM);
   EEPROM.put(0, idDevice);
   EEPROM.commit();
   EEPROM.end();
@@ -28,10 +29,12 @@ void Persistent::saveId(int newId) {
 }
 
 bool Persistent::getRegistered() {
+  this->setup();
   return registered;
 }
 
 int Persistent::getSavedId() {
+  this->setup();
   return idDevice;
 }
 

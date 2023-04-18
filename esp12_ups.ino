@@ -27,6 +27,8 @@ const Persistent persistent = {};
 void setup() {
   Serial.begin(SERIAL_COMMUNICATION_SPEED);
 
+  Persistent persistent = {};
+
   ModelDataConstruct modelDataConstruct(dataConstruct);  //+
   AuthDataConstruct authDataConstruct(dataConstruct);
 
@@ -36,11 +38,13 @@ void setup() {
   DataParser dataParser;
   Tasker tasker;  //-
 
-  // IotModel iotModel(cryptoNetwork, modelPersistent, tasker, &modelDataConstruct);
+  //IotModel iotModel(cryptoNetwork, modelPersistent, tasker, &modelDataConstruct);
   // iotController = new IotController(iotModel, authPersistent, dataParser, authDataConstruct);
   // (*iotController).setup();
   iotModel = new IotModel(cryptoNetwork, modelPersistent, tasker, modelDataConstruct);
-  authPersistent.setup();
+
+  persistent.setup();
+
   (*iotModel).setup(
     [&authDataConstruct, &authPersistent]() {
       Serial.println("IotController::setup ONCONNECTED BEFORE (*persistent).getRegistered()");
@@ -74,7 +78,6 @@ void setup() {
             Serial.println("newId");
             Serial.println(newId);
             authPersistent.saveId(newId);
-            Serial.println("AFTER SAVE ID");
             return String("");
           }
         case reset_c:
