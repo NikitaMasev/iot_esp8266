@@ -62,7 +62,7 @@ void IotNetwork::setup(CallbackConnected callbackConnected, CallbackMessage call
 }
 
 void IotNetwork::tick() {
-  //WiFiMulti.run();
+  WiFiMulti.run();
 
   if (iotServerConnected) {
     client.poll();

@@ -1,0 +1,432 @@
+[33mcommit 82d7e3f2b49e6d6226d74347b46e6ed57770ec8c[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Apr 18 15:42:56 2023 +0300
+
+    added wifi.run in tick method inside IotNetwork.cpp;
+
+[33mcommit 0b4d7b5669288cb8dc1163d538b871438258b725[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Apr 18 15:40:29 2023 +0300
+
+    fix getting error idDevice, which leads to unauthorization flow;
+
+[33mcommit a1ab2c286f96e0c22b9f423ec520a680e7532f4e[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Sat Mar 11 10:07:42 2023 +0300
+
+    some refactor IotModel.cpp; saving led address effects after changing effects by GestureDetector;
+
+[33mcommit 194b4e91537f3206e9c61d41433039ed7c6a05c5[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Fri Mar 10 12:34:15 2023 +0300
+
+    added feature on\off led address by gesture detector;
+
+[33mcommit ff8f88fd9b0389313fad5dc915e5ee4ced5c995f[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Fri Mar 10 12:06:54 2023 +0300
+
+    fixed runtime exceptions after saving new id device; some clean up code; new entity GestureDetector for switching led address effects;
+
+[33mcommit 18bf5b9ea90ed90ad6fcfbf4c79c8b746fe0c15b[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Fri Mar 10 10:30:00 2023 +0300
+
+    fixed led address tick animation; beta integration PAJ7620 sensor for switching led effects;
+
+[33mcommit c0969ecbdadf4f25678fcb438bd3a0a87b19458b[m
+Merge: 8c3caef 5486c56
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Wed Mar 1 11:40:23 2023 +0300
+
+    Merge branch 'main' of https://github.com/NikitaMasev/iot_esp8266 into main
+
+[33mcommit 5486c56e64dbb5932423b342577b0c0cf890e39d[m
+Author: Nikita Masev <Nikita.Masev@gmail.com>
+Date:   Wed Mar 1 11:29:29 2023 +0300
+
+    Initial commit
+
+[33mcommit 8c3caef56404ba0f75df03c13bb223d2818afd0f[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Wed Mar 1 00:48:45 2023 +0300
+
+    fix compile errors for led address type device;
+
+[33mcommit 78e681d358a7c51a5435fde287d3d2dfea50c021[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Feb 28 16:19:57 2023 +0300
+
+    compiled and runtime stable with const in main uno file;
+
+[33mcommit ab213bc3a77afab9a2686b32da6f617ce49fc32b[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Feb 28 16:12:40 2023 +0300
+
+    compiled and runtime stable with const in main uno file;
+
+[33mcommit 0ac3fda896be8a61f79900778a45e5b3ac29a11c[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Feb 28 15:59:43 2023 +0300
+
+    compiled and runtime stable with const in main uno file;
+
+[33mcommit b32f0c32c092f8d7dc99bf7658f7767716a3a2d7[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Feb 28 13:23:40 2023 +0300
+
+    update main ino file for other type iot devices;
+
+[33mcommit f78306e926f5642f881f61cea32b3325ff6601ca[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Mon Feb 27 17:01:31 2023 +0300
+
+    updated Config.h; global config for all devices; stable runtime without IotController
+
+[33mcommit f4ae815ff4c264471e0d95e8a0e5f2e496a55293[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Mon Feb 27 13:54:14 2023 +0300
+
+    stable without IotController;
+
+[33mcommit 4308a56fbe0346885808174ed36d1a94f55d7136[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Mon Feb 27 12:57:10 2023 +0300
+
+    normal working without IotController, but with it - runtime exception; process fixing;
+
+[33mcommit d10200ab29aea78f4d124c31cddb6f6093e05650[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Sat Feb 25 21:43:58 2023 +0300
+
+    fixed runtime exception with IotModel module; removed tradition path inherritance, applied composition for Persistent and DataConstruct modules; process fixing runtime exception with IotController module;
+
+[33mcommit 981d61daccb8acb29379ecfa125e02d8b75bae31[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Fri Feb 24 19:56:36 2023 +0300
+
+    fixed runtime error in network module; renamed network to iotnetwork; fixed intersections modules from ArduinoWebsockets.h and Network.h;
+
+[33mcommit 0909a172f77b12c45e676b2622f9a8abe7b2c021[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Feb 23 20:32:31 2023 +0300
+
+    refactor all modules, architecture and functional refactor; updated logic of interaction between modules; refactore tasker and GyverOS lib; apply MDC-like pattern; compile version(not tested in prod);
+
+[33mcommit 2a6e04fd1dff2022fc209a72ae7d60e75203fc86[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Sat Feb 18 20:30:46 2023 +0300
+
+    refactor and new features in network and crypto network modules; some cleanup code;
+
+[33mcommit fd32cd3a1d092568833358d6a1775e389bd903b6[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Fri Feb 17 12:31:43 2023 +0300
+
+    refactor naming volt cur
+
+[33mcommit 7481785ed37229b260583ad42289bffc357e73ca[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Fri Feb 17 12:30:40 2023 +0300
+
+    process refactor all modules to c++ style; refactor tasker, temp detector, cooler control, data construct, persistent, power control, rgba control, rgba address control, volt cur controller; (not compliled version)
+
+[33mcommit d0f5960ad31d47683ab267a177ff2f32f9c059e7[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Feb 16 17:09:53 2023 +0300
+
+    refactor network
+
+[33mcommit 2273ea2c2cae2c6ed80361d5fc8cfda210a27676[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Feb 16 12:18:04 2023 +0300
+
+    refactor CryptoAesUtil.h; extracted to single class;
+
+[33mcommit bc908ac00e9659a536e4d1f6a64a25de0772e92a[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Feb 16 11:05:28 2023 +0300
+
+    stable working 2 ups; release 1.0
+
+[33mcommit f3257d948c36eb21065a270d726cffeeb146bbe5[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Jan 26 21:41:03 2023 +0300
+
+    added new type control for reseting relations by id;
+
+[33mcommit 0699c4167bb68748552dc8aa776ec136e5b0e20c[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Jan 26 18:00:38 2023 +0300
+
+    auth flow after successfull re-registration
+
+[33mcommit 37cfe138baf469421098d035f653c298434a901d[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Jan 26 12:17:50 2023 +0300
+
+    changed timings in tasker
+
+[33mcommit 6fd619442228d130998331e1a7efb691fe5857bc[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Wed Jan 25 15:42:41 2023 +0300
+
+    some cleanup TypeDevice.h; more flexible controling power state of leds;
+
+[33mcommit c5c05cf9e7469bfa082d1684dede76c0e4aec18a[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Wed Jan 25 14:36:14 2023 +0300
+
+    removed broken led effects; fixed one color for all leds;
+
+[33mcommit 5b98be66757860424e8710d7ce006ccde3688834[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Jan 24 18:01:58 2023 +0300
+
+    apply color scheme from structure data on effects(event effect has own color scheme)
+
+[33mcommit 954ae3302be6f6c8e77c6c5390fbbbb1f1be0833[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Jan 24 16:05:32 2023 +0300
+
+    process resolving relations between tasker time and timer inside loopLedAddress
+
+[33mcommit 72fa044039112f8c726e28434ee6993e72f71a60[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Jan 24 15:40:09 2023 +0300
+
+    fixing timing 'strob like' effects after adding loop led address into tasker
+
+[33mcommit 79915e061a0830e9a6ea3fe014eb722ec58f6b45[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Jan 24 13:02:32 2023 +0300
+
+    fixing led address animation
+
+[33mcommit a0b020ec8641a4609de73c52d37b668736fcbed3[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Jan 24 11:58:06 2023 +0300
+
+    extracted encr/decr into single file; loop data pusher and network loop as tasker functions
+
+[33mcommit fb13c201b9fd573e02c4e5b4121273088f30534a[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Mon Jan 23 19:30:32 2023 +0300
+
+    refactor IotController.h, main ino file; restructorization of include logic; test new websocket lib with backend(some tiny freezing led address when send encrypted state);
+
+[33mcommit 577e5bfc18f9cc394d81886573b9050acdcb4bcc[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Mon Jan 23 12:11:48 2023 +0300
+
+    beta test integration new websocket lib client - ArduinoWebsockets;
+
+[33mcommit ac60321ef7bcb40209aa7b16cb12ca3de2ca3ac7[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Fri Jan 20 19:33:28 2023 +0300
+
+    removed delay hardcode from 26 led effect; updated timing effect;
+
+[33mcommit c9cb7ba500f7fd1703a53e90f0333fb30ad5cf0e[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Fri Jan 20 17:01:19 2023 +0300
+
+    removed delay in theaterChase(42); changed logic anim in 42 effect;
+
+[33mcommit 600ee7a9b65abe8414a7c9c84df1e485ac31ecc3[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Fri Jan 20 17:00:16 2023 +0300
+
+    removed delay in theaterChase(42); changed logic anim in 42 effect;
+
+[33mcommit 13653cbfd184ef26dcc16a37bcbf23651341fe86[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Fri Jan 20 15:56:38 2023 +0300
+
+    removed delay in runningLights(39); changed logic anim in 39 effect
+
+[33mcommit 978cfbbcc4bed4a35513fcd7bda7192d3e22727f[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Fri Jan 20 15:34:34 2023 +0300
+
+    removed delay in twinkleRandom(38); changed logic anim in 38 effect
+
+[33mcommit 49d5854fe214fa0e1632bcec0b36f80b31ea838a[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Fri Jan 20 15:24:16 2023 +0300
+
+    removed delay in rainbowCycle(37); changed logic anim in 37 effect
+
+[33mcommit 903ae5c08888637f074f9bcf388d91a329ea3ba1[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Fri Jan 20 15:24:01 2023 +0300
+
+    removed delay in rainbowCycle(37); changed logic anim in 37 effect
+
+[33mcommit 13195eb0515bade4d85666162f47ef31e8b6ea97[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Jan 19 19:02:12 2023 +0300
+
+    removed delay in colorWipe, change logic animation; 33 effect
+
+[33mcommit bf91ebbf9d7b85ee477463844f94fe28c8b5f1e9[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Jan 19 18:47:25 2023 +0300
+
+    updated timing in led effect - 29(matrix)
+
+[33mcommit 6cddbb1317e0a89a6201956cc3c84cd94f532aa1[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Jan 19 18:15:52 2023 +0300
+
+    updated timing in led effect - 22 (flame), removed hardcode delays
+
+[33mcommit d08a259af93517b9f26f65ed827a070283e22539[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Jan 19 17:38:47 2023 +0300
+
+    updated timing in led effect - 15(but exist bug - random displaying green color)
+
+[33mcommit b06c0997edeab50eae432ee62ff348dc28fddce5[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Jan 19 14:06:55 2023 +0300
+
+    updated timing in led effect - 9
+
+[33mcommit dced170d30356e0620b17acc5b809ec017d7a587[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Jan 19 14:00:58 2023 +0300
+
+    removed delay hardcode inside led address effect - 44
+
+[33mcommit 0a4a791efcb57aac62a2e842e56735acec0db40a[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Wed Jan 18 14:06:53 2023 +0300
+
+    removed delay hardcode from almost led address effects; 22 effects now working with common thisdelay variable;
+
+[33mcommit cc9a291566e93145c2dba5e6c6d1bd9ff22d1b07[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Jan 17 18:12:26 2023 +0300
+
+    fix jitter led address for 7-8 effects - deleted delay, replaced by timer on millis
+
+[33mcommit b73e214e87772b693305bb62c834eac434f5392e[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Jan 17 14:47:25 2023 +0300
+
+    fix flickering first led
+
+[33mcommit 7330cf13e452842015f73491a65879499286122c[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Jan 17 14:13:57 2023 +0300
+
+    research bug: freezing loop when websocket not connected to server - low performance inside WSclient_t.connect. Not solution(maybe async working inside native lib???)
+
+[33mcommit 351517d08151e4a56869204541b357976eca2499[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Mon Jan 16 20:14:37 2023 +0300
+
+    fix flickering wifi + fastled lib - working only esp8266 core 3.1.1 and fastled 3.4.0; full test logic with backend for rgba address(led address)
+
+[33mcommit 514a9041acf5ab36d4832bf64f101687bc15febb[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Mon Jan 16 18:47:44 2023 +0300
+
+    tested logic saving/restoring/parsing led config data; founded bugs: wifi with led address not working - crash address animations
+
+[33mcommit 85e256f5166900da825884d2f58b047898b3f5cf[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Fri Jan 13 22:10:04 2023 +0300
+
+    fully tested logic for lamp(switch) type device; fix saving and restoring power state for lamp type device
+
+[33mcommit c6636b478f903bf3e8a71972cfbc036a056d17b1[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Fri Jan 13 15:31:01 2023 +0300
+
+    fix parsing logic for ups; fully tested logic with backend for ups device
+
+[33mcommit b0bb1715782befc6d448d201fb31ac91dcfbb73b[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Jan 12 12:08:16 2023 +0300
+
+    some refactor names; change const char symbols packages to define
+
+[33mcommit cdf9e73f0c6ccc5a486bb6e768fb02a934f5be40[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Jan 10 16:29:32 2023 +0300
+
+    constructung data for lamp(switch), rgba, rgba address abd temp sensor;(not tested)
+
+[33mcommit c2981bbb8c318e7b7f586836f4ac9294fa596dc9[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Jan 10 13:58:26 2023 +0300
+
+    loop data pusher; constructing ups data; (not tested)
+
+[33mcommit e6bc74a06ab81653b260ec64a37f23f954f570af[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Tue Jan 10 11:08:30 2023 +0300
+
+    some refactor names; integrated gyverOS for ups(carcass, not tested)
+
+[33mcommit e571e88997f37b262c82a90700f9094d0ca2db02[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Dec 29 23:06:49 2022 +0300
+
+    some refactor; added todo things;
+
+[33mcommit 1bbeabc13985418edaa62cf677f66f15e05ac255[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Wed Dec 28 13:20:02 2022 +0300
+
+    fix registered conditions by id
+
+[33mcommit 688f0751a1f42fb95d8fc1f4e9513b5ef8dba76b[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Wed Dec 28 13:12:42 2022 +0300
+
+    added feature saving state power control, rgba, rgba address; some refactor setup functions for different type devices;
+
+[33mcommit 5e17478c53be4a4398c6ff4195c06b4ee509876c[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Wed Dec 21 17:59:47 2022 +0300
+
+    added carcass rgba led address; some refactor models structure; on/off feature for led;
+
+[33mcommit 0e82317604c18bd3e6c65842ca6b81cc1270f89b[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Sun Dec 18 23:45:25 2022 +0300
+
+    added carcass rgba control, conditions compilation for rgba control
+
+[33mcommit 4a873f566ac3a26cf16c8869f2c66ce032a41c71[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Sat Dec 17 21:41:52 2022 +0300
+
+    full logic auth, register; carcass for lamp type device; condition compilation by type device
+
+[33mcommit 8ad349dbdc9a7ccdabe46f621f9f9613165f6a14[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Fri Dec 16 20:56:59 2022 +0300
+
+    added carcass iot adapter; some parse function; auth and register construct function
+
+[33mcommit 96bf77ae23353fe88c849a7aa564aa59eeab8da5[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Dec 15 11:46:29 2022 +0300
+
+    update type device header file, conversation to allowing type control by type device
+
+[33mcommit bcbf944ee223fc6a07c1418ff6df8bd1896683d6[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Thu Dec 15 00:07:02 2022 +0300
+
+    added type control enum, convert function for type device enum
+
+[33mcommit a8020a60412d7dc74a21e60fbc9fd322d252d13e[m
+Author: Nikita Masev <n.masev@bastion-tech.ru>
+Date:   Wed Dec 14 13:39:07 2022 +0300
+
+    start iot project

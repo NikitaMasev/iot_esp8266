@@ -30,12 +30,12 @@ void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callba
 #elif defined(TYPE_DEVICE_RGBA)
   rgbaControl.updateLedConfig(persistent.getSavedLedConfigData());
 #elif defined(TYPE_DEVICE_RGBA_ADDRESS)
-  // rgbaAddressControl.updateLedAddressConfig(persistent.getSavedLedConfigData());
-  // RgbaAddressControl *rgbaTick = &this->rgbaAddressControl;
-  // tasker.runRgbaAddressTask(
-  //   [rgbaTick]() {
-  //     rgbaTick->tick();
-  //   });
+  rgbaAddressControl.updateLedAddressConfig(persistent.getSavedLedConfigData());
+  RgbaAddressControl *rgbaTick = &this->rgbaAddressControl;
+  tasker.runRgbaAddressTask(
+    [rgbaTick]() {
+      rgbaTick->tick();
+    });
 #elif defined(TYPE_DEVICE_TEMP_SENSOR)
   tasker.runTempTask(
     [this]() {
@@ -45,37 +45,37 @@ void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callba
   cryptoNetwork.setup(callbackConnected, callbackMessage);
 
 #if defined(CONTROL_LED_PAJ7620_SENSOR)
-  // RgbaAddressControl *rgbaAddrEffectSwitching = &this->rgbaAddressControl;
-  // ModelPersistent *persistentEffectSave = &this->persistent;
+  RgbaAddressControl *rgbaAddrEffectSwitching = &this->rgbaAddressControl;
+  ModelPersistent *persistentEffectSave = &this->persistent;
 
-  // gestureDetector.attachLeft([rgbaAddrEffectSwitching, persistentEffectSave]() {
-  //   LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
-  //   newConfigLed.powerOn = true;
-  //   rgbaAddrEffectSwitching->updateLedAddressConfig(newConfigLed);
-  //   persistentEffectSave->saveLedConfigData(newConfigLed);
-  // });
-  // gestureDetector.attachRight([rgbaAddrEffectSwitching, persistentEffectSave]() {
-  //   LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
-  //   newConfigLed.powerOn = false;
-  //   rgbaAddrEffectSwitching->updateLedAddressConfig(newConfigLed);
-  //   persistentEffectSave->saveLedConfigData(newConfigLed);
-  // });
-  // gestureDetector.attachUp([rgbaAddrEffectSwitching, persistentEffectSave]() {
-  //   rgbaAddrEffectSwitching->nextEffect();
-  //   LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
-  //   persistentEffectSave->saveLedConfigData(newConfigLed);
-  // });
-  // gestureDetector.attachDown([rgbaAddrEffectSwitching, persistentEffectSave]() {
-  //   rgbaAddrEffectSwitching->previousEffect();
-  //   LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
-  //   persistentEffectSave->saveLedConfigData(newConfigLed);
-  // });
+  gestureDetector.attachLeft([rgbaAddrEffectSwitching, persistentEffectSave]() {
+    LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
+    newConfigLed.powerOn = true;
+    rgbaAddrEffectSwitching->updateLedAddressConfig(newConfigLed);
+    persistentEffectSave->saveLedConfigData(newConfigLed);
+  });
+  gestureDetector.attachRight([rgbaAddrEffectSwitching, persistentEffectSave]() {
+    LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
+    newConfigLed.powerOn = false;
+    rgbaAddrEffectSwitching->updateLedAddressConfig(newConfigLed);
+    persistentEffectSave->saveLedConfigData(newConfigLed);
+  });
+  gestureDetector.attachUp([rgbaAddrEffectSwitching, persistentEffectSave]() {
+    rgbaAddrEffectSwitching->nextEffect();
+    LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
+    persistentEffectSave->saveLedConfigData(newConfigLed);
+  });
+  gestureDetector.attachDown([rgbaAddrEffectSwitching, persistentEffectSave]() {
+    rgbaAddrEffectSwitching->previousEffect();
+    LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
+    persistentEffectSave->saveLedConfigData(newConfigLed);
+  });
 
-  // GestureDetector *gestureTick = &this->gestureDetector;
+  GestureDetector *gestureTick = &this->gestureDetector;
 
-  // tasker.runGestureDetector([gestureTick]() {
-  //   gestureTick->tick();
-  // });
+  tasker.runGestureDetector([gestureTick]() {
+    gestureTick->tick();
+  });
 #endif
 }
 
