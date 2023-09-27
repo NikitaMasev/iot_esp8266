@@ -41,6 +41,7 @@ private:
   const int runningLightsCount = LED_COUNT * 2;
   int indexRunningLights = 0;
 
+  const int theaterChaseRainbowCycles = 255;
   const int theaterChaseCycles = 10;
   const int theaterChaseQ = 3;
   int indexCycleTheaterChase = 0;
@@ -53,7 +54,6 @@ private:
 
   int strobeCounter = 0;
   bool previousOn = false;
-  long lastTimeStrobe;
   int strobeAnim = delayFlash;
 
   LedConfigData ledConfigData = {
@@ -115,14 +115,14 @@ public:
   void strip_march_cw();
   void strip_march_ccw();
   void new_rainbow_loop();
-  void colorWipe(byte red, byte green, byte blue, byte redWipe, byte greenWipe, byte blueWipe);
+  void colorWipe(byte redWipe, byte greenWipe, byte blueWipe);
   void setPixelHeatColor(int Pixel, byte temperature);
   void Fire(int Cooling, int Sparking);
   byte *Wheel(byte WheelPos);
   void rainbowCycle();
   void TwinkleRandom();
-  void RunningLights(byte red, byte green, byte blue);
-  void theaterChase(byte red, byte green, byte blue);
-  void theaterChaseRainbow(int SpeedDelay);
-  void Strobe(byte red, byte green, byte blue);
+  void RunningLights();
+  void theaterChase();
+  void theaterChaseRainbow();
+  void Strobe();
 };

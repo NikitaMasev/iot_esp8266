@@ -34,9 +34,6 @@ private:
   ModelPersistent persistent;
 
   void tickDataPusher();
-  #if defined(CONTROL_LED_PAJ7620_SENSOR)
-  void tickSensorRgba();
-#endif
 
 #if defined(TYPE_DEVICE_UPS)
   TempDetector tempDetector = {};
@@ -53,8 +50,9 @@ private:
 #endif
 
 #if defined(CONTROL_LED_PAJ7620_SENSOR)
-GestureDetector gestureDetector = {};
+  GestureDetector gestureDetector = {};
 #endif
+
 public:
   IotModel(CryptoNetwork cryptoNetwork, ModelPersistent persistent, Tasker tasker, ModelDataConstruct dataConstruct)
     : cryptoNetwork(cryptoNetwork), persistent(persistent), tasker(tasker), dataConstruct(dataConstruct){};

@@ -2,7 +2,6 @@
 
 #include "RevEng_PAJ7620.h"
 #include "DataTypes.h"
-#include "Arduino.h"
 
 #define COUNT_CALLBACKS 1
 

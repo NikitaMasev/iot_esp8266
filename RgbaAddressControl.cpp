@@ -1,3 +1,4 @@
+#include "core_esp8266_features.h"
 #include "RgbaAddressControl.h"
 
 LedConfigData RgbaAddressControl::getLedAddressConfig() {
@@ -11,12 +12,14 @@ void RgbaAddressControl::updateLedAddressConfig(LedConfigData newConfigData) {
 
   ledConfigData = newConfigData;
   rgbaAddressEffectsUtil.updateConfig(ledConfigData);
-  updatePowerState();
+  updatePower(ledConfigData.powerOn);
   applyLedInternalConfig();
 }
 
-void RgbaAddressControl::updatePowerState() {
-  if (ledConfigData.powerOn) {
+void RgbaAddressControl::updatePower(bool powerOn) {
+  ledConfigData.powerOn = powerOn;
+
+  if (powerOn) {
     LEDS.setBrightness(ledConfigData.v);  // ограничить максимальную яркость
   } else {
     LEDS.setBrightness(0);
@@ -27,7 +30,7 @@ void RgbaAddressControl::nextEffect() {
   if (ledConfigData.mode != END_EFFECT_LED_ADDR) {
     ledConfigData.mode++;
     updateLedAddressConfig(ledConfigData);
-  }    
+  }
 }
 
 void RgbaAddressControl::previousEffect() {
@@ -112,14 +115,14 @@ void RgbaAddressControl::applyLedInternalConfig() {
     case 30: rgbaAddressEffectsUtil.thisdelay = 10; break;  // rainbowTwinkle
     case 31:
       rgbaAddressEffectsUtil.thisdelay = 50;
-      break;  // RunningLights
-    //case 42: thisdelay = 50; break;  // theaterChase
-    //case 43: thisdelay = 50; break;  // theaterChaseRainbow
-    case 32: rgbaAddressEffectsUtil.thisdelay = 0; break;  // Strobe
+      break;                                                 // RunningLights
+    case 32: rgbaAddressEffectsUtil.thisdelay = 100; break;  // Strobe
     case 33:
       rgbaAddressEffectsUtil.one_color_allHSV();
       LEDS.show();
       break;
+    case 34: rgbaAddressEffectsUtil.thisdelay = 50; break;  // theaterChase
+    case 35: rgbaAddressEffectsUtil.thisdelay = 50; break;  // theaterChaseRainbow
   }
 
   rgbaAddressEffectsUtil.bouncedirection = 0;
@@ -156,24 +159,26 @@ void RgbaAddressControl::tick() {
       case 25: rgbaAddressEffectsUtil.matrix(); break;                   // зелёненькие бегают по кругу случайно OK ?
       case 26: rgbaAddressEffectsUtil.new_rainbow_loop(); break;         // крутая плавная вращающаяся радуга  OK
       case 27:
-        rgbaAddressEffectsUtil.colorWipe(0x00, 0xff, 0x00, 0x00, 0x00, 0x00);  // OK
+        rgbaAddressEffectsUtil.colorWipe(0x00, 0x00, 0x00);  // OK
         break;
       case 28: rgbaAddressEffectsUtil.Fire(55, 120); break;    // линейный огонь          OK
       case 29: rgbaAddressEffectsUtil.rainbowCycle(); break;   // очень плавная вращающаяся радуга OK
       case 30: rgbaAddressEffectsUtil.TwinkleRandom(); break;  // случайные разноцветные включения (1 - танцуют все, 0 - случайный 1 диод) OK
       case 31:
-        rgbaAddressEffectsUtil.RunningLights(0xff, 0xff, 0x00);
+        rgbaAddressEffectsUtil.RunningLights();
         break;  // бегущие огни        OK ?
-      //case 42: theaterChase(0xff, 0, 0); break;         // бегущие каждые 3 (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3) OK, НО НЕ РАБОТАЕТ АДЕКВАТНО
-      //case 43: theaterChaseRainbow(thisdelay); break;   // бегущие каждые 3 радуга (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3) НЕ РАБОТАЕТ АДЕКВАТНО
       case 32:
-        rgbaAddressEffectsUtil.Strobe(0xff, 0xff, 0xff);
+        rgbaAddressEffectsUtil.Strobe();
         break;  // стробоскоп OK
       case 33:
         rgbaAddressEffectsUtil.one_color_allHSV();
         LEDS.show();
         break;
+      case 34: rgbaAddressEffectsUtil.theaterChase(); break;         // бегущие каждые 3 (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3) OK, НО НЕ РАБОТАЕТ АДЕКВАТНО
+      case 35: rgbaAddressEffectsUtil.theaterChaseRainbow(); break;  // бегущие каждые 3 радуга (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3) НЕ РАБОТАЕТ АДЕКВАТНО
     }
-    lastTimeUpdateLed = millis() + 12;
+    lastTimeUpdateLed = millis();
+  } else {
+    LEDS.show();
   }
 }

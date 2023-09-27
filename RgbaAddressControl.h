@@ -13,28 +13,31 @@ private:
     h: 100,
     s: 255,
     v: 180,
-    mode: 10,
+    mode: 3,
     powerOn: true,
   };
 
   long lastTimeUpdateLed = 0;
 
-  void updatePowerState();
   void applyLedInternalConfig();
 public:
   RgbaAddressControl()
     : rgbaAddressEffectsUtil(leds) {
+    LEDS.addLeds<WS2811, LED_DT, BRG>(leds, LED_COUNT);
+    rgbaAddressEffectsUtil.one_color_all(0, 0, 0);
+    LEDS.show();
+
+    applyLedInternalConfig();
     rgbaAddressEffectsUtil.updateConfig(ledConfigData);
-    LEDS.addLeds<WS2811, LED_DT, BRG>(leds, LED_COUNT);  // настрйоки для нашей ленты (ленты на WS2811, WS2812, WS2812B)
-    rgbaAddressEffectsUtil.one_color_all(0, 0, 0);       // погасить все светодиоды
-    LEDS.show();                                         // отослать команду
+    LEDS.show();
 
     randomSeed(analogRead(0));
   };
-  
+
   void nextEffect();
   void previousEffect();
   void updateLedAddressConfig(LedConfigData newConfigData);
+  void updatePower(bool powerOn);
   LedConfigData getLedAddressConfig();
   void tick();
 };

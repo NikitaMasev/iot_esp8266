@@ -20,5 +20,6 @@ private:
 public:
   RgbaControl();
   void updateLedConfig(LedConfigData newConfigData);
+  void updatePower(bool powerOn);
   LedConfigData getLedConfig();
 };

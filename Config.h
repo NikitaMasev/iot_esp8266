@@ -4,11 +4,11 @@
 
 //#define TYPE_DEVICE_UPS
 //#define TYPE_DEVICE_LAMP
-//#define TYPE_DEVICE_RGBA
+//#define TYPE_DEVICE_RGBA ///TODO NEED FIX
 #define TYPE_DEVICE_RGBA_ADDRESS
 //#define TYPE_DEVICE_TEMP_SENSOR
 
-#define CONTROL_LED_PAJ7620_SENSOR
+#define CONTROL_LED_PAJ7620_SENSOR ///??? LAGS LED ANIMATION (reason - call sensorPajLed.begin() in GestureDetector)
 
 #define PKG_CMD_SYMB "^"
 #define PKG_CMD_DELIMITER_SYMB ":"
@@ -18,14 +18,16 @@
 
 #define SERIAL_COMMUNICATION_SPEED 9600
 
-const constexpr char *ssid = "CrynetSystem";
-const constexpr char *password = "******";
+const constexpr char *ssid = "";
+const constexpr char *password = "";
 const constexpr char *iotServer = "ws://192.168.50.213:5080";
+//const constexpr char *iotServer = "ws://192.168.50.143:5080";
 
-const constexpr uint8_t cipher_key[] = { };
-const constexpr uint8_t cipher_iv[] = { };
+const constexpr uint8_t cipher_key[] = {48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 53, 54, 49, 48, 49, 49 };
+const constexpr uint8_t cipher_iv[] = { 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48};
 
 ///UPS START
+//IO5/D1 - SCL, IO4/D2 - SDA
 ////For Cooler
 #define PIN_PWM_COOLER 14
 #define TEMP_HIGH_UPS 58.0f    //C
@@ -35,9 +37,10 @@ const constexpr uint8_t cipher_iv[] = { };
 #define HIGH_PWM_COOLER 255
 ///For VoltageCurrent Sensor
 #define SAMPLES_VOLT_CUR 10
+#define VOLTAGE_DROP_CALIBRATE 0.215f
 ///For Temp Sensor
-#define PIM_TEMP_DC 2
-#define PIM_TEMP_ACC 13
+#define PIM_TEMP_DC 2 //D4
+#define PIM_TEMP_ACC 13 //D7
 #define TEMP_SENSOR_COUNT 2
 #define TEMP_NOT_UPDATED -8000L
 #define TIME_UPDATE_TEMP 750
@@ -51,6 +54,7 @@ const constexpr uint8_t cipher_iv[] = { };
 #define PIN_B 11
 ///LED RGB END
 ///LED RGB ADDRESS START
-#define LED_DT 14      // пин, куда подключен DIN ленты
-#define LED_COUNT 100  // число светодиодов в кольце/ленте
+///14/D5
+#define LED_DT 14 //14      // пин, куда подключен DIN ленты
+#define LED_COUNT 140  // число светодиодов в кольце/ленте
 ///LED RGB ADDRESS END

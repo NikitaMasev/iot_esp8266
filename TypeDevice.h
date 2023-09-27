@@ -33,7 +33,7 @@ const TypeDevice currentTypeDevice = rgba;
 const TypeDevice currentTypeDevice = rgbaAddress;
 #elif defined(TYPE_DEVICE_TEMP_SENSOR)
 const TypeDevice currentTypeDevice = tempSensor;
-#elif
+#else
 const TypeDevice currentTypeDevice = unknown;
 #endif
 
@@ -68,8 +68,8 @@ const static struct {
 } typeDeviceToTypeControl[] = {
   { ups, { register_c, reset_c } },
   { lamp, { powerOn_c, powerOff_c, register_c, reset_c } },
-  { rgba, { register_c, rgba_c, reset_c } },
-  { rgbaAddress, { register_c, rgbaEffects_c, reset_c } },
+  { rgba, { register_c, rgba_c, reset_c, powerOn_c, powerOff_c } },
+  { rgbaAddress, { register_c, rgbaEffects_c, reset_c, powerOn_c, powerOff_c } },
   { tempSensor, { register_c, reset_c } },
   { unknown, {} },
 };

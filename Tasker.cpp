@@ -12,7 +12,7 @@ void Tasker::runUpsTasks(CallbackTaskerLoop taskCooler, CallbackTaskerLoop taskT
 }
 
 void Tasker::runRgbaAddressTask(CallbackTaskerLoop taskRgba) {
-  os.attach(2, taskRgba, 10);  //10 OK 20??
+  os.attach(2, taskRgba, 0);//2
 }
 
 void Tasker::runTempTask(CallbackTaskerLoop taskTemp) {
@@ -20,7 +20,7 @@ void Tasker::runTempTask(CallbackTaskerLoop taskTemp) {
 }
 
 void Tasker::runGestureDetector(CallbackTaskerLoop taskGestureDetector) {
-  os.attach(3, taskGestureDetector, 70);  
+  os.attach(3, taskGestureDetector, 50);  
 }
 
 void Tasker::tick() {

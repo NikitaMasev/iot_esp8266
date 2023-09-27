@@ -16,7 +16,7 @@ void CryptoNetwork::setup(CallbackConnected callbackConnected, CallbackMessage c
       String dataForService = callbackConnected();
       Serial.println("CryptoNetwork AFTER callbackConnected");
       Serial.println(dataForService);
-      
+
       if (!dataForService.isEmpty()) {
         Serial.println("CryptoNetwork !dataForService.isEmpty()");
         String encr = cryptoAesUtil.encrypt(dataForService);

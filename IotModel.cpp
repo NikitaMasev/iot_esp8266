@@ -5,13 +5,16 @@
 #include "Arduino.h"
 
 void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callbackMessage) {
-  CryptoNetwork *cryptoNetworkVar = &this->cryptoNetwork;
+  //CryptoNetwork *cryptoNetworkVar = &this->cryptoNetwork;
 
   tasker.runMainTasks(
-    [cryptoNetworkVar]() {
-      cryptoNetworkVar->tick();
+    [this]() {
+      //delay(1);
+      //cryptoNetworkVar->tick();
+      this->cryptoNetwork.tick();
     },
     [this]() {
+      //delay(1);
       this->tickDataPusher();
     });
 #if defined(TYPE_DEVICE_UPS)
@@ -82,6 +85,15 @@ void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callba
 void IotModel::updatePower(bool controlOn) {
 #if defined(TYPE_DEVICE_LAMP)
   powerControl.updatePower(controlOn);
+  persistent.savePowerControlState(controlOn);
+#endif
+#if defined(TYPE_DEVICE_RGBA)
+  rgbaControl.updatePower(controlOn);
+  persistent.saveLedConfigData(rgbaControl.getLedAddressConfig());
+#endif
+#if defined(TYPE_DEVICE_RGBA_ADDRESS)
+  rgbaAddressControl.updatePower(controlOn);
+  persistent.saveLedConfigData(rgbaAddressControl.getLedAddressConfig());
 #endif
 }
 

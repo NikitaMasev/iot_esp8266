@@ -470,7 +470,6 @@ void RgbaAddressEffectsUtil::flame() {  //-m22-FLAMEISH EFFECT
     randtemp = random(0, 3);
     hinc = (hdif / float(TOP_INDEX)) + randtemp;
     ihueFlame = hmin;
-    Serial.println(thisdelay);
   }
 
   if (indexFlame <= TOP_INDEX) {
@@ -635,10 +634,14 @@ void RgbaAddressEffectsUtil::new_rainbow_loop() {  //-m88-RAINBOW FADE FROM FAST
 //-----------------------------плавное заполнение цветом-----------------------------------------
 
 
-void RgbaAddressEffectsUtil::colorWipe(byte red, byte green, byte blue, byte redWipe, byte greenWipe, byte blueWipe) {
+void RgbaAddressEffectsUtil::colorWipe(byte redWipe, byte greenWipe, byte blueWipe) {
+  CHSV hsv(ledConfigData.h, ledConfigData.s, ledConfigData.v);
+  CRGB rgb;
+  hsv2rgb_rainbow(hsv, rgb);
+
   if (indexColorWipe < LED_COUNT) {
     if (colorWipeFirst) {
-      setPixel(indexColorWipe, red, green, blue);
+      setPixel(indexColorWipe, rgb.red, rgb.green, rgb.blue);
     } else {
       setPixel(indexColorWipe, redWipe, greenWipe, blueWipe);
     }
@@ -766,12 +769,16 @@ void RgbaAddressEffectsUtil::TwinkleRandom() {
 }
 
 //-------------------------------RunningLights---------------------------------------
-void RgbaAddressEffectsUtil::RunningLights(byte red, byte green, byte blue) {
+void RgbaAddressEffectsUtil::RunningLights() {
+  CHSV hsv(ledConfigData.h, ledConfigData.s, ledConfigData.v);
+  CRGB rgb;
+  hsv2rgb_rainbow(hsv, rgb);
+
   if (indexRunningLights < runningLightsCount) {
     for (int i = 0; i < LED_COUNT; i++) {
-      setPixel(i, ((sin(i + indexRunningLights + 1) * 127 + 128) / 255) * red,
-               ((sin(i + indexRunningLights + 1) * 127 + 128) / 255) * green,
-               ((sin(i + indexRunningLights + 1) * 127 + 128) / 255) * blue);
+      setPixel(i, ((sin(i + indexRunningLights + 1) * 127 + 128) / 255) * rgb.red,
+               ((sin(i + indexRunningLights + 1) * 127 + 128) / 255) * rgb.green,
+               ((sin(i + indexRunningLights + 1) * 127 + 128) / 255) * rgb.blue);
     }
     FastLED.show();
     indexRunningLights++;
@@ -781,10 +788,13 @@ void RgbaAddressEffectsUtil::RunningLights(byte red, byte green, byte blue) {
 }
 
 //-------------------------------theaterChase---------------------------------------
-void RgbaAddressEffectsUtil::theaterChase(byte red, byte green, byte blue) {
+void RgbaAddressEffectsUtil::theaterChase() {
   if (indexQTheaterChase < theaterChaseQ && theaterChaseTurnMode) {
+    CHSV hsv(ledConfigData.h, ledConfigData.s, ledConfigData.v);
+    CRGB rgb;
+    hsv2rgb_rainbow(hsv, rgb);
     for (int i = 0; i < LED_COUNT; i = i + 3) {
-      setPixel(i + indexQTheaterChase, red, green, blue);  //turn every third pixel on
+      setPixel(i + indexQTheaterChase, rgb.red, rgb.green, rgb.blue);  //turn every third pixel on
     }
     FastLED.show();
     theaterChaseTurnMode = false;
@@ -805,45 +815,72 @@ void RgbaAddressEffectsUtil::theaterChase(byte red, byte green, byte blue) {
 }
 
 //-------------------------------theaterChaseRainbow---------------------------------------
-void RgbaAddressEffectsUtil::theaterChaseRainbow(int SpeedDelay) {
+void RgbaAddressEffectsUtil::theaterChaseRainbow() {
   byte *c;
 
-  for (int j = 0; j < 256; j++) {  // cycle all 256 colors in the wheel
-    for (int q = 0; q < 3; q++) {
-      for (int i = 0; i < LED_COUNT; i = i + 3) {
-        c = Wheel((i + j) % 255);
-        setPixel(i + q, *c, *(c + 1), *(c + 2));  //turn every third pixel on
-      }
-      FastLED.show();
-      delay(SpeedDelay);
-      for (int i = 0; i < LED_COUNT; i = i + 3) {
-        setPixel(i + q, 0, 0, 0);  //turn every third pixel off
-      }
+  if (indexQTheaterChase < theaterChaseQ && theaterChaseTurnMode) {
+    for (int i = 0; i < LED_COUNT; i = i + 3) {
+      c = Wheel((i + indexCycleTheaterChase) % 255);
+      setPixel(i + indexQTheaterChase, *c, *(c + 1), *(c + 2));  //turn every third pixel on
     }
+    FastLED.show();
+    theaterChaseTurnMode = false;
+  } else if (indexQTheaterChase < theaterChaseQ && !theaterChaseTurnMode) {
+    for (int i = 0; i < LED_COUNT; i = i + 3) {
+      setPixel(i + indexQTheaterChase, 0, 0, 0);  //turn every third pixel off
+    }
+    theaterChaseTurnMode = true;
+    indexQTheaterChase++;
+  } else if (indexQTheaterChase == theaterChaseQ && indexCycleTheaterChase < theaterChaseRainbowCycles) {
+    indexQTheaterChase = 0;
+    indexCycleTheaterChase++;
+    theaterChaseTurnMode = true;
+  } else if (indexCycleTheaterChase == theaterChaseRainbowCycles) {
+    indexCycleTheaterChase = 0;
+    theaterChaseTurnMode = true;
   }
 }
+// void RgbaAddressEffectsUtil::theaterChaseRainbow(int SpeedDelay) {
+//   byte *c;
+
+//   for (int j = 0; j < 256; j++) {  // cycle all 256 colors in the wheel
+//     for (int q = 0; q < 3; q++) {
+//       for (int i = 0; i < LED_COUNT; i = i + 3) {
+//         c = Wheel((i + j) % 255);
+//         setPixel(i + q, *c, *(c + 1), *(c + 2));  //turn every third pixel on
+//       }
+//       FastLED.show();
+//       //delay(SpeedDelay);
+//       for (int i = 0; i < LED_COUNT; i = i + 3) {
+//         setPixel(i + q, 0, 0, 0);  //turn every third pixel off
+//       }
+//     }
+//   }
+// }
 
 //-------------------------------Strobe---------------------------------------
-void RgbaAddressEffectsUtil::Strobe(byte red, byte green, byte blue) {
-  if (millis() - lastTimeStrobe > strobeAnim) {
-    if (strobeCounter == strobeCount) {
-      strobeAnim = delayPause;
-      strobeCounter = 0;
+void RgbaAddressEffectsUtil::Strobe() {
+  CHSV hsv(ledConfigData.h, ledConfigData.s, ledConfigData.v);
+  CRGB rgb;
+  hsv2rgb_rainbow(hsv, rgb);
+
+  if (strobeCounter == strobeCount) {
+    thisdelay = delayPause;
+    strobeCounter = 0;
+    setAll(0, 0, 0);
+
+    FastLED.show();
+  } else {
+    if (previousOn) {
       setAll(0, 0, 0);
-      FastLED.show();
     } else {
-      if (previousOn) {
-        setAll(0, 0, 0);
-      } else {
-        setAll(red, green, blue);
-      }
-      FastLED.show();
-      strobeAnim = delayFlash;
-      strobeCounter++;
-      previousOn = !previousOn;
+      setAll(rgb.red, rgb.green, rgb.blue);
     }
 
-    lastTimeStrobe = millis();
+    FastLED.show();
+    thisdelay = delayFlash;
+    strobeCounter++;
+    previousOn = !previousOn;
   }
 }
 

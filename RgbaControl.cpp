@@ -4,6 +4,11 @@ LedConfigData RgbaControl::getLedConfig() {
   return ledConfigData;
 }
 
+void RgbaControl::updatePower(bool powerOn) {
+  ledControl.setPower(powerOn);
+  ledConfigData.powerOn = powerOn;
+}
+
 RgbaControl::RgbaControl() {
   ledControl.setCRT(true);
 }

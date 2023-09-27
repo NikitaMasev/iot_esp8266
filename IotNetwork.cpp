@@ -1,3 +1,4 @@
+#include "core_esp8266_features.h"
 #include "IotNetwork.h"
 #include "Arduino.h"
 
@@ -14,7 +15,6 @@ void IotNetwork::setup(CallbackConnected callbackConnected, CallbackMessage call
   WiFiMulti.addAP(ssid.c_str(), pass.c_str());
 
   WiFiMulti.run();
-
   // while (WiFiMulti.run() != WL_CONNECTED) {
   //   Serial.println("Try connecting to WIFI");
   //   delay(1000);

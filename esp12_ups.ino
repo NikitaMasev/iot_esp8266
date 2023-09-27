@@ -92,7 +92,7 @@ void setup() {
           }
         case powerOn_c:
           {
-            iotModel->updatePower(false);
+            iotModel->updatePower(true);
             return String("");
           }
         case rgba_c:

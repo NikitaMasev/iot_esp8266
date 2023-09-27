@@ -18,7 +18,7 @@ void VoltCurController::updateVoltageAndCurrent() {
     loadvoltage += busvoltage + (shuntvoltage / 1000);
   }
   currentDC = current_mA / SAMPLES_VOLT_CUR;
-  voltageDC = loadvoltage / SAMPLES_VOLT_CUR;
+  voltageDC = loadvoltage / SAMPLES_VOLT_CUR + VOLTAGE_DROP_CALIBRATE;
 }
 
 void VoltCurController::tick() {
