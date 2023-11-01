@@ -20,3 +20,7 @@ String ModelDataConstruct::constructSwitchData(bool powerState) {
 String ModelDataConstruct::constructTempsData(float temps[], int length) {
   return dataConstruct.constructTempsData(temps, length);
 }
+
+String ModelDataConstruct::constructLedCctConfigData(LedCctConfigData ledConfigData) {
+  return dataConstruct.constructLedCctConfigData(ledConfigData);
+}

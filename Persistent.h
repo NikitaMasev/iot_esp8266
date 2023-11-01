@@ -19,6 +19,10 @@ public:
 
   void savePowerControlState(bool newState);
   bool getSavedPowerControlState();
+
   void saveLedConfigData(LedConfigData ledConfigData);
   LedConfigData getSavedLedConfigData();
+
+  void saveLedCctConfigData(LedCctConfigData ledConfigData);
+  LedCctConfigData getSavedLedCctConfigData();
 };

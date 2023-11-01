@@ -9,6 +9,7 @@ enum TypeDevice {
   lamp,
   rgba,
   rgbaAddress,
+  ledCct,
   tempSensor,
   unknown,
 };
@@ -18,6 +19,7 @@ enum TypeControl {
   powerOff_c,
   rgba_c,
   rgbaEffects_c,
+  ledCct_c,
   register_c,
   reset_c,
   unknown_c,
@@ -33,6 +35,8 @@ const TypeDevice currentTypeDevice = rgba;
 const TypeDevice currentTypeDevice = rgbaAddress;
 #elif defined(TYPE_DEVICE_TEMP_SENSOR)
 const TypeDevice currentTypeDevice = tempSensor;
+#elif defined(TYPE_DEVICE_LED_CCT)
+const TypeDevice currentTypeDevice = ledCct;
 #else
 const TypeDevice currentTypeDevice = unknown;
 #endif
@@ -45,6 +49,7 @@ const static struct {
   { lamp, "lamp" },
   { rgba, "rgba" },
   { rgbaAddress, "rgbaAddress" },
+  { ledCct, "ledCct" },
   { tempSensor, "tempSensor" },
   { unknown, "unknown" },
 };
@@ -57,6 +62,7 @@ const static struct {
   { powerOff_c, "powerOff" },
   { rgba_c, "rgba" },
   { rgbaEffects_c, "rgbaEffects" },
+  { ledCct_c, "ledCct" },
   { register_c, "register" },
   { reset_c, "reset" },
   { unknown_c, "unknown" },
@@ -70,6 +76,7 @@ const static struct {
   { lamp, { powerOn_c, powerOff_c, register_c, reset_c } },
   { rgba, { register_c, rgba_c, reset_c, powerOn_c, powerOff_c } },
   { rgbaAddress, { register_c, rgbaEffects_c, reset_c, powerOn_c, powerOff_c } },
+  { ledCct, { register_c, ledCct_c, reset_c, powerOn_c, powerOff_c } },
   { tempSensor, { register_c, reset_c } },
   { unknown, {} },
 };

@@ -14,3 +14,9 @@ struct LedConfigData {
   int mode;
   bool powerOn;
 };
+
+struct LedCctConfigData {
+  int brightness;
+  int colorTemperature;
+  bool powerOn;
+};

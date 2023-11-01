@@ -17,6 +17,8 @@ private:
   GyverOS<2> os = {};
 #elif defined(TYPE_DEVICE_RGBA)
   GyverOS<2> os = {};
+#elif defined(TYPE_DEVICE_LED_CCT)
+  GyverOS<2> os = {};
 #endif
 public:
   void runMainTasks(CallbackTaskerLoop taskNetwork, CallbackTaskerLoop taskDataPusher);

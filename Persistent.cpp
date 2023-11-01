@@ -139,3 +139,66 @@ LedConfigData Persistent::getSavedLedConfigData() {
 
   return ledConfigData;
 }
+
+void Persistent::saveLedCctConfigData(LedCctConfigData ledConfigData) {
+  int startAddress = getAddressForSavingSideData();
+
+  int sizeBr = sizeof(ledConfigData.brightness);
+  sizeBr++;
+  int sizeCt = sizeof(ledConfigData.colorTemperature);
+  sizeCt++;
+
+  EEPROM.begin(SIZE_EEPROM);
+  EEPROM.put(startAddress, ledConfigData.brightness);
+  EEPROM.put(startAddress + sizeBr, ledConfigData.colorTemperature);
+  EEPROM.put(startAddress + sizeBr + sizeCt, ledConfigData.powerOn ? 1 : 0);
+  EEPROM.commit();
+  EEPROM.end();
+
+
+  // Serial.println("saveLedConfigData");
+  // Serial.println("ledConfigData.h");
+  // Serial.println(ledConfigData.h);
+  // Serial.println("ledConfigData.s");
+  // Serial.println(ledConfigData.s);
+  // Serial.println("ledConfigData.v");
+  // Serial.println(ledConfigData.v);
+  // Serial.println("ledConfigData.mode");
+  // Serial.println(ledConfigData.mode);
+  // Serial.println("ledConfigData.powerOn");
+  // Serial.println(ledConfigData.powerOn);
+}
+
+LedCctConfigData Persistent::getSavedLedCctConfigData() {
+  LedCctConfigData ledConfigData;
+  int powerOn = 0;
+
+  int startAddress = getAddressForSavingSideData();
+
+  int sizeBr = sizeof(ledConfigData.brightness);
+  sizeBr++;
+  int sizeCt = sizeof(ledConfigData.colorTemperature);
+  sizeCt++;
+
+  EEPROM.begin(SIZE_EEPROM);
+  EEPROM.get(startAddress, ledConfigData.brightness);
+  EEPROM.get(startAddress + sizeBr, ledConfigData.colorTemperature);
+  EEPROM.get(startAddress + sizeBr + sizeCt, powerOn);
+  EEPROM.end();
+
+  ledConfigData.powerOn = powerOn == 1;
+
+  // Serial.println("getSavedLedConfigData");
+  // Serial.println("ledConfigData.h");
+  // Serial.println(ledConfigData.h);
+  // Serial.println("ledConfigData.s");
+  // Serial.println(ledConfigData.s);
+  // Serial.println("ledConfigData.v");
+  // Serial.println(ledConfigData.v);
+  // Serial.println("ledConfigData.mode");
+  // Serial.println(ledConfigData.mode);
+  // Serial.println("ledConfigData.powerOn");
+  // Serial.println(ledConfigData.powerOn);
+
+  return ledConfigData;
+}

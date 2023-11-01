@@ -19,4 +19,5 @@ public:
   String constructLedConfigData(LedConfigData ledConfigData);
   String constructSwitchData(bool powerState);
   String constructTempsData(float temps[], int length);
+  String constructLedCctConfigData(LedCctConfigData ledConfigData);
 };

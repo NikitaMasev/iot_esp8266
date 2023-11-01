@@ -61,3 +61,26 @@ LedConfigData DataParser::parseLedConfig(String data) {
 
   return ledConfigData;
 }
+
+LedCctConfigData DataParser::parseLedCctConfig(String data) {
+  LedCctConfigData ledCctConfigData;
+  StringParser pars;
+  uint8_t index = 0;
+
+  while (pars.update(data)) {
+    switch (index) {
+      case 0:
+        ledCctConfigData.brightness = pars.str.toInt();
+        break;
+      case 1:
+        ledCctConfigData.colorTemperature = pars.str.toInt();
+        break;
+      case 2:
+        ledCctConfigData.powerOn = pars.str.toInt() == 1;
+        break;
+    }
+    index++;
+  }
+
+  return ledCctConfigData;
+}

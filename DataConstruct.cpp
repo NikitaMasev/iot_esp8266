@@ -91,6 +91,26 @@ String DataConstruct::constructLedConfigData(LedConfigData ledConfigData) {
   return dataStr;
 }
 
+String DataConstruct::constructLedCctConfigData(LedCctConfigData ledConfigData) {
+  String dataStr;
+  char data[30] = "";
+  char tmp[8] = "";
+
+  strcat(data, START_PKG_DATA_SYMB);
+  itoa(ledConfigData.brightness, tmp, DEC);
+  strcat(data, tmp);
+  strcat(data, DELIMITER_IOT_DATA_SYMB);
+  itoa(ledConfigData.colorTemperature, tmp, DEC);
+  strcat(data, tmp);
+  strcat(data, DELIMITER_IOT_DATA_SYMB);
+  itoa(ledConfigData.powerOn ? 1 : 0, tmp, DEC);
+  strcat(data, tmp);
+  strcat(data, END_PKG_DATA_SYMB);
+
+  dataStr = data;
+  return dataStr;
+}
+
 String DataConstruct::constructSwitchData(bool powerState) {
   String dataStr;
   char data[8] = "";

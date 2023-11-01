@@ -7,4 +7,5 @@ class DataParser {
 public:
   ParsedHeaderPayload parseTextData(String data);
   LedConfigData parseLedConfig(String data);
+  LedCctConfigData parseLedCctConfig(String data);
 };

@@ -20,6 +20,8 @@
 #include "RgbaAddressControl.h"
 #elif defined(TYPE_DEVICE_TEMP_SENSOR)
 #include "TempDetector.h"
+#elif defined(TYPE_DEVICE_LED_CCT)
+#include "LedCctControl.h"
 #endif
 
 #if defined(CONTROL_LED_PAJ7620_SENSOR)
@@ -47,6 +49,8 @@ private:
   RgbaAddressControl rgbaAddressControl = {};
 #elif defined(TYPE_DEVICE_TEMP_SENSOR)
   TempDetector tempDetector = {};
+#elif defined(TYPE_DEVICE_LED_CCT)
+  LedCctControl ledCctControl = {};
 #endif
 
 #if defined(CONTROL_LED_PAJ7620_SENSOR)
@@ -60,4 +64,5 @@ public:
   void tick();
   void updatePower(bool controlOn);
   void updateLedConfig(LedConfigData parsedLedConfig);
+  void updateLedCctConfig(LedCctConfigData parsedLedConfig);
 };

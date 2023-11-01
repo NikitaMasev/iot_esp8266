@@ -15,6 +15,7 @@ public:
     float currentDC,
     float voltageDC);
   String constructLedConfigData(LedConfigData ledConfigData);
+  String constructLedCctConfigData(LedCctConfigData ledConfigData);
   String constructSwitchData(bool powerState);
   String constructTempsData(float temps[], int length);
 };

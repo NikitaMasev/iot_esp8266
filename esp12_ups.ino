@@ -98,9 +98,14 @@ void setup() {
         case rgba_c:
         case rgbaEffects_c:
           {
-            LedConfigData parsedLedConfig = dataParser.parseLedConfig(headerPayload.payload);
-            iotModel->updateLedConfig(parsedLedConfig);
+            LedConfigData parsedData = dataParser.parseLedConfig(headerPayload.payload);
+            iotModel->updateLedConfig(parsedData);
             return String("");
+          }
+        case ledCct_c:
+          {
+            LedCctConfigData parsedData = dataParser.parseLedCctConfig(headerPayload.payload);
+            iotModel->updateLedCctConfig(parsedData);
           }
       }
 

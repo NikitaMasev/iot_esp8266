@@ -5,10 +5,11 @@
 //#define TYPE_DEVICE_UPS
 //#define TYPE_DEVICE_LAMP
 //#define TYPE_DEVICE_RGBA ///TODO NEED FIX
-#define TYPE_DEVICE_RGBA_ADDRESS
+//#define TYPE_DEVICE_RGBA_ADDRESS
+#define TYPE_DEVICE_LED_CCT
 //#define TYPE_DEVICE_TEMP_SENSOR
 
-#define CONTROL_LED_PAJ7620_SENSOR ///??? LAGS LED ANIMATION (reason - call sensorPajLed.begin() in GestureDetector)
+//#define CONTROL_LED_PAJ7620_SENSOR ///
 
 #define PKG_CMD_SYMB "^"
 #define PKG_CMD_DELIMITER_SYMB ":"
@@ -20,11 +21,13 @@
 
 const constexpr char *ssid = "";
 const constexpr char *password = "";
-const constexpr char *iotServer = "ws://192.168.50.213:5080";
-//const constexpr char *iotServer = "ws://192.168.50.143:5080";
 
-const constexpr uint8_t cipher_key[] = {48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 53, 54, 49, 48, 49, 49 };
-const constexpr uint8_t cipher_iv[] = { 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48};
+const constexpr char *iotServer = "ws://192.168.50.143:5080";
+
+
+
+const constexpr uint8_t cipher_key[] = {48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 53, 54, 49, 48, 49, 49};
+const constexpr uint8_t cipher_iv[] = {48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48};
 
 ///UPS START
 //IO5/D1 - SCL, IO4/D2 - SDA
@@ -58,3 +61,8 @@ const constexpr uint8_t cipher_iv[] = { 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 
 #define LED_DT 14 //14      // пин, куда подключен DIN ленты
 #define LED_COUNT 140  // число светодиодов в кольце/ленте
 ///LED RGB ADDRESS END
+///LED CCT START
+#define PIN_COLD D1
+#define PIN_NULL D2
+#define PIN_WARM D5
+///LED CCT END

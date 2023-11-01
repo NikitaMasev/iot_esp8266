@@ -15,3 +15,11 @@ void ModelPersistent::saveLedConfigData(LedConfigData ledConfigData) {
 LedConfigData ModelPersistent::getSavedLedConfigData() {
   return persistent.getSavedLedConfigData();
 }
+
+void ModelPersistent::saveLedCctConfigData(LedCctConfigData ledConfigData) {
+  persistent.saveLedCctConfigData(ledConfigData);
+}
+
+LedCctConfigData ModelPersistent::getSavedLedCctConfigData() {
+  return persistent.getSavedLedCctConfigData();
+}

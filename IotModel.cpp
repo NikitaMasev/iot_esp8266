@@ -1,5 +1,5 @@
 #include "DataTypes.h"
-#include "HardwareSerial.h"
+//#include "HardwareSerial.h"
 #include "IotModel.h"
 #include "TypeDevice.h"
 #include "Arduino.h"
@@ -32,6 +32,8 @@ void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callba
   updatePower(persistent.getSavedPowerControlState());
 #elif defined(TYPE_DEVICE_RGBA)
   rgbaControl.updateLedConfig(persistent.getSavedLedConfigData());
+#elif defined(TYPE_DEVICE_LED_CCT)
+  ledCctControl.updateLedConfig(persistent.getSavedLedCctConfigData());
 #elif defined(TYPE_DEVICE_RGBA_ADDRESS)
   rgbaAddressControl.updateLedAddressConfig(persistent.getSavedLedConfigData());
   RgbaAddressControl *rgbaTick = &this->rgbaAddressControl;
@@ -63,16 +65,16 @@ void IotModel::setup(CallbackConnected callbackConnected, CallbackMessage callba
     rgbaAddrEffectSwitching->updateLedAddressConfig(newConfigLed);
     persistentEffectSave->saveLedConfigData(newConfigLed);
   });
-  gestureDetector.attachUp([rgbaAddrEffectSwitching, persistentEffectSave]() {
-    rgbaAddrEffectSwitching->nextEffect();
-    LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
-    persistentEffectSave->saveLedConfigData(newConfigLed);
-  });
-  gestureDetector.attachDown([rgbaAddrEffectSwitching, persistentEffectSave]() {
-    rgbaAddrEffectSwitching->previousEffect();
-    LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
-    persistentEffectSave->saveLedConfigData(newConfigLed);
-  });
+  // gestureDetector.attachUp([rgbaAddrEffectSwitching, persistentEffectSave]() {
+  //   rgbaAddrEffectSwitching->nextEffect();
+  //   LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
+  //   persistentEffectSave->saveLedConfigData(newConfigLed);
+  // });
+  // gestureDetector.attachDown([rgbaAddrEffectSwitching, persistentEffectSave]() {
+  //   rgbaAddrEffectSwitching->previousEffect();
+  //   LedConfigData newConfigLed = rgbaAddrEffectSwitching->getLedAddressConfig();
+  //   persistentEffectSave->saveLedConfigData(newConfigLed);
+  // });
 
   GestureDetector *gestureTick = &this->gestureDetector;
 
@@ -95,6 +97,10 @@ void IotModel::updatePower(bool controlOn) {
   rgbaAddressControl.updatePower(controlOn);
   persistent.saveLedConfigData(rgbaAddressControl.getLedAddressConfig());
 #endif
+#if defined(TYPE_DEVICE_LED_CCT)
+  ledCctControl.updatePower(controlOn);
+  persistent.saveLedCctConfigData(ledCctControl.getLedConfig());
+#endif
 }
 
 void IotModel::updateLedConfig(LedConfigData parsedLedConfig) {
@@ -104,6 +110,13 @@ void IotModel::updateLedConfig(LedConfigData parsedLedConfig) {
 #endif
 #if defined(TYPE_DEVICE_RGBA_ADDRESS)
   rgbaAddressControl.updateLedAddressConfig(parsedLedConfig);
+#endif
+}
+
+void IotModel::updateLedCctConfig(LedCctConfigData parsedLedConfig) {
+  persistent.saveLedCctConfigData(parsedLedConfig);
+#if defined(TYPE_DEVICE_LED_CCT)
+  ledCctControl.updateLedConfig(persistent.getSavedLedCctConfigData());
 #endif
 }
 
@@ -126,6 +139,9 @@ void IotModel::tickDataPusher() {
 #endif
 #if defined(TYPE_DEVICE_TEMP_SENSOR)
   dataForService = dataConstruct.constructTempsData(tempDetector.temps, TEMP_SENSOR_COUNT);
+#endif
+#if defined(TYPE_DEVICE_LED_CCT)
+  dataForService = dataConstruct.constructLedCctConfigData(ledCctControl.getLedConfig());
 #endif
 
   if (!dataForService.isEmpty()) {
