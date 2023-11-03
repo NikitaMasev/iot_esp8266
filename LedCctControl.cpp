@@ -23,15 +23,22 @@ void LedCctControl::ledConfigApplyControl() {
   if (ledConfigData.colorTemperature == 128) {
     coldValue = 255;
     warmValue = 255;
-  } else {
-    coldValue = 255 - ledConfigData.colorTemperature;
-    warmValue = ledConfigData.colorTemperature;
+  } else if (ledConfigData.colorTemperature < 128) {
+    coldValue = 255;
+    warmValue = ledConfigData.colorTemperature * 2;
+  } else if (ledConfigData.colorTemperature > 128) {
+    warmValue = 255;
+    coldValue = (255 - ledConfigData.colorTemperature) * 2;
   }
 
   ledControl.setRGB(coldValue, 0, warmValue);
 }
 
 void LedCctControl::updateLedConfig(LedCctConfigData newConfigData) {
+  if (newConfigData.brightness == -1 || newConfigData.colorTemperature == -1) {
+    return;
+  }
+
   ledConfigData = newConfigData;
   ledConfigApplyControl();
 }

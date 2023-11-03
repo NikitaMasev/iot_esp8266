@@ -49,11 +49,13 @@ void IotNetwork::setup(CallbackConnected callbackConnected, CallbackMessage call
       Serial.println("IotNetwork WebsocketsEvent::ConnectionClosed");
       iotServerConnected = false;
     } else if (event == WebsocketsEvent::GotPing) {
-      //Serial.println("IotNetwork WebsocketsEvent::GotPing");
-      client.pong();
+      Serial.println("IotNetwork WebsocketsEvent::GotPing");
+      //client.pong();
+      client.send("pong");
     } else if (event == WebsocketsEvent::GotPong) {
       Serial.println("IotNetwork WebsocketsEvent::GotPong");
-      client.ping();
+      client.send("ping");
+      //client.ping();
     }
   });
 

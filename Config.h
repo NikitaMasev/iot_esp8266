@@ -62,7 +62,7 @@ const constexpr uint8_t cipher_iv[] = {48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 4
 #define LED_COUNT 140  // число светодиодов в кольце/ленте
 ///LED RGB ADDRESS END
 ///LED CCT START
-#define PIN_COLD D1
+#define PIN_COLD D5
 #define PIN_NULL D2
-#define PIN_WARM D5
+#define PIN_WARM D1
 ///LED CCT END
